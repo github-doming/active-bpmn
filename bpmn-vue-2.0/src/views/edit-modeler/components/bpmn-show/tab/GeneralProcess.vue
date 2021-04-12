@@ -5,7 +5,7 @@
 				<a-input v-model="form.name" read-only/>
 			</a-form-model-item>
 			<a-form-model-item :label="local.description">
-				<a-input v-model="form.description"read-onl/>
+				<a-input v-model="form.description" read-onl/>
 			</a-form-model-item>
 		</a-form-model>
 	</div>

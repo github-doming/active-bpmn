@@ -170,6 +170,8 @@ public class ProcessDesignController {
 
 		local.put("singleVariableName", "变量名称不能重复");
 		local.put("mismatchType", "变量默认值与变量指定的类型不匹配");
+		local.put("description", "描述");
+		local.put("enterDescription", "请输入工作流描述");
 
 
 		Map<String, Object> language = new HashMap<>(15);
