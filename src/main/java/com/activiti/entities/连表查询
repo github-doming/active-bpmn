@@ -1,0 +1,45 @@
+/**
+ * create by weiwenhai
+ * sql:
+ * select d.* from caddocument d
+ * left join baseline_member b on d.id = b.rolebobject_id
+ * left join cadworkspace c on c.checkpoint_ref_id = b.roleaobject_id
+ * left join caddocument_master m on d.master_reference_id = m.id
+ * where m.cadname = 'MANIFOLD_SOLID_BREP_103837_1.prt' and c.id = 1090
+ */
+//创建查询
+EntityManager em = PersistenceHelper.service.getEntityManager();
+try{
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaQuery qs = cb.createQuery();
+    //需要查询的类
+    Root documentRoot = qs.from(CADDocument.class);
+    Root baselineRoot = qs.from(BaselineMember.class);
+    Root workspaceRoot = qs.from(CADWorkspace.class);
+    Root masterRoot = qs.from(CADDocumentMaster.class);
+    //关联字段
+    Path documentIdentifier = documentRoot.get("objectIdentifier");
+    Path baseRoleBRefKey = baselineRoot.get("roleBObjectRef").get("key");
+    Path baseRoleARefKey = baselineRoot.get("roleAObjectRef").get("key");
+    Path checkpointReference = workspaceRoot.get("checkpointReference").get("key");
+    Path masterReferenceKey = documentRoot.get("masterReference").get("key");
+    Path masterIdentifier = masterRoot.get("objectIdentifier");
+    Path workspaceIdentifier = workspaceRoot.get("objectIdentifier");
+    Path CADName = masterRoot.get("CADName");
+    //拼接多表关联字段
+    List<Predicate> predicates = new ArrayList<Predicate>();
+    predicates.add(cb.equal(documentIdentifier, baseRoleBRefKey));
+    predicates.add(cb.equal(checkpointReference, baseRoleARefKey));
+    predicates.add(cb.equal(masterReferenceKey, masterIdentifier));
+    //拼接查询条件
+    predicates.add(cb.equal(workspaceIdentifier,this.workspace.getObjectIdentifier()));
+    predicates.add(CADName.in(hashSet1));
+    //查询的对象
+    qs.select(documentRoot);
+    //查询条件
+    qs.where(predicates.toArray(new Predicate[predicates.size()]));
+    List<CADDocument> documents = em.createQuery(qs).getResultList();
+}catch (Exception e){
+}finally {
+    //em.close();
+}

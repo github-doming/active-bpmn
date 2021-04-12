@@ -1,0 +1,321 @@
+{
+  "name": "Activiti",
+  "uri": "http://activiti.org/bpmn",
+  "prefix": "activiti",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "types": [
+    {
+      "name": "Activity",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "taskFormTemplate",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "signingRequired",
+          "type": "Boolean",
+          "isAttr": true
+        }
+      ]
+    },
+    {
+      "name": "Variable",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "id",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "defaultDisplay",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "displayZhCn",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "displayEnUs",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "otherName",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "defaultValue",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "isVisible",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "isNecessary",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "isReadOnly",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "isReset",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "initFormVarKey",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
+      "name": "Participant",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "assign",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "group",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "role",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "assigns",
+          "isMany": true,
+          "type": "Assign"
+        },
+        {
+          "name": "groups",
+          "isMany": true,
+          "type": "Group"
+        },
+        {
+          "name": "roles",
+          "isMany": true,
+          "type": "Role"
+        }
+      ]
+    },
+    {
+      "name": "RoleSet",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "view",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "add",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "remove",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "sourceRef",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "repository",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "repositories",
+          "isMany": true,
+          "type": "Repository"
+        }
+      ]
+    },
+    {
+      "name": "TaskListener",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "event",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "class",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "field",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
+      "name": "Assign",
+      "properties": [
+        {
+          "name": "userName",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Group",
+      "properties": [
+        {
+          "name": "need",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "number",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Role",
+      "properties": [
+        {
+          "name": "need",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "number",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "roleCode",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Repository",
+      "properties": [
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    }
+  ],
+  "associations": []
+}
