@@ -10,7 +10,7 @@
 								 :params="bpmnParams" :element="element"></component>
 			<span>
 			<a-button type="primary" @click="saveBpmn" style="margin: 5px">{{local.save}}</a-button>
-			<a-button @click="saveBpmn" style="margin: 5px">{{local.download}}</a-button>
+			<a-button @click="saveBpmn" style="margin: 5px" v-show="downloadShow">{{local.download}}</a-button>
 			</span>
 		</div>
 	</div>
@@ -41,6 +41,11 @@
       },
     },
     components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties},
+    computed: {
+      downloadShow() {
+        return true;
+      },
+    },
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
