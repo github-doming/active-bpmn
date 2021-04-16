@@ -67,10 +67,6 @@
         if (!that.validateBpmn()) {
           return;
         }
-        // let rootParam = that.bpmnParams[that.bpmnParams.process.key];
-        // const name = rootParam.name+'.bpmn';
-        // const description = rootParam.description;
-        // console.log(name,description);
         that.bpmnModeler.saveXML({format: true}, (err, xml) => {
           if (err) {
             console.error('流程数据生成失败');
@@ -158,8 +154,6 @@
             that.success()
           }
         });
-        // that.bpmnModeler.get("canvas").zoom(0.8);
-        // that.bpmnModeler.get("canvas").zoom('fit-viewport');
       },
       success() {
         // 调控左侧工具栏
@@ -180,86 +174,7 @@
             that.propsComponent = 'ProcessProperties';
           }
           if (nodeType.includes(element.type)) {
-            let businessObject = element.businessObject;
-            //清洗数据
-            if (businessObject.extensionElements) {
-              // businessObject.extensionElements.get('values').filter(element => element['$type'] === BpmnTag.participant)
-              //     .forEach(participant => {
-              //       if (!participant.assigns) {
-              //         participant.assigns = [];
-              //       }
-              //       //参与者
-              //       if (participant.assign) {
-              //         participant.assign.split(';').forEach(assign => {
-              //           if (assign) {
-              //             let attrs = assign.split(',');
-              //             let tagElement = BpmnFunction.createElementTag(that.bpmnModeler, participant, BpmnTag.assign);
-              //             tagElement.userName = attrs[0];
-              //             tagElement.type = attrs[1];
-              //             tagElement.id = attrs[2];
-              //             participant.assigns.push(tagElement);
-              //           }
-              //         });
-              //       }
-              //       if (!participant.groups) {
-              //         participant.groups = [];
-              //       }
-              //       if (participant.group) {
-              //         participant.group.split(';').forEach(group => {
-              //           if (group) {
-              //             let attrs = group.split(',');
-              //             let tagElement = BpmnFunction.createElementTag(that.bpmnModeler, participant, BpmnTag.group);
-              //             tagElement.need = attrs[0].split('.')[0];
-              //             tagElement.number = attrs[0].split('.')[1];
-              //             tagElement.name = attrs[1];
-              //             tagElement.type = attrs[2];
-              //             tagElement.id = attrs[3];
-              //             participant.groups.push(tagElement);
-              //           }
-              //         });
-              //       }
-              //       if (!participant.roles) {
-              //         participant.roles = [];
-              //       }
-              //       if (participant.role) {
-              //         participant.role.split(';').forEach(role => {
-              //           if (role) {
-              //             let attrs = role.split(',');
-              //             let tagElement = BpmnFunction.createElementTag(that.bpmnModeler, participant, BpmnTag.role);
-              //             tagElement.need = attrs[0].split('.')[0];
-              //             tagElement.number = attrs[0].split('.')[1];
-              //             tagElement.name = attrs[1];
-              //             tagElement.type = attrs[2];
-              //             tagElement.roleCode = attrs[3];
-              //             tagElement.id = attrs[4];
-              //             participant.roles.push(tagElement);
-              //           }
-              //         });
-              //       }
-              //       delete participant.assign;
-              //       delete participant.group;
-              //       delete participant.role;
-              //     });
-              // businessObject.extensionElements.get('values').filter(element => element['$type'] === BpmnTag.roleSet)
-              //     .forEach(roleSet => {
-              //       if (!roleSet.repositories) {
-              //         roleSet.repositories = [];
-              //       }
-              //       if (roleSet.repository) {
-              //         roleSet.repository.split(';').forEach(repository => {
-              //           let attrs = repository.split(',');
-              //           let tagElement = BpmnFunction.createElementTag(that.bpmnModeler, roleSet, BpmnTag.repository);
-              //
-              //           tagElement.name = attrs[0];
-              //           tagElement.type = attrs[1];
-              //           tagElement.id = attrs[2];
-              //           roleSet.repositories.push(tagElement);
-              //         });
-              //       }
-              //       delete roleSet.repository;
-              //     });
-            }
-            that.bpmnParams[element.id] = businessObject;
+            that.bpmnParams[element.id] = element.businessObject;
           }
         });
       },
@@ -306,7 +221,7 @@
       },
       addEventBusListener() {
         let that = this;
-        this.bpmnModeler.on('element.click', event => {
+        that.bpmnModeler.on('element.click', event => {
           if (!event) {
             return;
           }
@@ -326,18 +241,24 @@
             that.propsComponent = 'ProcessProperties'
           }
         });
-        this.bpmnModeler.on('interactionEvents.createHit', event => {
-          that.propsComponent = 'NameProperties';
+        that.bpmnModeler.on('shape.added', event => {
           that.element = event.element;
-          if (that.element.type === 'bpmn:StartEvent') {
+          that.propsComponent = 'NameProperties';
+          const type = that.element.type;
+          if (type === 'bpmn:StartEvent') {
             that.element.businessObject.name = '开始';
-          } else if (that.element.type === 'bpmn:EndEvent') {
+          } else if (type === 'bpmn:EndEvent') {
             that.element.businessObject.name = '结束';
+          } else if (type === 'bpmn:UserTask') {
+            that.propsComponent = 'UserTaskProperties';
           }
-          //添加新节点的时候都将元素添加到 bpmnParams 中
-          that.bpmnParams[that.element.id] = that.element.businessObject;
         });
-        this.bpmnModeler.on('connection.removed', event => {
+        that.bpmnModeler.on('interactionEvents.createHit', event => {
+          //添加新节点的时候都将元素添加到 bpmnParams 中
+          that.bpmnParams[event.element.id] = event.element.businessObject;
+        });
+        // region 节点移除
+        that.bpmnModeler.on('connection.removed', event => {
           //移除该节点关联的转变
           let elementId = event.element.id;
           for (let key of Object.keys(this.bpmnParams)) {
@@ -350,18 +271,18 @@
             that.bpmnParams[key].extensionElements.set('values', values);
           }
           //移除节点时将元素从 bpmnParams 中移除
-          delete that.bpmnParams[event.element.id];
-          that.element = that.bpmnParams.process.element;
-          that.propsComponent = 'ProcessProperties'
+          that.removedElement(event);
         });
-        this.bpmnModeler.on('shape.removed', event => {
+        that.bpmnModeler.on('shape.removed', event => {
           //移除节点时将元素从 bpmnParams 中移除
-          delete that.bpmnParams[event.element.id];
-          that.element = that.bpmnParams.process.element;
-          that.propsComponent = 'ProcessProperties'
+          that.removedElement(event);
         });
-
-
+        // endregion
+      },
+      removedElement(event) {
+        delete this.bpmnParams[event.element.id];
+        this.element = this.bpmnParams.process.element;
+        this.propsComponent = 'ProcessProperties'
       },
 
       // endregion

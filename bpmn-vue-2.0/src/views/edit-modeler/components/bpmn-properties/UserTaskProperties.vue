@@ -59,7 +59,6 @@
         }
         return [];
       },
-
       roleSetInfos() {
         return this.extensionValues.filter(element => element['$type'] === BpmnTag.roleSet);
       },
@@ -82,7 +81,7 @@
       }
     },
     created() {
-      this.extensionValues = this.getExtensionElements().get('values')
+      this.extensionValues = this.getExtensionElements().get('values');
     },
     watch: {
       element(newValue) {
@@ -104,6 +103,14 @@
         if (!participant) {
           participant = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.participant);
           this.extensionValues.push(participant);
+          let tagElement = BpmnFunction.createElementTag(this.modeler, participant, BpmnTag.role);
+          participant.roles = [tagElement];
+          Object.assign(tagElement, {
+            'id': 'item.id', 'name': '操作者', 'roleCode': 'item.roleCode',
+          	'hover': false, 'type': 'role', 'need': 'NO', 'number': ''
+          });
+          const rolesOption = [{'name': '操作者', 'id': 'item.id', 'code': 'item.roleCode'}];
+          this.editRoleSet4Role(rolesOption, 'add');
         }
         return participant;
       },
