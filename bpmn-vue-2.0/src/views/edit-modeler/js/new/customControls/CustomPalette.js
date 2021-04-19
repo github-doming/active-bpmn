@@ -23,6 +23,12 @@ export default class CustomPalette {
       create.start(event, shape);
     }
 
+    function createInternalMethodRobotTask(event) {
+      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
+      shape.businessObject['activiti:type'] = 'setState';
+      create.start(event, shape);
+    }
+
     return {
       'create.user-task': {
         group: 'activity', className: 'bpmn-icon-user-task', title: translate('Create UserTask'),
@@ -32,6 +38,12 @@ export default class CustomPalette {
         group: 'activity', className: 'bpmn-icon-service-task', title: translate('Create ServiceTask'),
         action: {dragstart: createServiceTask, click: createServiceTask}
       },
+      'create.internal-method-robot-task': {
+        group: 'activity', // 分组名
+        className: 'icon-custom internal-method-robot-task', // 样式类名
+        title: '创建方法自动机',
+        action: {dragstart: createInternalMethodRobotTask, click: createInternalMethodRobotTask}
+      }
     }
   }
 

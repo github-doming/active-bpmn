@@ -1,29 +1,29 @@
 <template>
-	<div id="app">
-		<h1>流程管理</h1>
-		<a-row type="flex" justify="center">
-			<a-table :columns="columns" :data-source="tableData" :rowKey="record => record.id" :span="20">
-				<div slot="operation" slot-scope="text, record">
-					<a-button class="btn-border" @click="handleEdit()">编辑</a-button>
-					<a-button class="btn-border" @click="handleView()">查看</a-button>
-					<a-button class="btn-border" @click="handleShow()">展示</a-button>
-					<a-button class="btn-border" @click="handleDelete(record)">删除</a-button>
-				</div>
-			</a-table>
-		</a-row>
-		<a-modal :centered="true" :maskClosable="false" :title="dialogTitle" :visible.sync="dialogVisible" width="90%"
-						 @cancel="handleClose">
-			<div>
-				<component ref="modeler" :is="dialogComponent" :activeData="activeData"></component>
-			</div>
-			<span slot="footer" class="dialog-footer">
+  <div id="app">
+    <h1>流程管理</h1>
+    <a-row type="flex" justify="center">
+      <a-table :columns="columns" :data-source="tableData" :rowKey="record => record.id" :span="20">
+        <div slot="operation" slot-scope="text, record">
+          <a-button class="btn-border" @click="handleEdit()">编辑</a-button>
+          <a-button class="btn-border" @click="handleView()">查看</a-button>
+          <a-button class="btn-border" @click="handleShow()">展示</a-button>
+          <a-button class="btn-border" @click="handleDelete(record)">删除</a-button>
+        </div>
+      </a-table>
+    </a-row>
+    <a-modal :centered="true" :maskClosable="false" :title="dialogTitle" :visible.sync="dialogVisible" width="90%"
+             @cancel="handleClose">
+      <div>
+        <component ref="modeler" :is="dialogComponent" :activeData="activeData"></component>
+      </div>
+      <span slot="footer" class="dialog-footer">
 				<a-button @click="handleDisplay">显示XML</a-button>
 				<a-button type="danger" @click="handleClose">取 消</a-button>
 				<a-button type="primary" @click="handleOk">确 定</a-button>
 			</span>
-		</a-modal>
+    </a-modal>
 
-	</div>
+  </div>
 </template>
 
 <script>
@@ -67,7 +67,7 @@
         activeData: {},
       }
     },
-    components: {activeti, viewer,show},
+    components: {activeti, viewer, show},
     mounted() {
       const that = this;
       request({method: 'get', url: '/workflow/model/list',})
@@ -116,24 +116,35 @@
 </script>
 
 <style>
-	#app {
-		font-family: 'Avenir', Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-		padding-top: 60px;
-	}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    padding-top: 60px;
+  }
 
-	.ant-modal-header {
-		padding: 10px 20px !important;
-	}
+  .ant-modal-header {
+    padding: 10px 20px !important;
+  }
 
-	.ant-modal-body {
-		padding: 0 10px !important;
-	}
+  .ant-modal-body {
+    padding: 0 10px !important;
+  }
 
-	.btn-border {
-		margin-right: 10px;
-	}
+  .btn-border {
+    margin-right: 10px;
+  }
+
+  /* 自定义任务节点 */
+  .internal-method-robot-task:before {
+    content: '';
+    background-image: url('https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/rules.png');
+    background-size: 30px 30px;
+    width: 30px;
+    height: 30px;
+  }
+
+
 </style>

@@ -184,11 +184,11 @@
         canvas.children[0].removeChild(canvas.children[0].children[0]);
         //设置面板样式
         const selectPalette = canvas.children[0].children[0].children[4];
-        const selectPalStyle = {width: '130px', padding: '5px', background: 'white', left: '20px', borderRadius: 0};
+        const selectPalStyle = {width: '135px', padding: '5px', background: 'white', left: '20px', borderRadius: 0};
         for (let key in selectPalStyle) {
           selectPalette.style[key] = selectPalStyle[key]
         }
-        //调整显示节点
+        //调整显示类型
         let allGroups = Array.from(selectPalette.children[0].children);
         const dataGroups = ['tools', 'data-object', 'data-store', 'collaboration', 'artifact'];
         allGroups = allGroups.filter(group => {
@@ -199,16 +199,23 @@
           return true;
         });
 
+
         // 修改控件样式
         const controlStyle = {
           display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%', padding: '5px'
         };
+        //调整显示节点
+        const dataAction = ['create.intermediate-event','create.task'];
         allGroups.forEach(group => {
           Array.from(group.children).forEach(control => {
+            if (dataAction.includes( control.getAttribute('data-action'))){
+              control.style['display'] = 'none';
+              return;
+            }
             let text = control.title;
             if (control.title.indexOf("创建") > -1) {
               text = text.slice(2).split('/')[0].replace('事件', '').replace('扩展', '');
-              control.innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;'>${text}</div>`;
+              control.innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:10px;'>${text}</div>`;
             } else {
               text = text.split('/')[0].replace('Create ', '').replace('expanded ', '');
               control.innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:5px;'>${text}</div>`;
@@ -231,6 +238,7 @@
           } else if (that.element.type === 'bpmn:UserTask') {
             that.propsComponent = 'UserTaskProperties'
           } else if (that.element.type === 'bpmn:ServiceTask') {
+            console.log(that.element);
             that.propsComponent = 'ServiceTaskProperties'
           } else if (that.element.type === 'bpmn:StartEvent' || that.element.type === 'bpmn:EndEvent') {
             that.propsComponent = 'NameProperties'
