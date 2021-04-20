@@ -1,27 +1,27 @@
 <template>
-	<div class="properties">
-		<a-tabs type="card" v-model="activeTab">
-			<a-tab-pane key="general" :tab="local.general">
-				<general-user-task :param="param" :activity="activity()" @updateGeneral="updateGeneral"></general-user-task>
-			</a-tab-pane>
-			<a-tab-pane key="variable" :tab="local.variable">
-				<variable :variables="variables" :globalVariables="globalVariables" @updateVariable="updateVariable"></variable>
-			</a-tab-pane>
-			<a-tab-pane key="roleSet" :tab="local.roleSet">
-				<role-set :param="param" :roleSetInfos="roleSetInfos"></role-set>
-			</a-tab-pane>
-			<a-tab-pane key="participant" :tab="local.participant">
-				<participant :participant="participant()" @updateParticipant="updateParticipant"></participant>
-			</a-tab-pane>
-			<a-tab-pane key="resourceLibrary" :tab="local.resourceLibrary">
-				<resource-library :roleSets="roleSetInfos" @updateRepository="updateRepository"></resource-library>
-			</a-tab-pane>
-			<a-tab-pane key="taskListener" :tab="local.taskListener">
-				<task-listener :transform="transform" :taskListeners="taskListeners"
-											 @updateTaskListener="updateTaskListener"></task-listener>
-			</a-tab-pane>
-		</a-tabs>
-	</div>
+  <div class="properties">
+    <a-tabs type="card" v-model="activeTab">
+      <a-tab-pane key="general" :tab="local.general">
+        <general-user-task :param="param" :activity="activity()" @updateGeneral="updateGeneral"/>
+      </a-tab-pane>
+      <a-tab-pane key="variable" :tab="local.variable">
+        <variable :variables="variables" :globalVariables="globalVariables" @updateVariable="updateVariable"/>
+      </a-tab-pane>
+      <a-tab-pane key="roleSet" :tab="local.roleSet">
+        <role-set :param="param" :roleSetInfos="roleSetInfos"/>
+      </a-tab-pane>
+      <a-tab-pane key="participant" :tab="local.participant">
+        <participant :participant="participant()" @updateParticipant="updateParticipant"/>
+      </a-tab-pane>
+      <a-tab-pane key="resourceLibrary" :tab="local.resourceLibrary">
+        <resource-library :roleSets="roleSetInfos" @updateRepository="updateRepository"/>
+      </a-tab-pane>
+      <a-tab-pane key="taskListener" :tab="local.taskListener">
+        <task-listener :transform="transform" :taskListeners="taskListeners"
+                       @updateTaskListener="updateTaskListener"/>
+      </a-tab-pane>
+    </a-tabs>
+  </div>
 </template>
 
 <script>
@@ -63,10 +63,12 @@
         return this.extensionValues.filter(element => element['$type'] === BpmnTag.roleSet);
       },
       transform() {
-        let transform = [{code: 'taskCreate', name: this.local.create}, {code: 'assignment', name: this.local.assignment},
-          {code: 'complete', name: this.local.complete},];
+        let transform = [{code: 'taskCreate', name: this.local.create},
+          {code: 'assignment', name: this.local.assignment}, {code: 'complete', name: this.local.complete},];
         this.element.outgoing.forEach(element => {
-          transform.push({code: element.businessObject.id, name: element.businessObject.name});
+          if (element.businessObject.name){
+            transform.push({code: element.businessObject.id, name: element.businessObject.name});
+          }
         });
         return transform;
       },
@@ -106,11 +108,12 @@
           let tagElement = BpmnFunction.createElementTag(this.modeler, participant, BpmnTag.role);
           participant.roles = [tagElement];
           Object.assign(tagElement, {
-            'id': 'item.id', 'name': '操作者', 'roleCode': 'item.roleCode',
-          	'hover': false, 'type': 'role', 'need': 'NO', 'number': ''
+            'id': 'operator_id', 'name': this.local.operator, 'roleCode': 'operator_code',
+            'hover': false, 'type': 'role', 'need': 'NO', 'number': ''
           });
-          const rolesOption = [{'name': '操作者', 'id': 'item.id', 'code': 'item.roleCode'}];
-          this.editRoleSet4Role(rolesOption, 'add');
+          //操作者，不参与角色设置
+          // const rolesOption = [{'name': '操作者', 'id': 'item.id', 'code': 'item.roleCode'}];
+          // this.editRoleSet4Role(rolesOption, 'add');
         }
         return participant;
       },
@@ -225,8 +228,8 @@
 </script>
 
 <style scoped>
-	.properties {
-		padding: 8px 12px;
-		margin: 2px 3px;
-	}
+  .properties {
+    padding: 8px 12px;
+    margin: 2px 3px;
+  }
 </style>

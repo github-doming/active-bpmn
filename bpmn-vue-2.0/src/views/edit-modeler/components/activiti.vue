@@ -1,19 +1,18 @@
 <template>
-	<div class="container">
-		<div class="content">
-			<div class="canvas" ref="canvas"></div>
-
-		</div>
-		<div class="slide" @mousedown="slideDown">⋮</div>
-		<div class="side">
-			<component :is="propsComponent" v-if="bpmnModeler" :modeler="bpmnModeler"
-								 :params="bpmnParams" :element="element"></component>
-			<span>
+  <div class="container">
+    <div class="content">
+      <div class="canvas" ref="canvas"></div>
+    </div>
+    <div class="slide" @mousedown="slideDown">⋮</div>
+    <div class="side">
+      <component :is="propsComponent" v-if="bpmnModeler" :modeler="bpmnModeler"
+                 :params="bpmnParams" :element="element"></component>
+      <span>
 			<a-button type="primary" @click="saveBpmn" style="margin: 5px">{{local.save}}</a-button>
 			<a-button @click="saveBpmn" style="margin: 5px" v-show="downloadShow">{{local.download}}</a-button>
 			</span>
-		</div>
-	</div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -30,7 +29,8 @@
   import UserTaskProperties from "./bpmn-properties/UserTaskProperties";
   import ServiceTaskProperties from "./bpmn-properties/ServiceTaskProperties";
   import NameProperties from "./bpmn-properties/NameProperties";
-  import {BpmnFunction, BpmnTag} from "../js/new/BpmnHelper";
+  import SequenceProperties from "./bpmn-properties/SequenceProperties";
+  import {BpmnFunction} from "../js/new/BpmnHelper";
 
   export default {
     name: "",
@@ -40,7 +40,7 @@
         default: () => ({}),
       },
     },
-    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties},
+    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties, SequenceProperties},
     computed: {
       downloadShow() {
         return true;
@@ -141,8 +141,7 @@
           container: that.$refs.canvas,
           //自定义节点tip可选节点模块，翻译模块
           additionalModules: [
-            CustomControls,
-            {translate: ['value', CustomTranslate]}
+            CustomControls, {translate: ['value', CustomTranslate], labelEditingProvider: ['value', ""]},
           ],
           moddleExtensions: {activiti: CustomModdle}
         });
@@ -205,10 +204,10 @@
           display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%', padding: '5px'
         };
         //调整显示节点
-        const dataAction = ['create.intermediate-event','create.task'];
+        const dataAction = ['create.intermediate-event', 'create.task'];
         allGroups.forEach(group => {
           Array.from(group.children).forEach(control => {
-            if (dataAction.includes( control.getAttribute('data-action'))){
+            if (dataAction.includes(control.getAttribute('data-action'))) {
               control.style['display'] = 'none';
               return;
             }
@@ -242,13 +241,16 @@
           } else if (that.element.type === 'bpmn:StartEvent' || that.element.type === 'bpmn:EndEvent') {
             that.propsComponent = 'NameProperties'
           } else if (that.element.type === 'bpmn:SequenceFlow') {
-            that.propsComponent = 'NameProperties'
+            that.propsComponent = 'SequenceProperties'
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
           }
         });
         that.bpmnModeler.on('shape.added', event => {
+          if (event.element.type.indexOf('bpmn:') < 0) {
+            return;
+          }
           that.element = event.element;
           that.propsComponent = 'NameProperties';
           const type = that.element.type;
@@ -267,16 +269,7 @@
         // region 节点移除
         that.bpmnModeler.on('connection.removed', event => {
           //移除该节点关联的转变
-          let elementId = event.element.id;
-          for (let key of Object.keys(this.bpmnParams)) {
-            const type = that.bpmnParams[key].$type;
-            if (!type || type !== 'bpmn:UserTask') {
-              continue;
-            }
-            let values = that.bpmnParams[key].extensionElements.get('values');
-            values = values.filter(element => !(element['$type'] === BpmnTag.taskListener && element['event'] === elementId));
-            that.bpmnParams[key].extensionElements.set('values', values);
-          }
+          BpmnFunction.deleteTaskListener(that.bpmnParams, event.element.id);
           //移除节点时将元素从 bpmnParams 中移除
           that.removedElement(event);
         });
@@ -287,6 +280,9 @@
         // endregion
       },
       removedElement(event) {
+        if (event.element.type.indexOf('bpmn:') < 0) {
+          return;
+        }
         delete this.bpmnParams[event.element.id];
         this.element = this.bpmnParams.process.element;
         this.propsComponent = 'ProcessProperties'
@@ -300,61 +296,61 @@
 </script>
 
 <style scoped>
-	/* 拖拽相关样式 */
-	/*包围div样式*/
-	.container {
-		width: 95%;
-		height: 80vh;
-		margin: 1% 0;
-		overflow: hidden;
-	}
+  /* 拖拽相关样式 */
+  /*包围div样式*/
+  .container {
+    width: 95%;
+    height: 80vh;
+    margin: 1% 0;
+    overflow: hidden;
+  }
 
-	/*左侧div样式*/
-	.content {
-		width: calc(60% - 7px); /*左侧初始化宽度*/
-		background: #FFFFFF;
-		float: left;
-		box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.3);
-	}
+  /*左侧div样式*/
+  .content {
+    width: calc(60% - 7px); /*左侧初始化宽度*/
+    background: #FFFFFF;
+    float: left;
+    box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.3);
+  }
 
-	/*拖拽区div样式*/
-	.slide {
-		cursor: w-resize;
-		float: left;
-		position: relative;
-		top: 45%;
-		background-color: #d6d6d6;
-		/*border-radius: 5px;*/
-		/*margin: -10px 0 -10px 0;*/
-		width: 7px;
-		height: 30px;
-		background-size: cover;
-		background-position: center;
-		/*z-index: 99999;*/
-		font-size: 20px;
-		color: white;
-	}
+  /*拖拽区div样式*/
+  .slide {
+    cursor: w-resize;
+    float: left;
+    position: relative;
+    top: 45%;
+    background-color: #d6d6d6;
+    /*border-radius: 5px;*/
+    /*margin: -10px 0 -10px 0;*/
+    width: 7px;
+    height: 30px;
+    background-size: cover;
+    background-position: center;
+    /*z-index: 99999;*/
+    font-size: 20px;
+    color: white;
+  }
 
-	/*拖拽区鼠标悬停样式*/
-	.slide:hover {
-		color: #444444;
-	}
+  /*拖拽区鼠标悬停样式*/
+  .slide:hover {
+    color: #444444;
+  }
 
-	/*右侧div'样式*/
-	.side {
-		float: left;
-		width: 40%; /*右侧初始化宽度*/
-		height: 79vh;
-		background: #fff;
-		box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.08);
-	}
+  /*右侧div'样式*/
+  .side {
+    float: left;
+    width: 40%; /*右侧初始化宽度*/
+    height: 79vh;
+    background: #fff;
+    box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.08);
+  }
 
-	/*画图区域样式*/
-	.canvas {
-		width: 100%;
-		height: 79vh;
-		background-color: #f9f8ef
-	}
+  /*画图区域样式*/
+  .canvas {
+    width: 100%;
+    height: 79vh;
+    background-color: #f9f8ef
+  }
 
 
 </style>

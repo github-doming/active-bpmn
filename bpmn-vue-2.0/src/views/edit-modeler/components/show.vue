@@ -22,6 +22,7 @@
   import NameProperties from "./bpmn-show/NameProperties";
   import CustomModdle from "../js/new/activiti";
 
+  let moveDeviation = 5;
 
   export default {
     name: "show",

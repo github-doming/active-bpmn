@@ -16,7 +16,6 @@ export default class CustomRenderer extends BaseRenderer {
   }
 
   drawShape(visuals, element) {
-
     if (CustomTypes.includes(element.type)) {
       element.width = 60;
       element.height = 48;

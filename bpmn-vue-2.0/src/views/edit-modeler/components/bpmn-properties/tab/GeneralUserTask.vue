@@ -1,22 +1,22 @@
 <template>
-	<div class="general-context">
-		<a-form-model ref="form" :rules="rules" :model="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-			<a-form-model-item :label="local.name" prop="name">
-				<a-input :placeholder="local.enterName" v-model="form.name" @change="updateProperty('name')"/>
-			</a-form-model-item>
-			<a-form-model-item :label="local.taskFormTemplate" prop="taskFormTemplate">
-				<a-select v-model="activity.taskFormTemplate" :placeholder="local.selectTemplate">
-					<a-select-option v-for="item in template" :key="item">
-						{{item}}
-					</a-select-option>
-				</a-select>
-			</a-form-model-item>
-			<a-form-model-item :label="local.signingRequired" prop="signingRequired">
-				<a-switch v-model="activity.signingRequired"/>
-			</a-form-model-item>
+  <div class="general-context">
+    <a-form-model ref="form" :rules="rules" :model="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+      <a-form-model-item :label="local.name" prop="name">
+        <a-input :placeholder="local.enterName" v-model="form.name" @change="updateProperty('name')"/>
+      </a-form-model-item>
+      <a-form-model-item :label="local.taskFormTemplate" prop="taskFormTemplate">
+        <a-select v-model="activity.taskFormTemplate" :placeholder="local.selectTemplate">
+          <a-select-option v-for="item in template" :key="item">
+            {{item}}
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item :label="local.signingRequired" prop="signingRequired">
+        <a-switch v-model="activity.signingRequired"/>
+      </a-form-model-item>
 
-		</a-form-model>
-	</div>
+    </a-form-model>
+  </div>
 </template>
 
 <script>
@@ -58,14 +58,13 @@
       updateProperty(type) {
         this.$set(this.param, type, this.form[type]);
         this.$emit('updateGeneral', this.form);
-
       },
     },
   }
 </script>
 
 <style scoped>
-	.general-context {
-		height: 64vh;
-	}
+  .general-context {
+    height: 64vh;
+  }
 </style>

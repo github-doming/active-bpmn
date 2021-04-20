@@ -172,6 +172,7 @@ public class ProcessDesignController {
 		local.put("mismatchType", "变量默认值与变量指定的类型不匹配");
 		local.put("description", "描述");
 		local.put("enterDescription", "请输入工作流描述");
+		local.put("operator", "操作者");
 
 
 		Map<String, Object> language = new HashMap<>(15);
