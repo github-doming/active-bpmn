@@ -184,7 +184,7 @@ const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 '      <bpmn2:incoming>Flow_18p7hy3</bpmn2:incoming>\n' +
 '    </bpmn2:endEvent>\n' +
 '    <bpmn2:sequenceFlow id="Flow_18p7hy3" name="取消" sourceRef="Activity_0nevzrh" targetRef="Event_18r89i0" />\n' +
-'    <bpmn2:serviceTask id="Activity_0cotr7l" name="执行发放" class="com.pisx.tundra.foundation.workflow.workflowtest.TestServiceTaskListener">\n' +
+'    <bpmn2:serviceTask id="Activity_0cotr7l" name="执行发放" type="1" activiti:class="com.pisx.tundra.foundation.workflow.workflowtest.TestServiceTaskListener">\n' +
 '      <bpmn2:incoming>Flow_1up0h2v</bpmn2:incoming>\n' +
 '      <bpmn2:outgoing>Flow_0zeq6ls</bpmn2:outgoing>\n' +
 '    </bpmn2:serviceTask>\n' +
@@ -374,8 +374,8 @@ export const Http = {
 
 export const BpmnFunction = {
   getBpmnTemplate() {
-    return BaseCreateBpmn;
-    // return CompleteBpmn2;
+    // return BaseCreateBpmn;
+    return CompleteBpmn2;
   },
 
   /**

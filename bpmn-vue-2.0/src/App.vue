@@ -137,14 +137,5 @@
     margin-right: 10px;
   }
 
-  /* 自定义任务节点 */
-  .internal-method-robot-task:before {
-    content: '';
-    background-image: url('https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/rules.png');
-    background-size: 30px 30px;
-    width: 30px;
-    height: 30px;
-  }
-
 
 </style>

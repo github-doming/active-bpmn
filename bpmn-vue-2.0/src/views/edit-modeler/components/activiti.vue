@@ -238,7 +238,6 @@
           } else if (that.element.type === 'bpmn:UserTask') {
             that.propsComponent = 'UserTaskProperties'
           } else if (that.element.type === 'bpmn:ServiceTask') {
-            console.log(that.element);
             that.propsComponent = 'ServiceTaskProperties'
           } else if (that.element.type === 'bpmn:StartEvent' || that.element.type === 'bpmn:EndEvent') {
             that.propsComponent = 'NameProperties'
