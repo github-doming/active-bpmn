@@ -12,7 +12,6 @@
 </template>
 
 <script>
-  const propertiesType = ['name', 'description'];
   export default {
     name: "GeneralProcess",
     props: {
@@ -23,14 +22,14 @@
     },
     watch: {
       param(newValue) {
-        const that = this;
-        propertiesType.forEach(type => that.form[type] = newValue[type]);
+        this.form.name = newValue.name;
+        this.form.description = newValue.$attrs.description;
       }
     },
     data() {
-      const local = JSON.parse(localStorage.getItem('activeLocal'));
       return {
-        local, form: {name: this.param.name, description: this.param.description},
+        local: JSON.parse(localStorage.getItem('activeLocal')),
+        form: {name: this.param.name, description: this.param.$attrs.description},
       }
     },
   }

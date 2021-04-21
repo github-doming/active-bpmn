@@ -1,178 +1,179 @@
 <template>
 
-	<div class="participant-context">
-		<a-tabs class='table-box' default-active-key="assigns" tab-position="left" @change="changeTab">
-			<a-tab-pane :tab="local.user" key='assigns' class='flex'>
-				<div class="context-left">
-					<div class="from">
-						<a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
-							<a-form-item :label="local.fullName">
-								<a-input/>
-							</a-form-item>
-							<a-form-item :label="local.username">
-								<a-input/>
-							</a-form-item>
-						</a-form>
-						<a-button type="primary" class='from-btn' style="margin-top:48px;" @click="findParticipant()">{{local.find}}
-						</a-button>
-					</div>
-					<div class="table-left table-left-user">
-						<table>
-							<tr>
-								<th>{{local.username}}</th>
-								<th>{{local.fullName}}</th>
-							</tr>
-							<tr v-for='(item,index) in leftList' :key='item.id' :class='item.hover?"hover":""'
-									@click='add2Cache(index,"left",item)'>
-								<td>{{item.userName}}</td>
-								<td>{{item.name}}</td>
-							</tr>
-						</table>
-					</div>
-					<div>
-					</div>
-				</div>
-				<div class="shuttle-btn">
-					<span :class="rightIconStats ?'hover':''" @click='add2Data("right")'><a-icon type="double-right"/></span>
-					<span :class="leftIconStats ?'hover':''" @click='add2Data("left")'><a-icon type="double-left"/></span>
-				</div>
-				<div class="table-right">
-					<table>
-						<tr>
-							<th>{{local.workPrincipal}}</th>
-							<th>{{local.type}}</th>
-						</tr>
-						<tr v-for='(item,index) in rightList' :key='item.id' :class='item.hover?"hover":""'
-								@click='add2Cache(index,"right",item)'>
-							<td>{{item.userName}}</td>
-							<td>{{item.type}}</td>
-						</tr>
-					</table>
-				</div>
-			</a-tab-pane>
-			<a-tab-pane :tab="local.group" key='groups' class='flex'>
-				<div class="context-left">
-					<div class="from">
-						<a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
-							<a-form-item :label="local.groupName">
-								<a-input/>
-							</a-form-item>
-						</a-form>
-						<a-button type="primary" class='from-btn' style="margin-top:2px;" @click="findParticipant()">{{local.find}}
-						</a-button>
-					</div>
-					<div class="table-left">
-						<table>
-							<tr>
-								<th>{{local.group}}</th>
-							</tr>
-							<tr v-for='(item,index) in leftList' :key='item.id' :class='item.hover?"hover":""'
-									@click='add2Cache(index,"left",item)'>
-								<td>{{item.name}}</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="shuttle-btn">
-					<span :class="rightIconStats ?'hover':''" @click='add2Data("right")'><a-icon type="double-right"/></span>
-					<span :class="leftIconStats ?'hover':''" @click='add2Data("left")'><a-icon type="double-left"/></span>
-				</div>
-				<div class="table-right">
-					<table>
-						<tr>
-							<th>{{local.groupName}}</th>
-							<th>{{local.type}}</th>
-							<th>{{local.required}}</th>
-						</tr>
-						<tr v-for='(item,index) in rightList' :key='item.id' :class='item.hover?"hover":""'
-								@click='add2Cache(index,"right",item)'>
-							<td>{{item.name}}</td>
-							<td>{{item.type}}</td>
-							<td>
-								<a-select style="width: 120px;margin-right: 10px" default-value="NO" v-model="item.need">
-									<a-select-option value="NO">
-										{{local.notNecessary}}
-									</a-select-option>
-									<a-select-option value="ANY">
-										{{local.any}}
-									</a-select-option>
-									<a-select-option value="ALL">
-										{{local.all}}
-									</a-select-option>
-									<a-select-option value="NUMBER">
-										{{local.number}}
-									</a-select-option>
-								</a-select>
-								<a-input v-if="item.need === 'NUMBER'" v-model="item.number" :placeholder="local.enterNumber"
-												 style="width: 60px;margin-top: -1px"/>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</a-tab-pane>
+  <div class="participant-context">
+    <a-tabs class='table-box' default-active-key="assigns" tab-position="left" @change="changeTab">
+      <a-tab-pane :tab="local.user" key='assigns' class='flex'>
+        <div class="context-left">
+          <div class="from">
+            <a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
+              <a-form-item :label="local.fullName">
+                <a-input/>
+              </a-form-item>
+              <a-form-item :label="local.username">
+                <a-input/>
+              </a-form-item>
+            </a-form>
+            <a-button type="primary" class='from-btn' style="margin-top:48px;" @click="findParticipant()">{{local.find}}
+            </a-button>
+          </div>
+          <div class="table-left table-left-user">
+            <table>
+              <tr>
+                <th>{{local.username}}</th>
+                <th>{{local.fullName}}</th>
+              </tr>
+              <tr v-for='(item,index) in leftList' :key='item.id' :class='item.hover?"hover":""'
+                  @click='add2Cache(index,"left",item)'>
+                <td>{{item.userName}}</td>
+                <td>{{item.name}}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+          </div>
+        </div>
+        <div class="shuttle-btn">
+          <span :class="rightIconStats ?'hover':''" @click='add2Data("right")'><a-icon type="double-right"/></span>
+          <span :class="leftIconStats ?'hover':''" @click='add2Data("left")'><a-icon type="double-left"/></span>
+        </div>
+        <div class="table-right">
+          <table>
+            <tr>
+              <th>{{local.workPrincipal}}</th>
+              <th>{{local.type}}</th>
+            </tr>
+            <tr v-for='(item,index) in rightList' :key='item.id' :class='item.hover?"hover":""'
+                @click='add2Cache(index,"right",item)'>
+              <td>{{item.userName}}</td>
+              <td>{{item.type}}</td>
+            </tr>
+          </table>
+        </div>
+      </a-tab-pane>
+      <a-tab-pane :tab="local.group" key='groups' class='flex'>
+        <div class="context-left">
+          <div class="from">
+            <a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
+              <a-form-item :label="local.groupName">
+                <a-input/>
+              </a-form-item>
+            </a-form>
+            <a-button type="primary" class='from-btn' style="margin-top:2px;" @click="findParticipant()">{{local.find}}
+            </a-button>
+          </div>
+          <div class="table-left">
+            <table>
+              <tr>
+                <th>{{local.group}}</th>
+              </tr>
+              <tr v-for='(item,index) in leftList' :key='item.id' :class='item.hover?"hover":""'
+                  @click='add2Cache(index,"left",item)'>
+                <td>{{item.name}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="shuttle-btn">
+          <span :class="rightIconStats ?'hover':''" @click='add2Data("right")'><a-icon type="double-right"/></span>
+          <span :class="leftIconStats ?'hover':''" @click='add2Data("left")'><a-icon type="double-left"/></span>
+        </div>
+        <div class="table-right">
+          <table>
+            <tr>
+              <th>{{local.groupName}}</th>
+              <th>{{local.type}}</th>
+              <th>{{local.required}}</th>
+            </tr>
+            <tr v-for='(item,index) in rightList' :key='item.id' :class='item.hover?"hover":""'
+                @click='add2Cache(index,"right",item)'>
+              <td>{{item.name}}</td>
+              <td>{{item.type}}</td>
+              <td>
+                <a-select style="width: 120px;margin-right: 10px" default-value="NO" v-model="item.need">
+                  <a-select-option value="NO">
+                    {{local.notNecessary}}
+                  </a-select-option>
+                  <a-select-option value="ANY">
+                    {{local.any}}
+                  </a-select-option>
+                  <a-select-option value="ALL">
+                    {{local.all}}
+                  </a-select-option>
+                  <a-select-option value="NUMBER">
+                    {{local.number}}
+                  </a-select-option>
+                </a-select>
+                <a-input v-if="item.need === 'NUMBER'" v-model="item.number" :placeholder="local.enterNumber"
+                         style="width: 60px;margin-top: -1px"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </a-tab-pane>
 
-			<a-tab-pane :tab="local.role" key='roles' class='flex'>
-				<div class="context-left">
-					<div class="from">
-						<a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
-							<a-form-item :label="local.roleName">
-								<a-input/>
-							</a-form-item>
-						</a-form>
-						<a-button type="primary" class='from-btn' style="margin-top:2px;" @click="findParticipant()">{{local.find}}
-						</a-button>
-					</div>
-					<div class="table-left">
-						<table>
-							<tr>
-								<th>{{local.roleName}}</th>
-							</tr>
-							<tr v-for='(item,index) in leftList' :key='item.id' :class='item.hover?"hover":""'
-									@click='add2Cache(index,"left",item)'>
-								<td>{{item.name}}</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div class="shuttle-btn">
-					<span :class="rightIconStats ?'hover':''" @click='add2Data("right")'><a-icon type="double-right"/></span>
-					<span :class="leftIconStats ?'hover':''" @click='add2Data("left")'><a-icon type="double-left"/></span>
-				</div>
-				<div class="table-right">
-					<table>
-						<tr>
-							<th>{{local.role}}</th>
-							<th>{{local.type}}</th>
-							<th>{{local.required}}</th>
-						</tr>
-						<tr v-for='(item,index) in rightList' :key='item.id' :class='item.hover?"hover":""'
-								@click='add2Cache(index,"right",item)'>
-							<td>{{item.name}}</td>
-							<td>{{item.type}}</td>
-							<td>
-								<a-select style="width: 120px;margin-right: 10px" default-value="NO" v-model="item.need">
-									<a-select-option value="NO">
-										{{local.notNecessary}}
-									</a-select-option>
-									<a-select-option value="ANY">
-										{{local.any}}
-									</a-select-option>
-									<a-select-option value="ALL">
-										{{local.all}}
-									</a-select-option>
-									<a-select-option value="NUMBER">
-										{{local.number}}
-									</a-select-option>
-								</a-select>
-								<a-input v-if="item.need === 'NUMBER'" v-model="item.number" :placeholder="local.enterNumber"
-												 style="width: 60px;margin-top: -1px"/>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</a-tab-pane>
-		</a-tabs>
-	</div>
+      <a-tab-pane :tab="local.role" key='roles' class='flex'>
+        <div class="context-left">
+          <div class="from">
+            <a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
+              <a-form-item :label="local.roleName">
+                <a-input/>
+              </a-form-item>
+            </a-form>
+            <a-button type="primary" class='from-btn' style="margin-top:2px;" @click="findParticipant()">{{local.find}}
+            </a-button>
+          </div>
+          <div class="table-left">
+            <table>
+              <tr>
+                <th>{{local.roleName}}</th>
+              </tr>
+              <tr v-for='(item,index) in leftList' :key='item.id' :class='item.hover?"hover":""'
+                  @click='add2Cache(index,"left",item)'>
+                <td>{{item.name}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="shuttle-btn">
+          <span :class="rightIconStats ?'hover':''" @click='add2Data("right")'><a-icon type="double-right"/></span>
+          <span :class="leftIconStats ?'hover':''" @click='add2Data("left")'><a-icon type="double-left"/></span>
+        </div>
+        <div class="table-right">
+          <table>
+            <tr>
+              <th>{{local.role}}</th>
+              <th>{{local.type}}</th>
+              <th>{{local.required}}</th>
+            </tr>
+            <tr v-for='(item,index) in rightList' :key='item.id' :class='item.hover?"hover":""'
+                @click='add2Cache(index,"right",item)'>
+              <td>{{item.name}}</td>
+              <td>{{item.type}}</td>
+              <td>
+                <a-select style="width: 120px;margin-right: 10px" default-value="NO" v-model="item.need"
+                          :disabled="item.code==='operator_code'">
+                  <a-select-option value="NO">
+                    {{local.notNecessary}}
+                  </a-select-option>
+                  <a-select-option value="ANY">
+                    {{local.any}}
+                  </a-select-option>
+                  <a-select-option value="ALL">
+                    {{local.all}}
+                  </a-select-option>
+                  <a-select-option value="NUMBER">
+                    {{local.number}}
+                  </a-select-option>
+                </a-select>
+                <a-input v-if="item.need === 'NUMBER'" v-model="item.number" :placeholder="local.enterNumber"
+                         style="width: 60px;margin-top: -1px"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </a-tab-pane>
+    </a-tabs>
+  </div>
 
 </template>
 
@@ -335,121 +336,121 @@
 </script>
 
 <style scoped>
-	.participant-context {
-		width: 100%;
-		overflow: auto;
-		height: 64vh;
-	}
+  .participant-context {
+    width: 100%;
+    overflow: auto;
+    height: 64vh;
+  }
 
-	.table-box {
-		min-width: 700px;
-		height: 100%;
-	}
+  .table-box {
+    min-width: 700px;
+    height: 100%;
+  }
 
-	.flex {
-		display: flex;
-	}
+  .flex {
+    display: flex;
+  }
 
-	.context-left {
-		width: 250px;
-		height: 100%;
-	}
-
-
-	.shuttle-btn {
-		padding: 160px 10px 0 10px;
-	}
-
-	.shuttle-btn span {
-		display: block;
-		width: 40px;
-		height: 40px;
-		background: #fff;
-		border: 1px #ddd solid;
-		border-radius: 5px;
-		margin-bottom: 10px;
-		line-height: 40px;
-		text-align: center;
-	}
-
-	.shuttle-btn span.hover {
-		background: #1890ff;
-		color: #fff;
-	}
+  .context-left {
+    width: 250px;
+    height: 100%;
+  }
 
 
-	.table-right {
-		width: 100%;
-		overflow: auto;
-		border: 1px #ddd solid;
-		background: #fff;
-		margin-right: 1px;
-	}
+  .shuttle-btn {
+    padding: 160px 10px 0 10px;
+  }
 
-	table {
-		width: 100%;
-	}
+  .shuttle-btn span {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 1px #ddd solid;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    line-height: 40px;
+    text-align: center;
+  }
 
-	table th, table td {
-		padding: 5px 10px;
-		text-align: left;
-		border: 1px #ddd solid;
-	}
+  .shuttle-btn span.hover {
+    background: #1890ff;
+    color: #fff;
+  }
 
-	table td {
-		border: none;
-		border-bottom: 1px #ddd solid;
-	}
 
-	table tr:hover {
-		background: #f8f8f8;
-	}
+  .table-right {
+    width: 100%;
+    overflow: auto;
+    border: 1px #ddd solid;
+    background: #fff;
+    margin-right: 1px;
+  }
 
-	table th {
-		border-top: none;
-		background: #e9e9e9;
-	}
+  table {
+    width: 100%;
+  }
 
-	table th:first-child {
-		border-left: none;
-	}
+  table th, table td {
+    padding: 5px 10px;
+    text-align: left;
+    border: 1px #ddd solid;
+  }
 
-	table th:last-child {
-		border-right: none;
-	}
+  table td {
+    border: none;
+    border-bottom: 1px #ddd solid;
+  }
 
-	table tr.hover {
-		background: #eeeeee;
-	}
+  table tr:hover {
+    background: #f8f8f8;
+  }
 
-	.from {
-		display: flex;
-	}
+  table th {
+    border-top: none;
+    background: #e9e9e9;
+  }
 
-	.from-left {
-		width: 370px;
-	}
+  table th:first-child {
+    border-left: none;
+  }
 
-	.from-btn {
-		margin-top: 70px;
-	}
+  table th:last-child {
+    border-right: none;
+  }
 
-	.ant-form-item {
-		margin-bottom: 5px;
-	}
+  table tr.hover {
+    background: #eeeeee;
+  }
 
-	.table-left {
-		width: 100%;
-		height: 50vh;
-		border: 1px #ddd solid;
-		overflow: auto;
-		background: #fff;
-		margin-right: 1px;
-	}
+  .from {
+    display: flex;
+  }
 
-	.table-left-user {
-		height: calc(50vh - 45px);
-	}
+  .from-left {
+    width: 370px;
+  }
+
+  .from-btn {
+    margin-top: 70px;
+  }
+
+  .ant-form-item {
+    margin-bottom: 5px;
+  }
+
+  .table-left {
+    width: 100%;
+    height: 50vh;
+    border: 1px #ddd solid;
+    overflow: auto;
+    background: #fff;
+    margin-right: 1px;
+  }
+
+  .table-left-user {
+    height: calc(50vh - 45px);
+  }
 
 
 </style>

@@ -67,6 +67,10 @@
         if (!that.validateBpmn()) {
           return;
         }
+        // let rootParam = that.bpmnParams[that.bpmnParams.process.key];
+        // const name = rootParam.name;
+        // const description = rootParam.$attrs.description;
+        // console.log(name,description);
         that.bpmnModeler.saveXML({format: true}, (err, xml) => {
           if (err) {
             console.error('流程数据生成失败');

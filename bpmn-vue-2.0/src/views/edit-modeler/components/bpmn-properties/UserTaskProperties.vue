@@ -66,7 +66,7 @@
         let transform = [{code: 'taskCreate', name: this.local.create},
           {code: 'assignment', name: this.local.assignment}, {code: 'complete', name: this.local.complete},];
         this.element.outgoing.forEach(element => {
-          if (element.businessObject.name){
+          if (element.businessObject.name) {
             transform.push({code: element.businessObject.id, name: element.businessObject.name});
           }
         });
@@ -103,17 +103,40 @@
           }
         }
         if (!participant) {
-          participant = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.participant);
+          const that = this;
+          //新建用户节点 -
+          // 1.默认给与参与者角色,
+          participant = BpmnFunction.createElementTag(that.modeler, that.param.extensionElements, BpmnTag.participant);
           this.extensionValues.push(participant);
-          let tagElement = BpmnFunction.createElementTag(this.modeler, participant, BpmnTag.role);
+          let tagElement = BpmnFunction.createElementTag(that.modeler, participant, BpmnTag.role);
           participant.roles = [tagElement];
           Object.assign(tagElement, {
-            'id': 'operator_id', 'name': this.local.operator, 'roleCode': 'operator_code',
-            'hover': false, 'type': 'role', 'need': 'NO', 'number': ''
+            'id': 'operator_role_id', 'name': that.local.operator, 'roleCode': 'operator_code',
+            'hover': false, 'type': 'role', 'need': 'ALL', 'number': ''
           });
-          //操作者，不参与角色设置
-          // const rolesOption = [{'name': '操作者', 'id': 'item.id', 'code': 'item.roleCode'}];
-          // this.editRoleSet4Role(rolesOption, 'add');
+          //2.添加之前节点的角色设置
+          const rolesOption = {};
+          Object.keys(that.params).forEach(key => {
+            let extensionElements = that.params[key].extensionElements;
+            if (key === that.element.id || !extensionElements || that.params[key]['$type'] !== 'bpmn:UserTask') {
+              return;
+            }
+            extensionElements.get('values').filter(item => item.$type === BpmnTag.participant).forEach(participant => {
+              if (participant.roles) {
+                participant.roles.forEach(item => {
+                  if (item.id !== 'operator_role_id') {
+                    rolesOption[item.id] = {'name': item.name, 'id': item.id, 'code': item.roleCode, sourceRef: key};
+                  }
+                })
+              }
+            });
+          });
+          Object.values(rolesOption).forEach(item => {
+            let roleSet = BpmnFunction.createElementTag(that.modeler, that.getExtensionElements(), BpmnTag.roleSet);
+            Object.assign(roleSet, {view: false, add: false, remove: false, repositories: []});
+            Object.assign(roleSet, {...item});
+            that.extensionValues.push(roleSet);
+          });
         }
         return participant;
       },
@@ -202,11 +225,17 @@
             if (key === that.element.id || !extensionElements || that.params[key]['$type'] !== 'bpmn:UserTask') {
               return;
             }
+            let existedRoleSetId = [];
+            extensionElements.get('values').filter(item => item.$type === BpmnTag.roleSet).forEach(item => {
+              existedRoleSetId.push(item.id);
+            });
             rolesOption.forEach(item => {
-              roleSet = BpmnFunction.createElementTag(that.modeler, extensionElements, BpmnTag.roleSet);
-              Object.assign(roleSet, {view: false, add: false, remove: false, sourceRef: that.element.id});
-              Object.assign(roleSet, {...item, repositories: []});
-              extensionElements.get('values').push(roleSet);
+              if (existedRoleSetId.indexOf(item.id) <0){
+                roleSet = BpmnFunction.createElementTag(that.modeler, extensionElements, BpmnTag.roleSet);
+                Object.assign(roleSet, {view: false, add: false, remove: false, sourceRef: that.element.id});
+                Object.assign(roleSet, {...item, repositories: []});
+                extensionElements.get('values').push(roleSet);
+              }
             });
           });
         } else {
