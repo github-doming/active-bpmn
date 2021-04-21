@@ -143,13 +143,13 @@
       activity() {
         let activity;
         for (let i = 0; i < this.extensionValues.length; i++) {
-          if (this.extensionValues[i]['$type'] === BpmnTag.activity) {
+          if (this.extensionValues[i]['$type'] === BpmnTag.formTemplate) {
             activity = this.extensionValues[i];
             break;
           }
         }
         if (!activity) {
-          activity = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.activity);
+          activity = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.formTemplate);
           this.extensionValues.push(activity);
         }
         return activity;
@@ -198,11 +198,13 @@
       updateTaskListener(type, listenerData) {
         if ('add' === type) {
           let tagElement = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.taskListener);
-          for (let key in listenerData) {
-            if (listenerData.hasOwnProperty(key)) {
-              tagElement[key] = listenerData[key];
-            }
-          }
+          tagElement.event = listenerData.event;
+          tagElement.class = listenerData.class;
+
+          let fieldElement = BpmnFunction.createElementTag(this.modeler, tagElement, BpmnTag.field);
+          fieldElement.name = "eventName";
+          fieldElement.string = ['<![CDATA[' + listenerData.name + ']]>'];
+          tagElement.field = [fieldElement];
           this.extensionValues.push(tagElement);
         } else if ('remove' === type) {
           for (let i = 0; i < this.extensionValues.length; i++) {
@@ -230,7 +232,7 @@
               existedRoleSetId.push(item.id);
             });
             rolesOption.forEach(item => {
-              if (existedRoleSetId.indexOf(item.id) <0){
+              if (existedRoleSetId.indexOf(item.id) < 0) {
                 roleSet = BpmnFunction.createElementTag(that.modeler, extensionElements, BpmnTag.roleSet);
                 Object.assign(roleSet, {view: false, add: false, remove: false, sourceRef: that.element.id});
                 Object.assign(roleSet, {...item, repositories: []});

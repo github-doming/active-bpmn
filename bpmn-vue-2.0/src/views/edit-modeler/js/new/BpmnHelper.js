@@ -153,7 +153,6 @@ const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 '        </activiti:participant>\n' +
 '        <activiti:variable id="BOM01" name="leaveCount" defaultDisplay="请假天数" displayZhCn="请假天数" displayEnUs="leaveCount" type="int" defaultValue="1" isVisible="true" isNecessary="true" isReadOnly="false" isReset="true" initFormVarKey="leaveCount" />\n' +
 '        <activiti:roleSet id="2560" name="Project Manager" code="PM" view="true" add="true" remove="true" sourceRef="Activity_18kenek">\n' +
-'          <activiti:repository id="system_id" name="System Team" type="system" />\n' +
 '        </activiti:roleSet>\n' +
 '        <activiti:activity />\n' +
 '        <activiti:taskListener event="Flow_18p7hy3" class="TestCompletedTaskListener1" />\n' +
@@ -270,7 +269,7 @@ const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 // endregion
 
 export const BpmnTag = {
-  activity: 'activiti:Activity',
+  formTemplate: 'activiti:FormTemplate',
   variable: 'activiti:Variable',
   roleSet: 'activiti:RoleSet',
   taskListener: 'activiti:TaskListener',
@@ -279,6 +278,7 @@ export const BpmnTag = {
   assign: 'activiti:Assign',
   group: 'activiti:Group',
   role: 'activiti:Role',
+  field: 'activiti:Field',
 
   repository: 'activiti:Repository',
 
