@@ -200,11 +200,6 @@
           let tagElement = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.taskListener);
           tagElement.event = listenerData.event;
           tagElement.class = listenerData.class;
-
-          let fieldElement = BpmnFunction.createElementTag(this.modeler, tagElement, BpmnTag.field);
-          fieldElement.name = "eventName";
-          fieldElement.string = ['<![CDATA[' + listenerData.name + ']]>'];
-          tagElement.field = [fieldElement];
           this.extensionValues.push(tagElement);
         } else if ('remove' === type) {
           for (let i = 0; i < this.extensionValues.length; i++) {

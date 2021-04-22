@@ -203,11 +203,6 @@
           "name": "class",
           "type": "String",
           "isAttr": true
-        },
-        {
-          "name": "field",
-          "isMany": true,
-          "type": "Field"
         }
       ]
     },
@@ -312,21 +307,6 @@
         {
           "name": "type",
           "isAttr": true,
-          "type": "String"
-        }
-      ]
-    },
-    {
-      "name": "Field",
-      "properties": [
-        {
-          "name": "name",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "string",
-          "isMany": true,
           "type": "String"
         }
       ]

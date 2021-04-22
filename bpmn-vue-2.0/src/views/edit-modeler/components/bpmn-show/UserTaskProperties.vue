@@ -1,26 +1,26 @@
 <template>
-	<div class="properties">
-		<a-tabs type="card" v-model="activeTab">
-			<a-tab-pane key="general" :tab="local.general">
-				<general-user-task :param="param" :activity="activity"></general-user-task>
-			</a-tab-pane>
-			<a-tab-pane key="variable" :tab="local.variable">
-				<variable :variables="variables" :globalVariables="globalVariables"></variable>
-			</a-tab-pane>
-			<a-tab-pane key="roleSet" :tab="local.roleSet">
-				<role-set :param="param" :roleSetInfos="roleSetInfos"></role-set>
-			</a-tab-pane>
-			<a-tab-pane key="participant" :tab="local.participant">
-				<participant :participant="participant"></participant>
-			</a-tab-pane>
-			<a-tab-pane key="resourceLibrary" :tab="local.resourceLibrary">
-				<resource-library :roleSets="roleSetInfos"></resource-library>
-			</a-tab-pane>
-			<a-tab-pane key="taskListener" :tab="local.taskListener">
-				<task-listener :transform="transform" :taskListeners="taskListeners"></task-listener>
-			</a-tab-pane>
-		</a-tabs>
-	</div>
+  <div class="properties">
+    <a-tabs type="card" v-model="activeTab">
+      <a-tab-pane key="general" :tab="local.general">
+        <general-user-task :param="param" :activity="activity"></general-user-task>
+      </a-tab-pane>
+      <a-tab-pane key="variable" :tab="local.variable">
+        <variable :variables="variables" :globalVariables="globalVariables"></variable>
+      </a-tab-pane>
+      <a-tab-pane key="roleSet" :tab="local.roleSet">
+        <role-set :param="param" :roleSetInfos="roleSetInfos"></role-set>
+      </a-tab-pane>
+      <a-tab-pane key="participant" :tab="local.participant">
+        <participant :participant="participant"></participant>
+      </a-tab-pane>
+      <a-tab-pane key="resourceLibrary" :tab="local.resourceLibrary">
+        <resource-library :roleSets="roleSetInfos"></resource-library>
+      </a-tab-pane>
+      <a-tab-pane key="taskListener" :tab="local.taskListener">
+        <task-listener :transform="transform" :taskListeners="taskListeners"></task-listener>
+      </a-tab-pane>
+    </a-tabs>
+  </div>
 </template>
 
 <script>
@@ -35,7 +35,7 @@
 
   export default {
     name: "UserTaskProperties",
-    components: {GeneralUserTask, Variable, RoleSet, Participant, ResourceLibrary,TaskListener},
+    components: {GeneralUserTask, Variable, RoleSet, Participant, ResourceLibrary, TaskListener},
     props: {
       modeler: {
         type: Object,
@@ -50,7 +50,7 @@
     },
     computed: {
       activity() {
-        let activities = this.extensionValues.filter(element => element['$type'] === BpmnTag.activity);
+        let activities = this.extensionValues.filter(element => element['$type'] === BpmnTag.formTemplate);
         if (activities) {
           return activities[0];
         }
@@ -79,15 +79,19 @@
         return this.extensionValues.filter(element => element['$type'] === BpmnTag.taskListener);
       },
       transform() {
-        const translation ={'taskCreate': this.local.create,'assignment':this.local.assignment,'complete': this.local.complete};
+        const translation = {
+          'taskCreate': this.local.create,
+          'assignment': this.local.assignment,
+          'complete': this.local.complete
+        };
         this.element.outgoing.forEach(element => {
           translation[element.businessObject.id] = element.businessObject.name;
         });
         const transform = new Set();
-        this.taskListeners.forEach(item=>{
+        this.taskListeners.forEach(item => {
           let code = item.event;
           transform.add({code, name: translation[code]});
-				});
+        });
         return transform;
       },
     },

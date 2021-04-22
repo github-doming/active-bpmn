@@ -151,7 +151,7 @@
               <td>{{item.type}}</td>
               <td>
                 <a-select style="width: 120px;margin-right: 10px" default-value="NO" v-model="item.need"
-                          :disabled="item.code==='operator_code'">
+                          :disabled="item.roleCode==='operator_code'">
                   <a-select-option value="NO">
                     {{local.notNecessary}}
                   </a-select-option>
