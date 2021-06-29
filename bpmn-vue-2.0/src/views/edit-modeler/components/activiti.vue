@@ -30,6 +30,7 @@
   import ServiceTaskProperties from "./bpmn-properties/ServiceTaskProperties";
   import NameProperties from "./bpmn-properties/NameProperties";
   import SequenceProperties from "./bpmn-properties/SequenceProperties";
+  import InclusiveGatewayProperties from "./bpmn-properties/InclusiveGatewayProperties";
   import {BpmnFunction} from "../js/new/BpmnHelper";
 
   export default {
@@ -40,7 +41,7 @@
         default: () => ({}),
       },
     },
-    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties, SequenceProperties},
+    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties, SequenceProperties,InclusiveGatewayProperties},
     computed: {
       downloadShow() {
         return true;
@@ -166,7 +167,7 @@
       },
       initBpmnParams() {
         //解析的节点信息
-        const nodeType = ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent'];
+        const nodeType = ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:ParallelGateway', 'bpmn:ExclusiveGateway','bpmn:InclusiveGateway'];
         let that = this;
         this.bpmnModeler.get('elementRegistry').forEach(element => {
           if (element.type === 'bpmn:Process') {
@@ -208,7 +209,7 @@
           display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%', padding: '5px'
         };
         //调整显示节点
-        const dataAction = ['create.intermediate-event', 'create.task'];
+        const dataAction = ['create.intermediate-event', 'create.task', 'create.exclusive-gateway'];
         allGroups.forEach(group => {
           Array.from(group.children).forEach(control => {
             if (dataAction.includes(control.getAttribute('data-action'))) {
@@ -246,6 +247,8 @@
             that.propsComponent = 'NameProperties'
           } else if (that.element.type === 'bpmn:SequenceFlow') {
             that.propsComponent = 'SequenceProperties'
+          } else if (that.element.type === 'bpmn:InclusiveGateway') {
+              this.propsComponent = 'InclusiveGatewayProperties';
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
@@ -264,6 +267,10 @@
             that.element.businessObject.name = '结束';
           } else if (type === 'bpmn:UserTask') {
             that.propsComponent = 'UserTaskProperties';
+          }else if (type === 'bpmn:ParallelGateway' || type === 'bpmn:ExclusiveGateway') {
+              this.propsComponent = '';
+          } else if (type === 'bpmn:InclusiveGateway') {
+              this.propsComponent = 'InclusiveGatewayProperties';
           }
         });
         that.bpmnModeler.on('interactionEvents.createHit', event => {

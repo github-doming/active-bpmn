@@ -2,7 +2,7 @@
   <div class="properties">
     <a-tabs type="card">
       <a-tab-pane key="general" :tab="local.general">
-        <general-sequence :param="param" @updateGeneral="updateGeneral"/>
+        <general-sequence :param="param" @updateGeneral="updateGeneral" @updateCondition="updateCondition"/>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -41,6 +41,12 @@
         if (!newVal.name) {
           BpmnFunction.deleteTaskListener(this.params, this.element.id);
         }
+      },
+      updateCondition(condition) {
+        let expression = this.modeler.get("bpmnFactory").create('bpmn:FormalExpression', {body: condition});
+        this.modeler.get('modeling').updateProperties(this.element, {
+          conditionExpression: expression
+        });
       }
     },
   }

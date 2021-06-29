@@ -173,6 +173,9 @@ public class ProcessDesignController {
 		local.put("description", "描述");
 		local.put("enterDescription", "请输入工作流描述");
 		local.put("operator", "操作者");
+		local.put("threshold", "阈值");
+        local.put("condition", "条件");
+
 
 
 		Map<String, Object> language = new HashMap<>(15);
@@ -192,7 +195,10 @@ public class ProcessDesignController {
 		language.put("Create Pool/Participant", "创建池/参与者");
 		language.put("Create Group", "创建组");
 		language.put("Create UserTask", "创建用户任务");
-		language.put("Create CallActivity", "创建调用活动");
+		language.put("Create ServiceTask", "创建服务任务");
+		language.put("Create Parallel Gateway", "创建并行网关");
+		language.put("Create Exclusive Gateway", "创建互斥网关");
+		language.put("Create Inclusive Gateway", "创建相容网关");
 
 		local.put("language", language);
 

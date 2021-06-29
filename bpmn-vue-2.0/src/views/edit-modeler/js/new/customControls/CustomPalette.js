@@ -23,6 +23,19 @@ export default class CustomPalette {
       create.start(event, shape);
     }
 
+    function createGateway(event){
+      const dataAction = event.delegateTarget.attributes['data-action'].value;
+      let shape = null;
+      if(dataAction === 'create.parallelGateway'){
+        shape = elementFactory.createShape({type: 'bpmn:ParallelGateway'});
+      }else if(dataAction === 'create.exclusiveGateway'){
+        shape = elementFactory.createShape({type: 'bpmn:ExclusiveGateway'});
+      }else if(dataAction === 'create.inclusiveGateway'){
+        shape = elementFactory.createShape({type: 'bpmn:InclusiveGateway'});
+      }
+      create.start(event, shape);
+    }
+
     return {
       'create.user-task': {
         group: 'activity', className: 'bpmn-icon-user-task', title: translate('Create UserTask'),
@@ -32,6 +45,18 @@ export default class CustomPalette {
         group: 'activity', className: 'bpmn-icon-service-task', title: translate('Create ServiceTask'),
         action: {dragstart: createServiceTask, click: createServiceTask}
       },
+      'create.parallelGateway':{
+        group: 'activity', className: 'bpmn-icon-gateway-parallel', title: translate('Create Parallel Gateway'),
+        action: {dragstart: createGateway, click: createGateway}
+      },
+      'create.exclusiveGateway':{
+        group: 'activity', className: 'bpmn-icon-gateway-xor', title: translate('Create Exclusive Gateway'),
+        action: {dragstart: createGateway, click: createGateway}
+      },
+      'create.inclusiveGateway':{
+        group: 'activity', className: 'bpmn-icon-gateway-or', title: translate('Create Inclusive Gateway'),
+        action: {dragstart: createGateway, click: createGateway}
+      }
     }
   }
 

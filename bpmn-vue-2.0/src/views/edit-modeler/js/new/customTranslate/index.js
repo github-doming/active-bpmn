@@ -1,5 +1,5 @@
-import language from "./zh_cn";
-// import language from './language'
+// import language from "./zh_cn";
+import language from './language'
 
 export default function customTranslate(template, replacements) {
   replacements = replacements || {};

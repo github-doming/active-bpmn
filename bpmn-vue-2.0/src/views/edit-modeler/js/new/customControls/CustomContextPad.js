@@ -99,7 +99,7 @@ export default class CustomContextPad {
     if (BpmnType.includes(element.type)) {
       actions = {
         'append.end-event': appendAction('bpmn:EndEvent', 'bpmn-icon-end-event-none', translate('Append EndEvent')),
-        'append.gateway': appendAction('bpmn:ExclusiveGateway', 'bpmn-icon-gateway-none', translate('Append Gateway')),
+        'append.gateway': appendAction('bpmn:ExclusiveGateway', 'bpmn-icon-gateway-xor', translate('Exclusive Gateway')),
         'append.user-task': {
           group: 'model', className: 'bpmn-icon-user-task', title: translate('Append') + ' ' + translate('UserTask'),
           action: {click: appendUserTask, dragstart: appendUserTaskStart}

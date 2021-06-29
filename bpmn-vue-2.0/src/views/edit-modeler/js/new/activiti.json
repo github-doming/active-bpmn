@@ -207,6 +207,19 @@
       ]
     },
     {
+      "name": "Threshold",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
       "name": "Assign",
       "properties": [
         {
