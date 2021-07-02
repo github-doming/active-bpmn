@@ -7,10 +7,10 @@
           <div class="from">
             <a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
               <a-form-item :label="local.fullName">
-                <a-input/>
+                <a-input v-model="assignFrom.fullName"/>
               </a-form-item>
               <a-form-item :label="local.username">
-                <a-input/>
+                <a-input v-model="assignFrom.name"/>
               </a-form-item>
             </a-form>
             <a-button type="primary" class='from-btn' style="margin-top:48px;" @click="findParticipant()">{{local.find}}
@@ -55,7 +55,7 @@
           <div class="from">
             <a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
               <a-form-item :label="local.groupName">
-                <a-input/>
+                <a-input v-model="groupFrom.name"/>
               </a-form-item>
             </a-form>
             <a-button type="primary" class='from-btn' style="margin-top:2px;" @click="findParticipant()">{{local.find}}
@@ -116,7 +116,7 @@
           <div class="from">
             <a-form class="from-left" :label-col="{ span: 7 }" :wrapper-col="{ span: 16 }">
               <a-form-item :label="local.roleName">
-                <a-input/>
+                <a-input v-model="roleForm.roleName"/>
               </a-form-item>
             </a-form>
             <a-button type="primary" class='from-btn' style="margin-top:2px;" @click="findParticipant()">{{local.find}}
@@ -222,6 +222,7 @@
       findParticipant() {
         let that = this;
         let requestData = this.activeKey === 'assigns' ? this.assignFrom : this.activeKey === 'groups' ? this.groupFrom : this.roleForm;
+        console.log(requestData);
         Http.getParticipant(that.activeKey, requestData).then(result => {
           that.parseLeftList(result);
         });
