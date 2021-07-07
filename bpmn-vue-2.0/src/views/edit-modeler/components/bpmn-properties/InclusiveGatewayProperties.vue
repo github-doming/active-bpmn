@@ -2,14 +2,14 @@
   <div class="properties">
     <a-tabs type="card">
       <a-tab-pane key="general" :tab="local.general">
-        <general-inclusive-gateway :threshold="threshold"/>
+        <general-inclusive-gateway :threshold="threshold()"/>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 
 <script>
-  import {BpmnFunction, BpmnMethod, BpmnTag} from "../../js/new/BpmnHelper";
+  import {BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
   import GeneralInclusiveGateway from "./tab/GeneralInclusiveGateway";
 
   export default {
@@ -43,18 +43,19 @@
       },
     },
     computed: {
+
+    },
+    methods: {
+      getExtensionElements: BpmnMethod.getExtensionElements(),
       threshold() {
         let thresholds = this.extensionValues.filter(element => element['$type'] === BpmnTag.threshold);
         if (thresholds.length > 0) {
           return thresholds[0];
         }
-        let threshold = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.threshold);
-        this.extensionValues.push(threshold);
-        return threshold;
-      }
-    },
-    methods: {
-      getExtensionElements: BpmnMethod.getExtensionElements(),
+        let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.threshold);
+        this.extensionValues.push(elementTag);
+        return elementTag;
+      },
     },
   }
 </script>

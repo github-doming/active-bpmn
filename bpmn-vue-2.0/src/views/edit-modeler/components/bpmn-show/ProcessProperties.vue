@@ -16,7 +16,7 @@
   import GeneralProcess from "./tab/GeneralProcess";
   import Variable from "./tab/Variable";
 
-  import {BpmnComputed, BpmnMethod} from "../../js/new/BpmnHelper";
+  import {BpmnComputed, BpmnMethod} from "../js/BpmnHelper";
 
   export default {
     name: "ProcessProperties",

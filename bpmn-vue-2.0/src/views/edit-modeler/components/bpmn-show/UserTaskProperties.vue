@@ -31,7 +31,7 @@
   import Participant from "./tab/Participant";
   import ResourceLibrary from "./tab/ResourceLibrary";
   import TaskListener from "./tab/TaskListener";
-  import {BpmnComputed, BpmnMethod, BpmnTag} from "../../js/new/BpmnHelper";
+  import {BpmnComputed, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
 
   export default {
     name: "UserTaskProperties",

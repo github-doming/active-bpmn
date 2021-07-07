@@ -10,7 +10,6 @@
 
 <script>
   import General from "./tab/General";
-  import {BpmnMethod} from "../../js/new/BpmnHelper";
 
   export default {
     name: "NameProperties",

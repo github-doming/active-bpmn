@@ -178,7 +178,7 @@
 </template>
 
 <script>
-  import {Http} from "../../../js/new/BpmnHelper"
+  import {Http} from "../../js/BpmnHelper"
 
   let leftDataCache = [], rightDataCache = [];
   export default {
@@ -222,7 +222,6 @@
       findParticipant() {
         let that = this;
         let requestData = this.activeKey === 'assigns' ? this.assignFrom : this.activeKey === 'groups' ? this.groupFrom : this.roleForm;
-        console.log(requestData);
         Http.getParticipant(that.activeKey, requestData).then(result => {
           that.parseLeftList(result);
         });

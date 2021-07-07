@@ -20,7 +20,7 @@
   import UserTaskProperties from "./bpmn-show/UserTaskProperties";
   import ServiceTaskProperties from "./bpmn-show/ServiceTaskProperties";
   import NameProperties from "./bpmn-show/NameProperties";
-  import CustomModdle from "../js/new/activiti";
+  import CustomModdle from "./js/activiti";
 
   let moveDeviation = 5;
 

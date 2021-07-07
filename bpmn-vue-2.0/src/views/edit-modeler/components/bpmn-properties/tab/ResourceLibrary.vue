@@ -81,7 +81,7 @@
             <th>{{local.resourcePool}}</th>
             <th>{{local.type}}</th>
           </tr>
-          <tr v-for='(item,index) in activeRole.repositories' :key='item.id' :class='item.hover?"hover":""'
+          <tr v-for='(item,index) in activeRole.repositories' :key='item.id' :class='item.hover ? "hover" : ""'
               @click='add2Cache("resource",index,item)'>
             <td>{{item.name}}</td>
             <td>{{item.type}}</td>
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-  import {Http} from "../../../js/new/BpmnHelper";
+  import {Http} from "../../js/BpmnHelper";
 
   const contextTeam = [{name: 'Container Team', type: 'context', id: 'context_id'}];
   const systemTeam = [{name: 'System Team', type: 'system', id: 'system_id'}];
@@ -132,7 +132,7 @@
       },
       leftData() {
         return this.rlPoolKey === 'group' ? this.groupData : this.rlPoolKey === 'context' ? this.contextData : this.systemData
-      }
+      },
     },
     data() {
       return {
@@ -171,31 +171,30 @@
             return true
           }
         });
+        this.$set(item, 'hover', !result);
         if (result) {
-          this.$set(item, 'hover', false);
           operateData[index] = item;
           cacheData.splice(key, 1)
         } else {
-          this.$set(item, 'hover', true);
           let itemCopy = {...item};
           itemCopy.hover = false;
           cacheData.push(itemCopy)
         }
         if (type === 'resource') {
           this.leftIconStats = rightDataCache.length > 0;
+          this.$forceUpdate();
         } else {
           this.rightIconStats = leftDataCache.length > 0;
           if (this.rlPoolKey === 'group') {
-            this.groupData = operateData
+            this.groupData = operateData;
           } else if (this.rlPoolKey === 'context') {
-            this.contextData = operateData
+            this.contextData = operateData;
           } else {
-            this.systemData = operateData
+            this.systemData = operateData;
           }
         }
       },
       add2Data(type) {
-        let add2Data = type === 'right' ? this.activeRole.repositories : this.leftData;
         let remove4Data = type === 'right' ? this.leftData : this.activeRole.repositories;
         const stats = type === 'right' ? this.rightIconStats : this.leftIconStats;
         if (!stats) {
@@ -203,7 +202,6 @@
         }
         let that = this;
         let cacheData = type === 'right' ? leftDataCache : rightDataCache;
-        add2Data = add2Data.concat(cacheData);
         //找到没有在缓存中的数据
         remove4Data = remove4Data.filter(item => {
           let stats = true;
@@ -230,7 +228,7 @@
           leftDataCache = [];
           this.rightIconStats = false
         } else {
-          add2Data.forEach(item => {
+          cacheData.forEach(item => {
             if (item.type === 'group') {
               that.groupData.push(item)
             } else if (item.type === 'context') {

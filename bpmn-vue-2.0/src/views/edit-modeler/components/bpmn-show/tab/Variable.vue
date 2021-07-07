@@ -94,7 +94,6 @@
 
 <script>
   const type = ['int', 'char', 'float', 'boolean', 'String', 'Date', 'URL', 'Other...',];
-  const ignoreAttr = ['$type', 'id'];
 
   export default {
     name: "Variable",

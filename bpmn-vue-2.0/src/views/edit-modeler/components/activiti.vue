@@ -20,10 +20,11 @@
   import 'bpmn-js/dist/assets/diagram-js.css'
   import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
 
-  import CustomControls from "../js/new/customControls";
-  import CustomTranslate from "../js/new/customTranslate";
-  import CustomModdle from '../js/new/activiti'
-  import language from '../js/new/customTranslate/language'
+  import CustomControls from "./js/customControls";
+  import CustomTranslate from "./js/customTranslate";
+  import CustomModdle from './js/activiti'
+  import language from './js/customTranslate/language'
+  import {BpmnFunction} from "./js/BpmnHelper";
 
   import ProcessProperties from "./bpmn-properties/ProcessProperties";
   import UserTaskProperties from "./bpmn-properties/UserTaskProperties";
@@ -31,7 +32,6 @@
   import NameProperties from "./bpmn-properties/NameProperties";
   import SequenceProperties from "./bpmn-properties/SequenceProperties";
   import InclusiveGatewayProperties from "./bpmn-properties/InclusiveGatewayProperties";
-  import {BpmnFunction} from "../js/new/BpmnHelper";
 
   export default {
     name: "",

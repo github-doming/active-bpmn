@@ -46,7 +46,7 @@
   import BpmnViewer from "bpmn-js/lib/Viewer";
 
 
-  import AttributePanel from './AttributePanel'
+  import AttributePanel from './bpmn-viewer/AttributePanel'
 
   export default {
     name: "viewer",

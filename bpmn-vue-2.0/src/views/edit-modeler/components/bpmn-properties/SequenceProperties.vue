@@ -10,7 +10,7 @@
 
 <script>
   import GeneralSequence from "./tab/GeneralSequence";
-  import {BpmnFunction} from "../../js/new/BpmnHelper";
+  import {BpmnFunction} from "../js/BpmnHelper";
 
   export default {
     name: "SequenceProperties",

@@ -102,7 +102,7 @@
 </template>
 
 <script>
-  import {BpmnFunction} from "../../../js/new/BpmnHelper";
+  import {BpmnFunction} from "../../js/BpmnHelper";
   const type = ['int', 'char', 'float', 'boolean', 'String', 'Date', 'URL', 'Other...',];
   const ignoreAttr = ['$type', 'id'];
 

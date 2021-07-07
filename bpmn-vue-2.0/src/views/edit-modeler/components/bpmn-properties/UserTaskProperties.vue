@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import {BpmnComputed, BpmnFunction, BpmnMethod, BpmnTag} from "../../js/new/BpmnHelper";
+  import {BpmnComputed, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
 
   import Variable from "./tab/Variable";
   import RoleSet from "./tab/RoleSet";

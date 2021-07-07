@@ -19,7 +19,6 @@
 </template>
 
 <script>
-  const propertiesType = ['name'];
   export default {
     name: "GeneralUserTask",
     props: {

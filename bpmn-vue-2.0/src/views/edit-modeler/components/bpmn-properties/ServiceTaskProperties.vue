@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import {BpmnMethod} from "../../js/new/BpmnHelper";
+  import {BpmnMethod} from "../js/BpmnHelper";
   import GeneralServiceTask from "./tab/GeneralServiceTask";
 
   export default {
