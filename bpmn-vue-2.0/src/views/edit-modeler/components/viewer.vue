@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
-		<div class="content" style="overflow:auto;">
-			<div ref="canvas" class="canvas"></div>
+		<div class="content" >
+			<div ref="canvas" class="canvas"/>
 		</div>
 		<div class="slide" @mousedown="slideDown"></div>
 		<div class="side" style="overflow:auto;padding-top: 10px">
@@ -47,6 +47,7 @@
 
 
   import AttributePanel from './bpmn-viewer/AttributePanel'
+  import CustomModdle from "./js/activiti";
 
   export default {
     name: "viewer",
@@ -61,8 +62,8 @@
       return {
         bpmnModeler: null,
         key: '1',
-        runningKey: 'Activity_1nr5csw',
-        ranKeys: ['Event_1kq5rc0','Activity_0vt6bfp','Activity_1nr5csw'],
+        runningKey: 'Activity_0nevzrh',
+        ranKeys: ['Event_19h0jyz','Activity_0nevzrh','Activity_1nr5csw'],
         processKey: '',
         element: null,
         showAttribute: true,
@@ -105,7 +106,8 @@
       initBpmnModeler() {
         let canvas = this.$refs.canvas;
         this.bpmnModeler = new BpmnViewer({
-          container: canvas
+          container: canvas,
+          moddleExtensions: {activiti: CustomModdle}
         });
         this.importBpmnXml()
       },
@@ -123,9 +125,9 @@
       success() {
         this.element = this.bpmnModeler.get('elementRegistry').filter(element => element.type === 'bpmn:Process')[0];
         this.processKey = this.element.id;
-        console.log('创建成功!');
+        this.adjustViewer();
         this.addModelerListener();
-        this.highlightRun()
+        this.highlightRun();
 
       },
       addModelerListener() {
@@ -156,13 +158,17 @@
           canvas.addMarker(key, 'gloomy');
         })
       },
+      adjustViewer() {
+        const canvas = this.$refs.canvas;
+        canvas.children[0].removeChild(canvas.children[0].children[0]);
+      },
 
     }
 
   }
 </script>
 
-<style >
+<style scoped>
 	/* 拖拽相关样式 */
 	/*包围div样式*/
 	.container {
@@ -182,6 +188,7 @@
 		width: 100%;
 		height: calc(60% - 7px); /*左侧初始化宽度*/
 		background: #FFFFFF;
+    overflow:scroll;
 	}
 
 	/*拖拽区div样式*/
@@ -189,12 +196,10 @@
 		cursor: s-resize;
 		position: relative;
 		background-color: #d6d6d6;
-		/*border-radius: 5px;*/
 		width: 100%;
 		height: 7px;
 		background-size: cover;
 		background-position: center;
-		/*z-index: 99999;*/
 		font-size: 20px;
 		color: white;
 	}
@@ -211,7 +216,7 @@
 
 	/*画图区域样式*/
 	.canvas {
-		width: 100%;
+    width: 2000px;
 		height: 100vh;
 		border: 1px solid #c7c7c7;
 	}
@@ -222,8 +227,11 @@
 
 	/*正在运行节点样式*/
 	.highlight .djs-visual > :nth-child(1) {
-		/*stroke: #2bb483 !important;*/
-		fill: #2bb483 !important;
+    fill: #66CC66 !important;
+	}
+  /*已终止的任务节点样式*/
+	.highlight .djs-visual > :nth-child(1) {
+		fill: #fcfa3a !important;
 	}
 
 </style>

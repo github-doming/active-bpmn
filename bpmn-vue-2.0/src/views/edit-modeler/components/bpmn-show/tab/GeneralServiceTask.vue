@@ -27,7 +27,6 @@
       }
     },
     data() {
-      console.log(this.param);
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
         form: {name: this.param.name, 'activiti:class': this.param.$attrs['activiti:class']},

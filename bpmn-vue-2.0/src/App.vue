@@ -28,7 +28,7 @@
 
 <script>
   import request from './util/request'
-  import {BpmnFunction} from "./views/edit-modeler/js/new/BpmnHelper";
+  import {BpmnFunction} from "./views/edit-modeler/components/js/BpmnHelper";
 
   import activeti from "./views/edit-modeler/components/activiti";
   import show from "./views/edit-modeler/components/show";

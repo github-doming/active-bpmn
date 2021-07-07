@@ -1,17 +1,14 @@
 <template>
-	<div class="container">
-		<div class="content"  >
-			<div class="content-inner">
-				<div class="canvas" ref="canvas"></div>
-			</div>
-
-		</div>
-		<div class="slide" @mousedown="slideDown">⋮</div>
-		<div class="side">
-			<component :is="propsComponent" v-if="bpmnModeler" :modeler="bpmnModeler"
-								 :params="bpmnParams" :element="element"></component>
-		</div>
-	</div>
+  <div class="container">
+    <div class="content">
+      <div class="canvas" ref="canvas"/>
+    </div>
+    <div class="slide" @mousedown="slideDown">⋮</div>
+    <div class="side">
+      <component :is="propsComponent" v-if="bpmnModeler" :modeler="bpmnModeler"
+                 :params="bpmnParams" :element="element"></component>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,8 +19,6 @@
   import NameProperties from "./bpmn-show/NameProperties";
   import CustomModdle from "./js/activiti";
 
-  let moveDeviation = 5;
-
   export default {
     name: "show",
     props: {
@@ -32,7 +27,7 @@
         default: () => ({}),
       },
     },
-		components:{ProcessProperties,UserTaskProperties,ServiceTaskProperties,NameProperties},
+    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties},
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
@@ -106,6 +101,7 @@
         });
       },
       success() {
+        this.adjustViewer();
         this.initBpmnParams();
         this.addEventBusListener();
       },
@@ -126,7 +122,6 @@
           }
         });
       },
-
       addEventBusListener() {
         this.bpmnModeler.on('element.click', event => {
           let that = this;
@@ -150,7 +145,10 @@
           }
         });
       },
-
+      adjustViewer() {
+        const canvas = this.$refs.canvas;
+        canvas.children[0].removeChild(canvas.children[0].children[0]);
+      },
       // endregion
 
 
@@ -159,66 +157,64 @@
 </script>
 
 <style scoped>
-	/* 拖拽相关样式 */
-	/*包围div样式*/
-	.container {
-		width: 95%;
-		height: 80vh;
-		margin: 1% 0;
-		overflow: hidden;
-	}
+  /* 拖拽相关样式 */
+  /*包围div样式*/
+  .container {
+    width: 95%;
+    height: 80vh;
+    margin: 1% 0;
+    overflow: hidden;
+  }
 
-	/*左侧div样式*/
-	.content {
-		overflow-y:auto;
-		height: 100%;
-		width: calc(60% - 7px); /*左侧初始化宽度*/
-		float: left;
-		box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.3);
-	}
-	.content-inner{
-		width: 2000px;
-		background: #FFFFFF;
-	}
+  /*左侧div样式*/
+  .content {
+    background: #FFFFFF;
+    overflow-y: auto;
+    height: 100%;
+    width: calc(60% - 7px); /*左侧初始化宽度*/
+    float: left;
+    box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.3);
+  }
 
-	/*拖拽区div样式*/
-	.slide {
-		cursor: w-resize;
-		float: left;
-		position: relative;
-		top: 45%;
-		background-color: #d6d6d6;
-		/*border-radius: 5px;*/
-		/*margin: -10px 0 -10px 0;*/
-		width: 7px;
-		height: 30px;
-		background-size: cover;
-		background-position: center;
-		/*z-index: 99999;*/
-		font-size: 20px;
-		color: white;
-	}
+  /*画图区域样式*/
+  .canvas {
+    width: 2000px;
+    height: 99vh;
+    background-color: #f9f8ef
+  }
 
-	/*拖拽区鼠标悬停样式*/
-	.slide:hover {
-		color: #444444;
-	}
+  /*拖拽区div样式*/
+  .slide {
+    cursor: w-resize;
+    float: left;
+    position: relative;
+    top: 45%;
+    background-color: #d6d6d6;
+    /*border-radius: 5px;*/
+    /*margin: -10px 0 -10px 0;*/
+    width: 7px;
+    height: 30px;
+    background-size: cover;
+    background-position: center;
+    /*z-index: 99999;*/
+    font-size: 20px;
+    color: white;
+  }
 
-	/*右侧div'样式*/
-	.side {
-		float: left;
-		width: 40%; /*右侧初始化宽度*/
-		height: 79vh;
-		background: #fff;
-		box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.08);
-		margin: 0 0 0;
-	}
+  /*拖拽区鼠标悬停样式*/
+  .slide:hover {
+    color: #444444;
+  }
 
-	/*画图区域样式*/
-	.canvas {
-		width: 100%;
-		height: 99vh;
-		background-color: #f9f8ef
-	}
+  /*右侧div'样式*/
+  .side {
+    float: left;
+    width: 40%; /*右侧初始化宽度*/
+    height: 79vh;
+    background: #fff;
+    box-shadow: -1px 4px 5px 3px rgba(0, 0, 0, 0.08);
+    margin: 0 0 0;
+  }
+
 
 </style>

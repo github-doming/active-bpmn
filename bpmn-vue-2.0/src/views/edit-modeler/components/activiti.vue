@@ -160,8 +160,7 @@
         });
       },
       success() {
-        // 调控左侧工具栏
-        this.adjustPalette();
+        this.adjustViewer();
         this.initBpmnParams();
         this.addEventBusListener();
       },
@@ -182,7 +181,7 @@
           }
         });
       },
-      adjustPalette() {
+      adjustViewer() {
         // 获取 bpmn 设计器实例
         const canvas = this.$refs.canvas;
         canvas.children[0].removeChild(canvas.children[0].children[0]);
