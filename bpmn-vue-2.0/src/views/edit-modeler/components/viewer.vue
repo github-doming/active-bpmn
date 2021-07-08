@@ -1,45 +1,45 @@
 <template>
-	<div class="container">
-		<div class="content" >
-			<div ref="canvas" class="canvas"/>
-		</div>
-		<div class="slide" @mousedown="slideDown"></div>
-		<div class="side" style="overflow:auto;padding-top: 10px">
-			<div>
-				<a @click="showAttribute = !showAttribute" style="float: right">{{showText}}</a>
-				<attribute-panel panel-id="Process_1" panel-title="建库流程" title-size="large"
-												 :show-attribute="showAttribute">
-					<attribute-panel panel-title="进程详细信息" :has-border="false" title-size="small">
-						<div>
-							<span style="width: 100px;float: left;font-weight:bold;">类别:</span>
-							<div style="text-align:left">默认值</div>
-						</div>
-						<div>
-							<span style="width: 100px;float: left">类别:</span>
-							<div style="text-align:left">默认值</div>
-						</div>
-						<div>
-							<span style="width: 100px;float: left">类别:</span>
-							<div style="text-align:left">默认值</div>
-						</div>
-					</attribute-panel>
-					<attribute-panel panel-title="进程变量" :has-border="false" title-size="small"/>
-					<attribute-panel panel-title="进程参与者" :has-border="false" title-size="small"/>
-					<attribute-panel panel-title="进程内容" :has-border="false" title-size="small"/>
-				</attribute-panel>
-				<attribute-panel panel-title="活动" title-size="large" :show-attribute="showAttribute">
-					<attribute-panel panel-id="Activity_1nr5csw" panel-title="活动：提交">
-						<attribute-panel panel-title="活动特性" :has-border="false" title-size="small"/>
-						<attribute-panel panel-title="活动参与者" :has-border="false" title-size="small"/>
-						<attribute-panel panel-title="活动详细信息" :has-border="false" title-size="small"/>
-						<attribute-panel panel-title="活动变量" :has-border="false"
-														 title-size="small"/>
-					</attribute-panel>
-				</attribute-panel>
-			</div>
-		</div>
+  <div class="container">
+    <div class="content">
+      <div ref="canvas" class="canvas"/>
+    </div>
+    <div class="slide" @mousedown="slideDown"></div>
+    <div class="side" style="overflow:auto;padding-top: 10px">
+      <div>
+        <a @click="showAttribute = !showAttribute" style="float: right">{{showText}}</a>
+        <attribute-panel panel-id="Process_1" panel-title="建库流程" title-size="large"
+                         :show-attribute="showAttribute">
+          <attribute-panel panel-title="进程详细信息" :has-border="false" title-size="small">
+            <div>
+              <span style="width: 100px;float: left;font-weight:bold;">类别:</span>
+              <div style="text-align:left">默认值</div>
+            </div>
+            <div>
+              <span style="width: 100px;float: left">类别:</span>
+              <div style="text-align:left">默认值</div>
+            </div>
+            <div>
+              <span style="width: 100px;float: left">类别:</span>
+              <div style="text-align:left">默认值</div>
+            </div>
+          </attribute-panel>
+          <attribute-panel panel-title="进程变量" :has-border="false" title-size="small"/>
+          <attribute-panel panel-title="进程参与者" :has-border="false" title-size="small"/>
+          <attribute-panel panel-title="进程内容" :has-border="false" title-size="small"/>
+        </attribute-panel>
+        <attribute-panel panel-title="活动" title-size="large" :show-attribute="showAttribute">
+          <attribute-panel panel-id="Activity_1nr5csw" panel-title="活动：提交">
+            <attribute-panel panel-title="活动特性" :has-border="false" title-size="small"/>
+            <attribute-panel panel-title="活动参与者" :has-border="false" title-size="small"/>
+            <attribute-panel panel-title="活动详细信息" :has-border="false" title-size="small"/>
+            <attribute-panel panel-title="活动变量" :has-border="false"
+                             title-size="small"/>
+          </attribute-panel>
+        </attribute-panel>
+      </div>
+    </div>
 
-	</div>
+  </div>
 </template>
 
 <script>
@@ -62,8 +62,9 @@
       return {
         bpmnModeler: null,
         key: '1',
-        runningKey: 'Activity_0nevzrh',
-        ranKeys: ['Event_19h0jyz','Activity_0nevzrh','Activity_1nr5csw'],
+        runningKeys: ['Activity_0nevzrh'],
+        ranKeys: ['Event_19h0jyz', 'Activity_0nevzrh', 'Activity_1nr5csw'],
+        terminatedKeys: [],
         processKey: '',
         element: null,
         showAttribute: true,
@@ -153,10 +154,15 @@
       },
       highlightRun() {
         let canvas = this.bpmnModeler.get('canvas');
-        canvas.addMarker(this.runningKey, 'highlight');
+        this.runningKeys.forEach(key => {
+          canvas.addMarker(key, 'highlight');
+        });
         this.ranKeys.forEach(key => {
-          canvas.addMarker(key, 'gloomy');
-        })
+          canvas.addMarker(key, 'executed');
+        });
+        this.terminatedKeys.forEach(key => {
+          canvas.addMarker(key, 'terminated');
+        });
       },
       adjustViewer() {
         const canvas = this.$refs.canvas;
@@ -169,69 +175,71 @@
 </script>
 
 <style scoped>
-	/* 拖拽相关样式 */
-	/*包围div样式*/
-	.container {
-		width: 95%;
-		height: 80vh;
-		margin: 1% 0;
-		overflow: hidden;
+  /* 拖拽相关样式 */
+  /*包围div样式*/
+  .container {
+    width: 95%;
+    height: 80vh;
+    margin: 1% 0;
+    overflow: hidden;
 
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-	}
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
-	/*左侧div样式*/
-	.content {
-		width: 100%;
-		height: calc(60% - 7px); /*左侧初始化宽度*/
-		background: #FFFFFF;
-    overflow:scroll;
-	}
+  /*左侧div样式*/
+  .content {
+    width: 100%;
+    height: calc(60% - 7px); /*左侧初始化宽度*/
+    background: #FFFFFF;
+    overflow: scroll;
+  }
 
-	/*拖拽区div样式*/
-	.slide {
-		cursor: s-resize;
-		position: relative;
-		background-color: #d6d6d6;
-		width: 100%;
-		height: 7px;
-		background-size: cover;
-		background-position: center;
-		font-size: 20px;
-		color: white;
-	}
+  /*拖拽区div样式*/
+  .slide {
+    cursor: s-resize;
+    position: relative;
+    background-color: #d6d6d6;
+    width: 100%;
+    height: 7px;
+    background-size: cover;
+    background-position: center;
+    font-size: 20px;
+    color: white;
+  }
 
 
-	/*右侧div'样式*/
-	.side {
-		float: left;
-		width: 100%;
-		height: 30%;
-		background: #fff;
-		margin: 16px 0 0;
-	}
+  /*右侧div'样式*/
+  .side {
+    float: left;
+    width: 100%;
+    height: 30%;
+    background: #fff;
+    margin: 16px 0 0;
+  }
 
-	/*画图区域样式*/
-	.canvas {
+  /*画图区域样式*/
+  .canvas {
     width: 2000px;
-		height: 100vh;
-		border: 1px solid #c7c7c7;
-	}
-	/*已运行节点样式*/
-	.gloomy .djs-visual > :nth-child(1) {
-		fill: #d0d0d0 !important;
-	}
+    height: 100vh;
+    border: 1px solid #c7c7c7;
+  }
 
-	/*正在运行节点样式*/
-	.highlight .djs-visual > :nth-child(1) {
+  /*已运行节点样式*/
+  .executed .djs-visual > :nth-child(1) {
+    fill: #d0d0d0 !important;
+  }
+
+  /*正在运行节点样式*/
+  .running .djs-visual > :nth-child(1) {
     fill: #66CC66 !important;
-	}
+  }
+
   /*已终止的任务节点样式*/
-	.highlight .djs-visual > :nth-child(1) {
-		fill: #fcfa3a !important;
-	}
+  .terminated .djs-visual > :nth-child(1) {
+    fill: #fcfa3a !important;
+  }
 
 </style>

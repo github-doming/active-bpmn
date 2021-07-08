@@ -19,122 +19,183 @@ const BaseCreateBpmn = '<?xml version="1.0" encoding="UTF-8"?>' +
     '</bpmndi:BPMNDiagram>' +
     '</bpmn2:definitions>';
 const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
-    '  <bpmn2:process id="Process_1" name="物料采购申请流程(出口)" isExecutable="true">\n' +
+    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
+    '  <bpmn2:process id="OR_com.pisx.tundra.foundation.workflow.model.WfProcessTemplateMaster_10298" name="EarlyBOM审批" isExecutable="true">\n' +
     '    <bpmn2:extensionElements>\n' +
-    '      <activiti:variable id="BOM01" name="supplier" defaultDisplay="采购供应商" displayZhCn="采购供应商" displayEnUs="supplier" type="String" defaultValue="美的" isVisible="true" isNecessary="true" isReadOnly="false" isReset="true" />\n' +
+    '      <activiti:variable xmlns:activiti="http://activiti.org/bpmn" id="BOM01" name="bomType" defaultDisplay="bomType" displayZhCn="BOM类型" displayEnUs="bomType" type="int" defaultValue="1" isVisible="false" isNecessary="false" isReadOnly="false" isReset="true" />\n' +
     '    </bpmn2:extensionElements>\n' +
-    '    <bpmn2:startEvent id="Event_0gm9rlq" name="开始">\n' +
-    '      <bpmn2:outgoing>Flow_0hp9nas</bpmn2:outgoing>\n' +
-    '    </bpmn2:startEvent>\n' +
-    '    <bpmn2:userTask id="Activity_0yjk7wx" name="采购申请">\n' +
+    '    <bpmn2:startEvent id="Event_1amwz96" name="开始" />\n' +
+    '    <bpmn2:userTask id="Activity_0xsikp7" name="BOM提交">\n' +
     '      <bpmn2:extensionElements>\n' +
-    '        <activiti:activity />\n' +
+    '        <activiti:formTemplate />\n' +
     '        <activiti:participant>\n' +
-    '          <activiti:assign userName="jwzhao" type="user" id="5372" />\n' +
+    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_role_id" />\n' +
     '        </activiti:participant>\n' +
-    '        <activiti:roleSet id="2560" name="Project Manager" code="PM" view="true" add="true" remove="true" sourceRef="Activity_1h7cihe">\n' +
+    '        <activiti:roleSet id="Reviewer" name="审核者" code="Reviewer" view="true" add="true" remove="true" sourceRef="Activity_1wdc0wn">\n' +
     '          <activiti:repository id="system_id" name="System Team" type="system" />\n' +
     '        </activiti:roleSet>\n' +
-    '        <activiti:variable id="BOM01" name="supplierName" defaultDisplay="采购供应商" displayZhCn="采购供应商" displayEnUs="supplier" type="String" defaultValue="美的" isVisible="true" isNecessary="true" isReadOnly="false" isReset="true" initFormVarKey="supplier" />\n' +
-    '        <activiti:roleSet id="2558" name="Process Engineer" code="Process Engineer" view="false" add="false" remove="false" sourceRef="Activity_1h7cihe" />\n' +
-    '        <activiti:variable id="BOM11" name="wfprocessInfo" defaultDisplay="流程详细信息" displayZhCn="流程详细信息" displayEnUs="wfprocessInfo" type="Other..." otherName="com.pisx.tundra.foundation.workflow.workflowtest.WfDefTest" isVisible="true" isNecessary="true" isReadOnly="false" isReset="true" />\n' +
+    '        <activiti:roleSet id="Process Engineer" name="Process Engineer" code="Process Engineer" view="true" add="true" remove="true" sourceRef="Activity_06rkyj6">\n' +
+    '          <activiti:repository id="6458" name="Reviewer" type="group" />\n' +
+    '        </activiti:roleSet>\n' +
     '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>Flow_0hp9nas</bpmn2:incoming>\n' +
-    '      <bpmn2:incoming>Flow_1s2y3l0</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>Flow_0yq9mtc</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>Flow_10jyavm</bpmn2:outgoing>\n' +
     '    </bpmn2:userTask>\n' +
-    '    <bpmn2:sequenceFlow id="Flow_0hp9nas" sourceRef="Event_0gm9rlq" targetRef="Activity_0yjk7wx" />\n' +
-    '    <bpmn2:sequenceFlow id="Flow_0yq9mtc" name="通过" sourceRef="Activity_0yjk7wx" targetRef="Activity_1h7cihe" />\n' +
-    '    <bpmn2:userTask id="Activity_1h7cihe" name="项目经理审核">\n' +
+    '    <bpmn2:exclusiveGateway id="Gateway_0yyr904" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_07azpq6" name="提交" sourceRef="Activity_0xsikp7" targetRef="Activity_17wm7nm" />\n' +
+    '    <bpmn2:userTask id="Activity_06rkyj6" name="审核">\n' +
     '      <bpmn2:extensionElements>\n' +
-    '        <activiti:activity />\n' +
+    '        <activiti:formTemplate />\n' +
     '        <activiti:participant>\n' +
-    '          <activiti:assign userName="bzhou" type="user" id="731" />\n' +
-    '          <activiti:assign userName="jwzhao" type="user" id="5372" />\n' +
-    '          <activiti:group need="NUMBER" number="1" name="PISX" type="group" id="15" />\n' +
-    '          <activiti:role need="ANY" number="" name="Project Manager" type="role" roleCode="PM" id="2560" />\n' +
-    '          <activiti:role need="NO" number="" name="Process Engineer" type="role" roleCode="Process Engineer" id="2558" />\n' +
+    '          <activiti:group need="ALL" number="" name="Reviewer" type="group" id="6458" />\n' +
+    '          <activiti:role need="ALL" number="" name="Process Engineer" type="role" roleCode="Process Engineer" id="Process Engineer" />\n' +
     '        </activiti:participant>\n' +
+    '        <activiti:roleSet id="Reviewer" name="审核者" code="Reviewer" view="false" add="false" remove="false" sourceRef="Activity_1wdc0wn" />\n' +
     '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>Flow_0yq9mtc</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>Flow_1utfw5z</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>Flow_1s2y3l0</bpmn2:outgoing>\n' +
     '    </bpmn2:userTask>\n' +
-    '    <bpmn2:endEvent id="Event_1pj3agx" name="结束">\n' +
-    '      <bpmn2:incoming>Flow_1utfw5z</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:sequenceFlow id="Flow_1utfw5z" name="通过" sourceRef="Activity_1h7cihe" targetRef="Event_1pj3agx" />\n' +
-    '    <bpmn2:endEvent id="Event_1dkstxz" name="结束">\n' +
-    '      <bpmn2:incoming>Flow_10jyavm</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:sequenceFlow id="Flow_10jyavm" name="取消" sourceRef="Activity_0yjk7wx" targetRef="Event_1dkstxz" />\n' +
-    '    <bpmn2:sequenceFlow id="Flow_1s2y3l0" name="驳回" sourceRef="Activity_1h7cihe" targetRef="Activity_0yjk7wx" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1ebytto" name="采购物料" sourceRef="Gateway_0yyr904" targetRef="Activity_06rkyj6">\n' +
+    '      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${bomType==1}</bpmn2:conditionExpression>\n' +
+    '    </bpmn2:sequenceFlow>\n' +
+    '    <bpmn2:userTask id="Activity_1wdc0wn" name="审批">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:formTemplate />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:role need="NO" number="" name="审核者" type="role" roleCode="Reviewer" id="Reviewer" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:roleSet id="Process Engineer" name="Process Engineer" code="Process Engineer" view="false" add="false" remove="false" sourceRef="Activity_06rkyj6" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1y33o5p" name="自制BOM" sourceRef="Gateway_0yyr904" targetRef="Activity_1wdc0wn">\n' +
+    '      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${bomType==2}</bpmn2:conditionExpression>\n' +
+    '    </bpmn2:sequenceFlow>\n' +
+    '    <bpmn2:exclusiveGateway id="Gateway_0oc62o4" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1a78dz0" name="通过" sourceRef="Activity_06rkyj6" targetRef="Gateway_0oc62o4" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_10hxub2" name="通过" sourceRef="Activity_1wdc0wn" targetRef="Gateway_0oc62o4" />\n' +
+    '    <bpmn2:endEvent id="Event_1kurwyq" name="结束" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_08vzxns" sourceRef="Gateway_0oc62o4" targetRef="Event_1kurwyq" />\n' +
+    '    <bpmn2:endEvent id="Event_1qyvtf0" name="结束" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1mnsesm" name="取消" sourceRef="Activity_0xsikp7" targetRef="Event_1qyvtf0" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0ol4z8x" name="驳回" sourceRef="Activity_06rkyj6" targetRef="Activity_0xsikp7" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0uqer0q" name="驳回" sourceRef="Activity_1wdc0wn" targetRef="Activity_0xsikp7" />\n' +
+    '    <bpmn2:serviceTask id="Activity_1bcaeo2" name="角色初始化" activiti:class="com.pisx.tundra.foundation.workflow.workflowtest.WfServiceTaskTest" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0l36xx3" sourceRef="Event_1amwz96" targetRef="Activity_1bcaeo2" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1moyusb" sourceRef="Activity_1bcaeo2" targetRef="Activity_0xsikp7" />\n' +
+    '    <bpmn2:serviceTask id="Activity_17wm7nm" name="状态发放" activiti:class="com.pisx.tundra.foundation.workflow.workflowtest.WfServiceTaskTest" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_11nw06h" sourceRef="Activity_17wm7nm" targetRef="Gateway_0yyr904" />\n' +
     '  </bpmn2:process>\n' +
-    '  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
-    '    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
-    '      <bpmndi:BPMNEdge id="Flow_1s2y3l0_di" bpmnElement="Flow_1s2y3l0">\n' +
-    '        <di:waypoint x="580" y="306" />\n' +
-    '        <di:waypoint x="580" y="220" />\n' +
-    '        <di:waypoint x="340" y="220" />\n' +
-    '        <di:waypoint x="340" y="306" />\n' +
+    '  <bpmndi:BPMNDiagram id="BPMNDiagram_OR_com.pisx.tundra.foundation.workflow.model.WfProcessTemplateMaster_10298">\n' +
+    '    <bpmndi:BPMNPlane id="BPMNPlane_OR_com.pisx.tundra.foundation.workflow.model.WfProcessTemplateMaster_10298" bpmnElement="OR_com.pisx.tundra.foundation.workflow.model.WfProcessTemplateMaster_10298">\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Event_1amwz96" bpmnElement="Event_1amwz96">\n' +
+    '        <dc:Bounds x="62" y="322" width="36" height="36" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Activity_0xsikp7" bpmnElement="Activity_0xsikp7">\n' +
+    '        <dc:Bounds x="270" y="316" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Gateway_0yyr904" bpmnElement="Gateway_0yyr904" isMarkerVisible="true">\n' +
+    '        <dc:Bounds x="575" y="315" width="50" height="50" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Activity_06rkyj6" bpmnElement="Activity_06rkyj6">\n' +
+    '        <dc:Bounds x="630" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Activity_1wdc0wn" bpmnElement="Activity_1wdc0wn">\n' +
+    '        <dc:Bounds x="630" y="410" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Gateway_0oc62o4" bpmnElement="Gateway_0oc62o4">\n' +
+    '        <dc:Bounds x="745" y="315" width="50" height="50" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Event_1kurwyq" bpmnElement="Event_1kurwyq">\n' +
+    '        <dc:Bounds x="872" y="322" width="36" height="36" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Event_1qyvtf0" bpmnElement="Event_1qyvtf0">\n' +
+    '        <dc:Bounds x="182" y="492" width="36" height="36" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Activity_1bcaeo2" bpmnElement="Activity_1bcaeo2">\n' +
+    '        <dc:Bounds x="140" y="316" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="BPMNShape_Activity_17wm7nm" bpmnElement="Activity_17wm7nm">\n' +
+    '        <dc:Bounds x="430" y="316" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_11nw06h" bpmnElement="Flow_11nw06h">\n' +
+    '        <di:waypoint x="490" y="340" />\n' +
+    '        <di:waypoint x="575" y="340" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1moyusb" bpmnElement="Flow_1moyusb">\n' +
+    '        <di:waypoint x="200" y="340" />\n' +
+    '        <di:waypoint x="270" y="340" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_0l36xx3" bpmnElement="Flow_0l36xx3">\n' +
+    '        <di:waypoint x="98" y="340" />\n' +
+    '        <di:waypoint x="140" y="340" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_0uqer0q" bpmnElement="Flow_0uqer0q">\n' +
+    '        <di:waypoint x="660" y="458" />\n' +
+    '        <di:waypoint x="660" y="570" />\n' +
+    '        <di:waypoint x="300" y="570" />\n' +
+    '        <di:waypoint x="300" y="364" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="449" y="202" width="22" height="14" />\n' +
+    '          <dc:Bounds x="469" y="552" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_10jyavm_di" bpmnElement="Flow_10jyavm">\n' +
-    '        <di:waypoint x="340" y="354" />\n' +
-    '        <di:waypoint x="340" y="422" />\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_0ol4z8x" bpmnElement="Flow_0ol4z8x">\n' +
+    '        <di:waypoint x="660" y="236" />\n' +
+    '        <di:waypoint x="660" y="170" />\n' +
+    '        <di:waypoint x="300" y="170" />\n' +
+    '        <di:waypoint x="300" y="316" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="344" y="385" width="22" height="14" />\n' +
+    '          <dc:Bounds x="469" y="152" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_1utfw5z_di" bpmnElement="Flow_1utfw5z">\n' +
-    '        <di:waypoint x="610" y="330" />\n' +
-    '        <di:waypoint x="682" y="330" />\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1mnsesm" bpmnElement="Flow_1mnsesm">\n' +
+    '        <di:waypoint x="287" y="364" />\n' +
+    '        <di:waypoint x="210" y="495" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="635" y="312" width="23" height="14" />\n' +
+    '          <dc:Bounds x="251" y="374" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_0yq9mtc_di" bpmnElement="Flow_0yq9mtc">\n' +
-    '        <di:waypoint x="370" y="330" />\n' +
-    '        <di:waypoint x="550" y="330" />\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_08vzxns" bpmnElement="Flow_08vzxns">\n' +
+    '        <di:waypoint x="795" y="340" />\n' +
+    '        <di:waypoint x="872" y="340" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_10hxub2" bpmnElement="Flow_10hxub2">\n' +
+    '        <di:waypoint x="690" y="434" />\n' +
+    '        <di:waypoint x="770" y="434" />\n' +
+    '        <di:waypoint x="770" y="365" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="408" y="312" width="23" height="14" />\n' +
+    '          <dc:Bounds x="719" y="416" width="23" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_0hp9nas_di" bpmnElement="Flow_0hp9nas">\n' +
-    '        <di:waypoint x="238" y="330" />\n' +
-    '        <di:waypoint x="310" y="330" />\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1a78dz0" bpmnElement="Flow_1a78dz0">\n' +
+    '        <di:waypoint x="690" y="260" />\n' +
+    '        <di:waypoint x="770" y="260" />\n' +
+    '        <di:waypoint x="770" y="315" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="719" y="242" width="23" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="Event_0gm9rlq_di" bpmnElement="Event_0gm9rlq">\n' +
-    '        <dc:Bounds x="202" y="312" width="36" height="36" />\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1y33o5p" bpmnElement="Flow_1y33o5p">\n' +
+    '        <di:waypoint x="600" y="365" />\n' +
+    '        <di:waypoint x="600" y="434" />\n' +
+    '        <di:waypoint x="630" y="434" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="208" y="351" width="23" height="14" />\n' +
+    '          <dc:Bounds x="589" y="413" width="48" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Activity_0yjk7wx_di" bpmnElement="Activity_0yjk7wx">\n' +
-    '        <dc:Bounds x="310" y="306" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Activity_1h7cihe_di" bpmnElement="Activity_1h7cihe">\n' +
-    '        <dc:Bounds x="550" y="306" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Event_1pj3agx_di" bpmnElement="Event_1pj3agx">\n' +
-    '        <dc:Bounds x="682" y="312" width="36" height="36" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_1ebytto" bpmnElement="Flow_1ebytto">\n' +
+    '        <di:waypoint x="600" y="315" />\n' +
+    '        <di:waypoint x="600" y="260" />\n' +
+    '        <di:waypoint x="630" y="260" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="688" y="351" width="23" height="14" />\n' +
+    '          <dc:Bounds x="590" y="243" width="45" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Event_1dkstxz_di" bpmnElement="Event_1dkstxz">\n' +
-    '        <dc:Bounds x="322" y="422" width="36" height="36" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="BPMNEdge_Flow_07azpq6" bpmnElement="Flow_07azpq6">\n' +
+    '        <di:waypoint x="330" y="340" />\n' +
+    '        <di:waypoint x="430" y="340" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="328" y="461" width="23" height="14" />\n' +
+    '          <dc:Bounds x="369" y="322" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
-    '</bpmn2:definitions>\n';
+    '</bpmn2:definitions>\nd';
 
 const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
@@ -311,7 +372,7 @@ export const BpmnTag = {
   assign: 'activiti:Assign',
   group: 'activiti:Group',
   role: 'activiti:Role',
-  threshold:'activiti:Threshold',
+  threshold: 'activiti:Threshold',
   repository: 'activiti:Repository',
 
   getParticipant(participantKey) {
@@ -413,7 +474,7 @@ export const Http = {
 export const BpmnFunction = {
   getBpmnTemplate() {
     // return BaseCreateBpmn;
-    return CompleteBpmn2;
+    return CompleteBpmn;
   },
 
   /**
@@ -429,7 +490,7 @@ export const BpmnFunction = {
     tag.$parent = parent;
     return tag
   },
-  deleteTaskListener(bpmnParams,elementId){
+  deleteTaskListener(bpmnParams, elementId) {
     for (let key of Object.keys(bpmnParams)) {
       const type = bpmnParams[key].$type;
       if (!type || type !== 'bpmn:UserTask') {
@@ -440,7 +501,7 @@ export const BpmnFunction = {
       bpmnParams[key].extensionElements.set('values', values);
     }
   },
-  errorMessage: function (_this,err) {
+  errorMessage: function (_this, err) {
     _this.$notification.error({
       message: '提示:',
       description: err,
