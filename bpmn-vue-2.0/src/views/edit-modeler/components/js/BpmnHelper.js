@@ -198,169 +198,24 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '</bpmn2:definitions>\nd';
 
 const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
-    '  <bpmn2:process id="Process_1" name="请假申请流程" isExecutable="true" description="description">\n' +
-    '    <bpmn2:extensionElements>\n' +
-    '      <activiti:variable id="BOM01" name="leaveCount" defaultDisplay="请假天数" displayZhCn="请假天数" displayEnUs="leaveCount" type="int" defaultValue="1" isVisible="true" isNecessary="true" isReadOnly="false" isReset="true" />\n' +
-    '    </bpmn2:extensionElements>\n' +
-    '    <bpmn2:startEvent id="Event_19h0jyz" name="开始">\n' +
-    '      <bpmn2:extensionElements />\n' +
-    '      <bpmn2:outgoing>Flow_1ib0cgg</bpmn2:outgoing>\n' +
-    '    </bpmn2:startEvent>\n' +
-    '    <bpmn2:userTask id="Activity_0nevzrh" name="替代申请">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:participant>\n' +
-    '          <activiti:assign userName="jwzhao" type="user" id="5372" />\n' +
-    '        </activiti:participant>\n' +
-    '        <activiti:variable id="BOM01" name="leaveCount" defaultDisplay="请假天数" displayZhCn="请假天数" displayEnUs="leaveCount" type="int" defaultValue="1" isVisible="true" isNecessary="true" isReadOnly="false" isReset="true" initFormVarKey="leaveCount" />\n' +
-    '        <activiti:roleSet id="2560" name="Project Manager" code="PM" view="true" add="true" remove="true" sourceRef="Activity_18kenek" />\n' +
-    '        <activiti:formTemplate taskFormTemplate="Audit - Conduct Audit" />\n' +
-    '        <activiti:taskListener event="assignment" class="TestCompletedTaskListener2" />\n' +
-    '        <activiti:taskListener event="Flow_1up0h2v" class="TestCompletedTaskListener3" />\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>Flow_1ib0cgg</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>Flow_1up0h2v</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0x0l74k</bpmn2:outgoing>\n' +
-    '    </bpmn2:userTask>\n' +
-    '    <bpmn2:sequenceFlow id="Flow_1ib0cgg" sourceRef="Event_19h0jyz" targetRef="Activity_0nevzrh" />\n' +
-    '    <bpmn2:userTask id="Activity_18kenek" name="主管审批">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:participant>\n' +
-    '          <activiti:role need="ANY" number="" name="Project Manager" type="role" roleCode="PM" id="2560" />\n' +
-    '        </activiti:participant>\n' +
-    '        <activiti:formTemplate />\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>Flow_0zeq6ls</bpmn2:incoming>\n' +
-    '      <bpmn2:incoming>SequenceFlow_17elsky</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>Flow_1jutiu7</bpmn2:outgoing>\n' +
-    '    </bpmn2:userTask>\n' +
-    '    <bpmn2:endEvent id="Event_1xb93ro" name="结束">\n' +
-    '      <bpmn2:extensionElements />\n' +
-    '      <bpmn2:incoming>Flow_1jutiu7</bpmn2:incoming>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1iug3rb</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:sequenceFlow id="Flow_1jutiu7" name="通过" sourceRef="Activity_18kenek" targetRef="Event_1xb93ro" />\n' +
-    '    <bpmn2:endEvent id="Event_18r89i0" name="结束">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:participant />\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_0x0l74k</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:serviceTask id="Activity_0cotr7l" name="执行发放" activiti:class="com.pisx.tundra.foundation.workflow.workflowtest.TestServiceTaskListener">\n' +
-    '      <bpmn2:incoming>Flow_1up0h2v</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>Flow_0zeq6ls</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0oseb0r</bpmn2:outgoing>\n' +
-    '    </bpmn2:serviceTask>\n' +
-    '    <bpmn2:sequenceFlow id="Flow_1up0h2v" name="通过" sourceRef="Activity_0nevzrh" targetRef="Activity_0cotr7l" />\n' +
-    '    <bpmn2:sequenceFlow id="Flow_0zeq6ls" sourceRef="Activity_0cotr7l" targetRef="Activity_18kenek" />\n' +
-    '    <bpmn2:exclusiveGateway id="ExclusiveGateway_0x0zqz6">\n' +
-    '      <bpmn2:incoming>SequenceFlow_0oseb0r</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_17elsky</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0m4qmim</bpmn2:outgoing>\n' +
-    '    </bpmn2:exclusiveGateway>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0oseb0r" sourceRef="Activity_0cotr7l" targetRef="ExclusiveGateway_0x0zqz6" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_17elsky" sourceRef="ExclusiveGateway_0x0zqz6" targetRef="Activity_18kenek" />\n' +
-    '    <bpmn2:userTask id="UserTask_11teixm" name="经理审核">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:formTemplate />\n' +
-    '        <activiti:participant>\n' +
-    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_role_id" />\n' +
-    '        </activiti:participant>\n' +
-    '        <activiti:roleSet id="2560" name="Project Manager" code="PM" view="false" add="false" remove="false" sourceRef="Activity_18kenek" />\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_0m4qmim</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1iug3rb</bpmn2:outgoing>\n' +
-    '    </bpmn2:userTask>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0m4qmim" sourceRef="ExclusiveGateway_0x0zqz6" targetRef="UserTask_11teixm" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1iug3rb" sourceRef="UserTask_11teixm" targetRef="Event_1xb93ro" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0x0l74k" name="驳回" sourceRef="Activity_0nevzrh" targetRef="Event_18r89i0" condition="" />\n' +
+    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
+    '  <bpmn2:process id="Process_1" name="123" isExecutable="true">\n' +
+    '    <bpmn2:extensionElements />\n' +
+    '    <bpmn2:serviceTask id="ServiceTask_0fjy776" name="状态机" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener" />\n' +
     '  </bpmn2:process>\n' +
     '  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
     '    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
-    '      <bpmndi:BPMNEdge id="Flow_0zeq6ls_di" bpmnElement="Flow_0zeq6ls">\n' +
-    '        <di:waypoint x="510" y="340" />\n' +
-    '        <di:waypoint x="560" y="340" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_1up0h2v_di" bpmnElement="Flow_1up0h2v">\n' +
-    '        <di:waypoint x="380" y="340" />\n' +
-    '        <di:waypoint x="450" y="340" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="404" y="322" width="23" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_1jutiu7_di" bpmnElement="Flow_1jutiu7">\n' +
-    '        <di:waypoint x="620" y="340" />\n' +
-    '        <di:waypoint x="712" y="340" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="655" y="322" width="23" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="Flow_1ib0cgg_di" bpmnElement="Flow_1ib0cgg">\n' +
-    '        <di:waypoint x="248" y="340" />\n' +
-    '        <di:waypoint x="320" y="340" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="Event_19h0jyz_di" bpmnElement="Event_19h0jyz">\n' +
-    '        <dc:Bounds x="212" y="322" width="36" height="36" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="218" y="361" width="23" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
+    '      <bpmndi:BPMNShape id="ServiceTask_0fjy776_di" bpmnElement="ServiceTask_0fjy776">\n' +
+    '        <dc:Bounds x="480" y="176" width="60" height="48" />\n' +
     '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Activity_0nevzrh_di" bpmnElement="Activity_0nevzrh">\n' +
-    '        <dc:Bounds x="320" y="316" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Activity_18kenek_di" bpmnElement="Activity_18kenek">\n' +
-    '        <dc:Bounds x="560" y="316" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Event_1xb93ro_di" bpmnElement="Event_1xb93ro">\n' +
-    '        <dc:Bounds x="712" y="322" width="36" height="36" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="718" y="298" width="23" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Event_18r89i0_di" bpmnElement="Event_18r89i0">\n' +
-    '        <dc:Bounds x="332" y="432" width="36" height="36" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="338" y="471" width="23" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="Activity_0cotr7l_di" bpmnElement="Activity_0cotr7l">\n' +
-    '        <dc:Bounds x="450" y="316" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="ExclusiveGateway_0x0zqz6_di" bpmnElement="ExclusiveGateway_0x0zqz6" isMarkerVisible="true">\n' +
-    '        <dc:Bounds x="455" y="425" width="50" height="50" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0oseb0r_di" bpmnElement="SequenceFlow_0oseb0r">\n' +
-    '        <di:waypoint x="480" y="364" />\n' +
-    '        <di:waypoint x="480" y="425" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_17elsky_di" bpmnElement="SequenceFlow_17elsky">\n' +
-    '        <di:waypoint x="505" y="450" />\n' +
-    '        <di:waypoint x="590" y="450" />\n' +
-    '        <di:waypoint x="590" y="364" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="UserTask_11teixm_di" bpmnElement="UserTask_11teixm">\n' +
-    '        <dc:Bounds x="450" y="536" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0m4qmim_di" bpmnElement="SequenceFlow_0m4qmim">\n' +
-    '        <di:waypoint x="480" y="475" />\n' +
-    '        <di:waypoint x="480" y="536" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1iug3rb_di" bpmnElement="SequenceFlow_1iug3rb">\n' +
-    '        <di:waypoint x="510" y="560" />\n' +
-    '        <di:waypoint x="730" y="560" />\n' +
-    '        <di:waypoint x="730" y="358" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0x0l74k_di" bpmnElement="SequenceFlow_0x0l74k">\n' +
-    '        <di:waypoint x="350" y="364" />\n' +
-    '        <di:waypoint x="350" y="432" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="354" y="395" width="22" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNEdge>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
     '</bpmn2:definitions>';
 // endregion
+
+export const BpmnConfig = {
+  statusAutoClass:'com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener',
+};
 
 export const BpmnTag = {
   formTemplate: 'activiti:FormTemplate',
@@ -372,8 +227,9 @@ export const BpmnTag = {
   assign: 'activiti:Assign',
   group: 'activiti:Group',
   role: 'activiti:Role',
-  threshold: 'activiti:Threshold',
   repository: 'activiti:Repository',
+  threshold: 'activiti:Threshold',
+  field: 'activiti:Field',
 
   getParticipant(participantKey) {
     if (participantKey === 'assigns') {
@@ -396,7 +252,6 @@ export const BpmnTag = {
     return undefined;
   }
 };
-
 
 export const BpmnMethod = {
   getExtensionElements() {
@@ -473,8 +328,8 @@ export const Http = {
 
 export const BpmnFunction = {
   getBpmnTemplate() {
-    // return BaseCreateBpmn;
-    return CompleteBpmn;
+    return BaseCreateBpmn;
+    // return CompleteBpmn2;
   },
 
   /**

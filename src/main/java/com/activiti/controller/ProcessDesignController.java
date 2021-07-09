@@ -48,6 +48,15 @@ public class ProcessDesignController {
 	public List<Model> listModel() {
 		return processDesignService.listModel();
 	}
+	@RequestMapping(value = "/model/status", method = RequestMethod.GET)
+	public JSONArray lisStatus() {
+		JSONArray template = new JSONArray();
+		template.add("OPEN");
+		template.add("CLOSE");
+		template.add("WORK");
+		template.add("INWORK");
+		return template;
+	}
 
 	@RequestMapping(value = "/model/template", method = RequestMethod.GET)
 	public JSONArray templateModel() {
@@ -175,6 +184,7 @@ public class ProcessDesignController {
 		local.put("operator", "操作者");
 		local.put("threshold", "阈值");
         local.put("condition", "条件");
+        local.put("specificState", "特定状态");
 
 
 

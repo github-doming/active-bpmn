@@ -1,5 +1,6 @@
 // 引入默认的renderer
 import BaseRenderer from 'diagram-js/lib/draw/BaseRenderer';
+import {BpmnConfig} from "../BpmnHelper";
 
 const CustomTypes = ['bpmn:UserTask', 'bpmn:ServiceTask'];
 
@@ -20,12 +21,19 @@ export default class CustomRenderer extends BaseRenderer {
       element.width = 60;
       element.height = 48;
     }
+    if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
+      let shape = this.bpmnRenderer.drawShape(visuals, element);
+      shape.style.setProperty('fill', '#fc7b07');
+      return shape;
+    }
     return this.bpmnRenderer.drawShape(visuals, element);
   }
+
 
   getShapePath(shape) {
     return this.bpmnRenderer.getShapePath(shape);
   }
 
 }
+
 CustomRenderer.$inject = ['eventBus', 'bpmnRenderer'];

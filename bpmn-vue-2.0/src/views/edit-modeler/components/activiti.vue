@@ -41,7 +41,14 @@
         default: () => ({}),
       },
     },
-    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties, SequenceProperties,InclusiveGatewayProperties},
+    components: {
+      ProcessProperties,
+      UserTaskProperties,
+      ServiceTaskProperties,
+      NameProperties,
+      SequenceProperties,
+      InclusiveGatewayProperties
+    },
     computed: {
       downloadShow() {
         return true;
@@ -166,7 +173,7 @@
       },
       initBpmnParams() {
         //解析的节点信息
-        const nodeType = ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:ParallelGateway', 'bpmn:ExclusiveGateway','bpmn:InclusiveGateway'];
+        const nodeType = ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:ParallelGateway', 'bpmn:ExclusiveGateway', 'bpmn:InclusiveGateway'];
         let that = this;
         this.bpmnModeler.get('elementRegistry').forEach(element => {
           if (element.type === 'bpmn:Process') {
@@ -247,7 +254,7 @@
           } else if (that.element.type === 'bpmn:SequenceFlow') {
             that.propsComponent = 'SequenceProperties'
           } else if (that.element.type === 'bpmn:InclusiveGateway') {
-              this.propsComponent = 'InclusiveGatewayProperties';
+            this.propsComponent = 'InclusiveGatewayProperties';
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
@@ -266,10 +273,10 @@
             that.element.businessObject.name = '结束';
           } else if (type === 'bpmn:UserTask') {
             that.propsComponent = 'UserTaskProperties';
-          }else if (type === 'bpmn:ParallelGateway' || type === 'bpmn:ExclusiveGateway') {
-              this.propsComponent = '';
+          } else if (type === 'bpmn:ParallelGateway' || type === 'bpmn:ExclusiveGateway') {
+            this.propsComponent = '';
           } else if (type === 'bpmn:InclusiveGateway') {
-              this.propsComponent = 'InclusiveGatewayProperties';
+            this.propsComponent = 'InclusiveGatewayProperties';
           }
         });
         that.bpmnModeler.on('interactionEvents.createHit', event => {
@@ -362,5 +369,9 @@
     background-color: #f9f8ef
   }
 
-
+</style>
+<style>
+  .bpmn-icon-red:before {
+    color: #cc0026;
+  }
 </style>

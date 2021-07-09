@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
-    <div class="content">
+  <div class="viewer-container">
+    <div class="viewer-content">
       <div ref="canvas" class="canvas"/>
     </div>
-    <div class="slide" @mousedown="slideDown"></div>
-    <div class="side" style="overflow:auto;padding-top: 10px">
+    <div class="viewer-slide" @mousedown="slideDown"></div>
+    <div class="viewer-side" style="overflow:auto;padding-top: 10px">
       <div>
         <a @click="showAttribute = !showAttribute" style="float: right">{{showText}}</a>
         <attribute-panel panel-id="Process_1" panel-title="建库流程" title-size="large"
@@ -62,9 +62,9 @@
       return {
         bpmnModeler: null,
         key: '1',
-        runningKeys: ['Activity_0nevzrh'],
-        ranKeys: ['Event_19h0jyz', 'Activity_0nevzrh', 'Activity_1nr5csw'],
-        terminatedKeys: [],
+        runningKeys: ['Activity_1wdc0wn'],
+        ranKeys: ['Event_1amwz96', 'Activity_0xsikp7'],
+        terminatedKeys: ['Gateway_0yyr904'],
         processKey: '',
         element: null,
         showAttribute: true,
@@ -155,10 +155,11 @@
       highlightRun() {
         let canvas = this.bpmnModeler.get('canvas');
         this.runningKeys.forEach(key => {
-          canvas.addMarker(key, 'highlight');
+          console.log(key);
+          canvas.addMarker(key, 'running');
         });
         this.ranKeys.forEach(key => {
-          canvas.addMarker(key, 'executed');
+          canvas.addMarker(key, 'ran');
         });
         this.terminatedKeys.forEach(key => {
           canvas.addMarker(key, 'terminated');
@@ -177,7 +178,7 @@
 <style scoped>
   /* 拖拽相关样式 */
   /*包围div样式*/
-  .container {
+  .viewer-container {
     width: 95%;
     height: 80vh;
     margin: 1% 0;
@@ -190,7 +191,7 @@
   }
 
   /*左侧div样式*/
-  .content {
+  .viewer-content {
     width: 100%;
     height: calc(60% - 7px); /*左侧初始化宽度*/
     background: #FFFFFF;
@@ -198,7 +199,7 @@
   }
 
   /*拖拽区div样式*/
-  .slide {
+  .viewer-slide {
     cursor: s-resize;
     position: relative;
     background-color: #d6d6d6;
@@ -212,7 +213,7 @@
 
 
   /*右侧div'样式*/
-  .side {
+  .viewer-side {
     float: left;
     width: 100%;
     height: 30%;
@@ -226,15 +227,16 @@
     height: 100vh;
     border: 1px solid #c7c7c7;
   }
-
+</style>
+<style>
   /*已运行节点样式*/
-  .executed .djs-visual > :nth-child(1) {
+  .ran .djs-visual > :nth-child(1) {
     fill: #d0d0d0 !important;
   }
 
   /*正在运行节点样式*/
   .running .djs-visual > :nth-child(1) {
-    fill: #66CC66 !important;
+    fill: #00cc5c !important;
   }
 
   /*已终止的任务节点样式*/

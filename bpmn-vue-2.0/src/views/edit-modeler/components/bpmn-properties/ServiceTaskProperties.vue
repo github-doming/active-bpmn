@@ -1,20 +1,22 @@
 <template>
-	<div class="properties">
-		<a-tabs type="card">
-			<a-tab-pane key="general" :tab="local.general">
-				<general-service-task :param="param" @updateGeneral="updateGeneral"/>
-			</a-tab-pane>
-		</a-tabs>
-	</div>
+  <div class="properties">
+    <a-tabs type="card">
+      <a-tab-pane key="general" :tab="local.general">
+        <general-service-task v-show="!statusAuto" :param="param" @updateGeneral="updateGeneral"/>
+        <general-service-task-status-auto v-show="statusAuto" :field="field()"/>
+      </a-tab-pane>
+    </a-tabs>
+  </div>
 </template>
 
 <script>
-  import {BpmnMethod} from "../js/BpmnHelper";
+  import {BpmnConfig, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
   import GeneralServiceTask from "./tab/GeneralServiceTask";
+  import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
 
   export default {
     name: "ServiceTaskProperties",
-    components: {GeneralServiceTask},
+    components: {GeneralServiceTaskStatusAuto, GeneralServiceTask},
     props: {
       modeler: {
         type: Object,
@@ -28,22 +30,42 @@
       }
     },
     data() {
-      return {local: JSON.parse(localStorage.getItem('activeLocal')), param: this.params[this.element.id]}
+      return {local: JSON.parse(localStorage.getItem('activeLocal')),extensionValues: [], param: this.params[this.element.id]}
     },
     watch: {
       element(val) {
         this.param = this.params[val.id];
+        this.extensionValues = this.getExtensionElements().get('values');
       },
+    },
+    computed: {
+      statusAuto() {
+        return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass;
+      },
+    },
+    created() {
+      this.extensionValues = this.getExtensionElements().get('values');
     },
     methods: {
       updateGeneral: BpmnMethod.updateGeneral(),
+      getExtensionElements: BpmnMethod.getExtensionElements(),
+      field() {
+        let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
+        if (fields.length > 0) {
+          return fields[0];
+        }
+        let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.field);
+        elementTag.name = 'stateKey';
+        this.extensionValues.push(elementTag);
+        return elementTag;
+      },
     },
   }
 </script>
 
 <style scoped>
-	.properties {
-		padding: 8px 12px;
-		margin: 2px 3px;
-	}
+  .properties {
+    padding: 8px 12px;
+    margin: 2px 3px;
+  }
 </style>

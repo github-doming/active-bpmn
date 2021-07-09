@@ -220,6 +220,28 @@
       ]
     },
     {
+      "name": "Field",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "isBody": true,
+          "type": "String"
+        }
+      ]
+    },
+
+
+
+
+    {
       "name": "Assign",
       "properties": [
         {
