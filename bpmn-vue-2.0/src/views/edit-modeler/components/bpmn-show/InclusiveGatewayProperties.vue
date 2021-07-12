@@ -2,21 +2,19 @@
   <div class="properties">
     <a-tabs type="card">
       <a-tab-pane key="general" :tab="local.general">
-        <general-service-task v-show="!statusAuto" :param="param"/>
-        <general-service-task-status-auto v-show="statusAuto" :field="field"/>
+        <general-inclusive-gateway :threshold="threshold"/>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 
 <script>
-  import GeneralServiceTask from "./tab/GeneralServiceTask";
-  import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
-  import {BpmnConfig,  BpmnMethod, BpmnTag} from "../js/BpmnHelper";
+  import { BpmnMethod, BpmnTag} from "../js/BpmnHelper";
+  import GeneralInclusiveGateway from "./tab/GeneralInclusiveGateway";
 
   export default {
-    name: "ServiceTaskProperties",
-    components: {GeneralServiceTask,GeneralServiceTaskStatusAuto},
+    name: "InclusiveGatewayProperties",
+    components: {GeneralInclusiveGateway},
     props: {
       modeler: {
         type: Object,
@@ -36,13 +34,10 @@
       },
     },
     computed: {
-      statusAuto() {
-        return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass;
-      },
-      field() {
-        let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
-        if (fields.length > 0) {
-          return fields[0];
+      threshold() {
+        let thresholds = this.extensionValues.filter(element => element['$type'] === BpmnTag.threshold);
+        if (thresholds.length > 0) {
+          return thresholds[0];
         }
         return {};
       },
@@ -50,8 +45,7 @@
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
-        param: this.params[this.element.id],
-        extensionValues: [],
+        param: this.params[this.element.id], extensionValues: [],
       }
     },
     created() {
@@ -59,7 +53,7 @@
     },
     methods: {
       getExtensionElements: BpmnMethod.getExtensionElementsOnly(),
-    }
+    },
   }
 </script>
 

@@ -24,7 +24,7 @@
   import CustomTranslate from "./js/customTranslate";
   import CustomModdle from './js/activiti'
   import language from './js/customTranslate/language'
-  import {BpmnFunction} from "./js/BpmnHelper";
+  import {BpmnConfig, BpmnFunction} from "./js/BpmnHelper";
 
   import ProcessProperties from "./bpmn-properties/ProcessProperties";
   import UserTaskProperties from "./bpmn-properties/UserTaskProperties";
@@ -173,7 +173,7 @@
       },
       initBpmnParams() {
         //解析的节点信息
-        const nodeType = ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:ParallelGateway', 'bpmn:ExclusiveGateway', 'bpmn:InclusiveGateway'];
+        const nodeType = BpmnConfig.analyzeTypes;
         let that = this;
         this.bpmnModeler.get('elementRegistry').forEach(element => {
           if (element.type === 'bpmn:Process') {
@@ -273,10 +273,11 @@
             that.element.businessObject.name = '结束';
           } else if (type === 'bpmn:UserTask') {
             that.propsComponent = 'UserTaskProperties';
-          } else if (type === 'bpmn:ParallelGateway' || type === 'bpmn:ExclusiveGateway') {
-            this.propsComponent = '';
           } else if (type === 'bpmn:InclusiveGateway') {
-            this.propsComponent = 'InclusiveGatewayProperties';
+            that.propsComponent = 'InclusiveGatewayProperties';
+          } else {
+            that.element = that.bpmnParams.process.element;
+            that.propsComponent = 'ProcessProperties'
           }
         });
         that.bpmnModeler.on('interactionEvents.createHit', event => {

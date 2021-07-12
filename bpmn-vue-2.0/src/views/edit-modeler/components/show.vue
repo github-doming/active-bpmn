@@ -17,7 +17,10 @@
   import UserTaskProperties from "./bpmn-show/UserTaskProperties";
   import ServiceTaskProperties from "./bpmn-show/ServiceTaskProperties";
   import NameProperties from "./bpmn-show/NameProperties";
+  import SequenceProperties from "./bpmn-show/SequenceProperties";
+  import InclusiveGatewayProperties from "./bpmn-show/InclusiveGatewayProperties";
   import CustomModdle from "./js/activiti";
+  import {BpmnConfig} from "./js/BpmnHelper";
 
   export default {
     name: "show",
@@ -27,7 +30,7 @@
         default: () => ({}),
       },
     },
-    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties},
+    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties,SequenceProperties,InclusiveGatewayProperties, NameProperties},
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
@@ -107,7 +110,7 @@
       },
       initBpmnParams() {
         //解析的节点信息
-        const nodeType = ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent'];
+        const nodeType = BpmnConfig.analyzeTypes;
         let that = this;
         this.bpmnModeler.get('elementRegistry').forEach(element => {
           if (element.type === 'bpmn:Process') {
@@ -138,8 +141,10 @@
           } else if (that.element.type === 'bpmn:StartEvent' || that.element.type === 'bpmn:EndEvent') {
             that.propsComponent = 'NameProperties'
           } else if (that.element.type === 'bpmn:SequenceFlow') {
-            that.propsComponent = 'NameProperties'
-          } else {
+            that.propsComponent = 'SequenceProperties'
+          } else if (that.element.type === 'bpmn:InclusiveGateway') {
+            this.propsComponent = 'InclusiveGatewayProperties';
+          }else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
           }
@@ -148,6 +153,13 @@
       adjustViewer() {
         const canvas = this.$refs.canvas;
         canvas.children[0].removeChild(canvas.children[0].children[0]);
+
+        let bpmnCanvas = this.bpmnModeler.get('canvas');
+        this.bpmnModeler.get('elementRegistry').forEach(element => {
+          if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
+            bpmnCanvas.addMarker(element.id, 'status-auto');
+          }
+        });
       },
       // endregion
 
@@ -216,5 +228,12 @@
     margin: 0 0 0;
   }
 
+
+</style>
+<style>
+  /*状态自动机节点样式*/
+  .status-auto .djs-visual > :nth-child(1) {
+    fill: #fc7b07 !important;
+  }
 
 </style>

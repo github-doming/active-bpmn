@@ -48,6 +48,7 @@
 
   import AttributePanel from './bpmn-viewer/AttributePanel'
   import CustomModdle from "./js/activiti";
+  import {BpmnConfig} from "./js/BpmnHelper";
 
   export default {
     name: "viewer",
@@ -62,9 +63,9 @@
       return {
         bpmnModeler: null,
         key: '1',
-        runningKeys: ['Activity_1wdc0wn'],
-        ranKeys: ['Event_1amwz96', 'Activity_0xsikp7'],
-        terminatedKeys: ['Gateway_0yyr904'],
+        runningKeys: [],
+        ranKeys: [],
+        terminatedKeys: [],
         processKey: '',
         element: null,
         showAttribute: true,
@@ -149,13 +150,11 @@
             element = document.getElementById(that.processKey);
           }
           element.scrollIntoView(true);
-
-        })
+        });
       },
       highlightRun() {
         let canvas = this.bpmnModeler.get('canvas');
         this.runningKeys.forEach(key => {
-          console.log(key);
           canvas.addMarker(key, 'running');
         });
         this.ranKeys.forEach(key => {
@@ -168,6 +167,14 @@
       adjustViewer() {
         const canvas = this.$refs.canvas;
         canvas.children[0].removeChild(canvas.children[0].children[0]);
+
+        let bpmnCanvas = this.bpmnModeler.get('canvas');
+        this.bpmnModeler.get('elementRegistry').forEach(element => {
+          if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
+            bpmnCanvas.addMarker(element.id, 'status-auto');
+           // console.log(element);
+          }
+        });
       },
 
     }
@@ -242,6 +249,11 @@
   /*已终止的任务节点样式*/
   .terminated .djs-visual > :nth-child(1) {
     fill: #fcfa3a !important;
+  }
+
+  /*状态自动机节点样式*/
+  .status-auto .djs-visual > :nth-child(1) {
+    fill: #fc7b07 !important;
   }
 
 </style>
