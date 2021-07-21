@@ -17,64 +17,75 @@ export default class CustomPalette {
       translate
     } = this;
 
-    function createUserTask(event) {
-      const shape = elementFactory.createShape({type: 'bpmn:UserTask'});
-      create.start(event, shape);
-    }
-
-    function createServiceTask(event) {
-      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
-      create.start(event, shape);
-    }
-
-    function createGateway(event) {
+    function createNode(event) {
       const dataAction = event.delegateTarget.attributes['data-action'].value;
-      let shape = null;
-      if (dataAction === 'create.parallelGateway') {
-        shape = elementFactory.createShape({type: 'bpmn:ParallelGateway'});
-      } else if (dataAction === 'create.exclusiveGateway') {
-        shape = elementFactory.createShape({type: 'bpmn:ExclusiveGateway'});
-      } else if (dataAction === 'create.inclusiveGateway') {
-        shape = elementFactory.createShape({type: 'bpmn:InclusiveGateway'});
+      let bpmnType;
+      if (dataAction === 'create.user-task') {
+        bpmnType = 'bpmn:UserTask';
+      } else if (dataAction === 'create.service-task') {
+        bpmnType = 'bpmn:ServiceTask';
+      } else if (dataAction === 'create.parallel-gateway') {
+        bpmnType = 'bpmn:ParallelGateway';
+      } else if (dataAction === 'create.xor-gateway') {
+        bpmnType = 'bpmn:ExclusiveGateway';
+      } else if (dataAction === 'create.inclusive-gateway') {
+        bpmnType = 'bpmn:InclusiveGateway';
+      }
+      const shape = elementFactory.createShape({type: bpmnType});
+      if (BpmnConfig.asyncTypes.includes(bpmnType)) {
+        shape.businessObject.$attrs['activiti:async'] = true;
       }
       create.start(event, shape);
     }
 
     function createStatusAuto(event) {
       const businessObject = bpmnFactory.create('bpmn:ServiceTask');
-      businessObject['name'] = '状态机';
+      businessObject['name'] = '设置状态';
       businessObject.$attrs['activiti:class'] = BpmnConfig.statusAutoClass;
       const shape = elementFactory.createShape({type: 'bpmn:ServiceTask', businessObject});
       create.start(event, shape);
     }
+
+    function createIntermediateCatchEvent(event) {
+      const timerEvent = bpmnFactory.create('bpmn:TimerEventDefinition');
+      const businessObject = bpmnFactory.create('bpmn:IntermediateCatchEvent');
+      businessObject.eventDefinitions = [timerEvent];
+      const shape = elementFactory.createShape({type: 'bpmn:IntermediateCatchEvent', businessObject});
+      timerEvent.$parent = shape;
+      create.start(event, shape);
+    }
+
     return {
       'create.user-task': {
         group: 'activity', className: 'bpmn-icon-user-task', title: translate('Create UserTask'),
-        action: {dragstart: createUserTask, click: createUserTask}
+        action: {dragstart: createNode, click: createNode}
       },
       'create.service-task': {
         group: 'activity', className: 'bpmn-icon-service-task', title: translate('Create ServiceTask'),
-        action: {dragstart: createServiceTask, click: createServiceTask}
+        action: {dragstart: createNode, click: createNode}
       },
-      'create.parallelGateway': {
+      'create.parallel-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-parallel', title: translate('Create Parallel Gateway'),
-        action: {dragstart: createGateway, click: createGateway}
+        action: {dragstart: createNode, click: createNode}
       },
-      'create.exclusiveGateway': {
+      'create.xor-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-xor', title: translate('Create Exclusive Gateway'),
-        action: {dragstart: createGateway, click: createGateway}
+        action: {dragstart: createNode, click: createNode}
       },
-      'create.inclusiveGateway': {
+      'create.inclusive-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-or', title: translate('Create Inclusive Gateway'),
-        action: {dragstart: createGateway, click: createGateway}
+        action: {dragstart: createNode, click: createNode}
       },
-      'create.statusAuto': {
-        group: 'activity', className: 'bpmn-icon-service-task bpmn-icon-red', title: translate('状态自动机'),
+      'create.status-auto': {
+        group: 'activity', className: 'icon-custom icon-custom-status-auto', title: translate('Create Status Auto'),
         action: {dragstart: createStatusAuto, click: createStatusAuto}
+      },
+      'create.intermediate-event-catch-timer': {
+        group: 'activity', className: 'bpmn-icon-intermediate-event-catch-timer', title: translate('Create Timer'),
+        action: {dragstart: createIntermediateCatchEvent, click: createIntermediateCatchEvent}
       }
     }
   }
-
 }
 CustomPalette.$inject = [
   'bpmnFactory',

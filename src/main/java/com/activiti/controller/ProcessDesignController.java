@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/workflow")
@@ -48,14 +46,19 @@ public class ProcessDesignController {
 	public List<Model> listModel() {
 		return processDesignService.listModel();
 	}
+
 	@RequestMapping(value = "/model/status", method = RequestMethod.GET)
 	public JSONArray lisStatus() {
-		JSONArray template = new JSONArray();
-		template.add("OPEN");
-		template.add("CLOSE");
-		template.add("WORK");
-		template.add("INWORK");
-		return template;
+		String[] status = {"OPEN", "CLOSE", "WORK", "INWORK"};
+		JSONArray result = new JSONArray();
+		Arrays.stream(status).forEach(state -> {
+			Map<String, String> data = new HashMap<>(2);
+			data.put("code", state.toLowerCase());
+			data.put("name", state);
+			result.add(data);
+		});
+
+		return result;
 	}
 
 	@RequestMapping(value = "/model/template", method = RequestMethod.GET)
@@ -183,9 +186,10 @@ public class ProcessDesignController {
 		local.put("enterDescription", "请输入工作流描述");
 		local.put("operator", "操作者");
 		local.put("threshold", "阈值");
-        local.put("condition", "条件");
-        local.put("specificState", "特定状态");
-
+		local.put("condition", "条件");
+		local.put("specificState", "特定状态");
+		local.put("vote", "路由");
+		local.put("isPriority", "是否优先");
 
 
 		Map<String, Object> language = new HashMap<>(15);
@@ -209,6 +213,16 @@ public class ProcessDesignController {
 		language.put("Create Parallel Gateway", "创建并行网关");
 		language.put("Create Exclusive Gateway", "创建互斥网关");
 		language.put("Create Inclusive Gateway", "创建相容网关");
+		language.put("Create Status Auto", "创建状态自动机");
+		language.put("Create Timer", "创建定时器");
+
+
+		language.put("Append End Event", "追加结束事件");
+		language.put("Append User Task", "追加用户任务");
+		language.put("Append Service Task", "追加服务任务");
+		language.put("Append Exclusive Gateway", "追加互斥网关");
+		language.put("Connect", "连接");
+		language.put("Remove", "移除");
 
 		local.put("language", language);
 

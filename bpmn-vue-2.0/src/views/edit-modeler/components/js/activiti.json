@@ -207,6 +207,19 @@
       ]
     },
     {
+      "name": "VoteSelect",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "votes",
+          "isMany": true,
+          "type": "Vote"
+        }
+      ]
+    },
+    {
       "name": "Threshold",
       "superClass": [
         "Element"
@@ -231,8 +244,8 @@
           "type": "String"
         },
         {
-          "name": "value",
-          "isBody": true,
+          "name": "string",
+          "isBody": false,
           "type": "String"
         }
       ]
@@ -343,6 +356,26 @@
           "name": "type",
           "isAttr": true,
           "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Vote",
+      "properties": [
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "priority",
+          "isAttr": true,
+          "type": "Boolean"
         }
       ]
     }

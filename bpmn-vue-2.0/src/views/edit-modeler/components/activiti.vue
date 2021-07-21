@@ -32,6 +32,7 @@
   import NameProperties from "./bpmn-properties/NameProperties";
   import SequenceProperties from "./bpmn-properties/SequenceProperties";
   import InclusiveGatewayProperties from "./bpmn-properties/InclusiveGatewayProperties";
+  import IntermediateCatchEventProperties from "./bpmn-properties/IntermediateCatchEventProperties";
 
   export default {
     name: "",
@@ -42,12 +43,8 @@
       },
     },
     components: {
-      ProcessProperties,
-      UserTaskProperties,
-      ServiceTaskProperties,
-      NameProperties,
-      SequenceProperties,
-      InclusiveGatewayProperties
+      ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties, SequenceProperties,
+      InclusiveGatewayProperties, IntermediateCatchEventProperties
     },
     computed: {
       downloadShow() {
@@ -246,7 +243,7 @@
           if (that.element.type === 'bpmn:Process') {
             that.propsComponent = 'ProcessProperties'
           } else if (that.element.type === 'bpmn:UserTask') {
-            that.propsComponent = 'UserTaskProperties'
+            that.propsComponent = 'UserTaskProperties';
           } else if (that.element.type === 'bpmn:ServiceTask') {
             that.propsComponent = 'ServiceTaskProperties'
           } else if (that.element.type === 'bpmn:StartEvent' || that.element.type === 'bpmn:EndEvent') {
@@ -255,6 +252,8 @@
             that.propsComponent = 'SequenceProperties'
           } else if (that.element.type === 'bpmn:InclusiveGateway') {
             this.propsComponent = 'InclusiveGatewayProperties';
+          } else if (that.element.type === 'bpmn:IntermediateCatchEvent') {
+            this.propsComponent = 'IntermediateCatchEventProperties';
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
@@ -275,6 +274,8 @@
             that.propsComponent = 'UserTaskProperties';
           } else if (type === 'bpmn:InclusiveGateway') {
             that.propsComponent = 'InclusiveGatewayProperties';
+          } else if (type === 'bpmn:IntermediateCatchEvent') {
+            that.propsComponent = 'IntermediateCatchEventProperties';
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
@@ -287,7 +288,7 @@
         // region 节点移除
         that.bpmnModeler.on('connection.removed', event => {
           //移除该节点关联的转变
-          BpmnFunction.deleteTaskListener(that.bpmnParams, event.element.id);
+          BpmnFunction.deleteSequence(that.bpmnParams, event.element.id);
           //移除节点时将元素从 bpmnParams 中移除
           that.removedElement(event);
         });
@@ -372,7 +373,25 @@
 
 </style>
 <style>
-  .bpmn-icon-red:before {
-    color: #cc0026;
+  .icon-custom {
+    border-radius: 50%;
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .icon-custom-status-auto:before{
+    content: url('./js/util/set-status.svg');
+  }
+  [class^="icon-custom-"]:before, [class*=" icon-custom-"]:before {
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
   }
 </style>

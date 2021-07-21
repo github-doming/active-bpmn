@@ -198,147 +198,31 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '</bpmn2:definitions>\nd';
 
 const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
-    '  <bpmn2:process id="Process_1" name="测试" isExecutable="true">\n' +
+    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
+    '  <bpmn2:process id="Process_1" name="234" isExecutable="true">\n' +
     '    <bpmn2:extensionElements />\n' +
-    '    <bpmn2:startEvent id="StartEvent_1u4mc14" name="开始">\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0zw16yb</bpmn2:outgoing>\n' +
-    '    </bpmn2:startEvent>\n' +
-    '    <bpmn2:serviceTask id="ServiceTask_0dozaxk" name="123" activiti:class="456">\n' +
+    '    <bpmn2:serviceTask id="ServiceTask_01w5qhm" name="CLOSE" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener">\n' +
     '      <bpmn2:extensionElements>\n' +
-    '        <activiti:field name="stateKey" />\n' +
+    '        <activiti:field name="stateKey">\n' +
+    '          <activiti:string>close</activiti:string>\n' +
+    '        </activiti:field>\n' +
     '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_0zw16yb</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1jp71uw</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0tvlci9</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1akyez5</bpmn2:outgoing>\n' +
     '    </bpmn2:serviceTask>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0zw16yb" sourceRef="StartEvent_1u4mc14" targetRef="ServiceTask_0dozaxk" />\n' +
-    '    <bpmn2:serviceTask id="ServiceTask_1qq1ulg" name="状态机" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:field name="stateKey">WORK</activiti:field>\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1eztbxf</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1dgabkw</bpmn2:outgoing>\n' +
-    '    </bpmn2:serviceTask>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1jp71uw" sourceRef="ServiceTask_0dozaxk" targetRef="InclusiveGateway_0tqrse9" />\n' +
-    '    <bpmn2:inclusiveGateway id="InclusiveGateway_0tqrse9">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:threshold />\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1jp71uw</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1eztbxf</bpmn2:outgoing>\n' +
-    '    </bpmn2:inclusiveGateway>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1eztbxf" sourceRef="InclusiveGateway_0tqrse9" targetRef="ServiceTask_1qq1ulg" />\n' +
-    '    <bpmn2:parallelGateway id="ParallelGateway_199simd">\n' +
-    '      <bpmn2:incoming>SequenceFlow_0tvlci9</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1fqhuf1</bpmn2:outgoing>\n' +
-    '    </bpmn2:parallelGateway>\n' +
-    '    <bpmn2:exclusiveGateway id="ExclusiveGateway_0nn29lx">\n' +
-    '      <bpmn2:incoming>SequenceFlow_1akyez5</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1kggk3i</bpmn2:outgoing>\n' +
-    '    </bpmn2:exclusiveGateway>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0tvlci9" sourceRef="ServiceTask_0dozaxk" targetRef="ParallelGateway_199simd" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1akyez5" sourceRef="ServiceTask_0dozaxk" targetRef="ExclusiveGateway_0nn29lx" />\n' +
-    '    <bpmn2:userTask id="UserTask_1j2coy1" name="测试">\n' +
-    '      <bpmn2:extensionElements>\n' +
-    '        <activiti:formTemplate />\n' +
-    '        <activiti:participant>\n' +
-    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_role_id" />\n' +
-    '        </activiti:participant>\n' +
-    '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1fqhuf1</bpmn2:incoming>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1kggk3i</bpmn2:incoming>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1dgabkw</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1ofjefw</bpmn2:outgoing>\n' +
-    '    </bpmn2:userTask>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1fqhuf1" sourceRef="ParallelGateway_199simd" targetRef="UserTask_1j2coy1" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1kggk3i" sourceRef="ExclusiveGateway_0nn29lx" targetRef="UserTask_1j2coy1" />\n' +
-    '    <bpmn2:endEvent id="EndEvent_192jngx" name="结束">\n' +
-    '      <bpmn2:incoming>SequenceFlow_1ofjefw</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1ofjefw" sourceRef="UserTask_1j2coy1" targetRef="EndEvent_192jngx" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1dgabkw" sourceRef="ServiceTask_1qq1ulg" targetRef="UserTask_1j2coy1" />\n' +
     '  </bpmn2:process>\n' +
     '  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
     '    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
-    '      <bpmndi:BPMNShape id="StartEvent_1u4mc14_di" bpmnElement="StartEvent_1u4mc14">\n' +
-    '        <dc:Bounds x="312" y="156" width="36" height="36" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="319" y="195" width="22" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
+    '      <bpmndi:BPMNShape id="ServiceTask_01w5qhm_di" bpmnElement="ServiceTask_01w5qhm">\n' +
+    '        <dc:Bounds x="506" y="206" width="48" height="48" />\n' +
     '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="ServiceTask_0dozaxk_di" bpmnElement="ServiceTask_0dozaxk">\n' +
-    '        <dc:Bounds x="400" y="150" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0zw16yb_di" bpmnElement="SequenceFlow_0zw16yb">\n' +
-    '        <di:waypoint x="348" y="174" />\n' +
-    '        <di:waypoint x="400" y="174" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="ServiceTask_1qq1ulg_di" bpmnElement="ServiceTask_1qq1ulg">\n' +
-    '        <dc:Bounds x="700" y="150" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1jp71uw_di" bpmnElement="SequenceFlow_1jp71uw">\n' +
-    '        <di:waypoint x="460" y="174" />\n' +
-    '        <di:waypoint x="545" y="174" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="InclusiveGateway_0tqrse9_di" bpmnElement="InclusiveGateway_0tqrse9">\n' +
-    '        <dc:Bounds x="545" y="149" width="50" height="50" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1eztbxf_di" bpmnElement="SequenceFlow_1eztbxf">\n' +
-    '        <di:waypoint x="595" y="174" />\n' +
-    '        <di:waypoint x="700" y="174" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="ParallelGateway_199simd_di" bpmnElement="ParallelGateway_199simd">\n' +
-    '        <dc:Bounds x="545" y="235" width="50" height="50" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="ExclusiveGateway_0nn29lx_di" bpmnElement="ExclusiveGateway_0nn29lx" isMarkerVisible="true">\n' +
-    '        <dc:Bounds x="545" y="325" width="50" height="50" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0tvlci9_di" bpmnElement="SequenceFlow_0tvlci9">\n' +
-    '        <di:waypoint x="430" y="198" />\n' +
-    '        <di:waypoint x="430" y="260" />\n' +
-    '        <di:waypoint x="545" y="260" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1akyez5_di" bpmnElement="SequenceFlow_1akyez5">\n' +
-    '        <di:waypoint x="430" y="198" />\n' +
-    '        <di:waypoint x="430" y="350" />\n' +
-    '        <di:waypoint x="545" y="350" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="UserTask_1j2coy1_di" bpmnElement="UserTask_1j2coy1">\n' +
-    '        <dc:Bounds x="700" y="236" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1fqhuf1_di" bpmnElement="SequenceFlow_1fqhuf1">\n' +
-    '        <di:waypoint x="595" y="260" />\n' +
-    '        <di:waypoint x="700" y="260" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1kggk3i_di" bpmnElement="SequenceFlow_1kggk3i">\n' +
-    '        <di:waypoint x="595" y="350" />\n' +
-    '        <di:waypoint x="730" y="350" />\n' +
-    '        <di:waypoint x="730" y="284" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="EndEvent_192jngx_di" bpmnElement="EndEvent_192jngx">\n' +
-    '        <dc:Bounds x="872" y="242" width="36" height="36" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="879" y="281" width="22" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1ofjefw_di" bpmnElement="SequenceFlow_1ofjefw">\n' +
-    '        <di:waypoint x="760" y="260" />\n' +
-    '        <di:waypoint x="872" y="260" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1dgabkw_di" bpmnElement="SequenceFlow_1dgabkw">\n' +
-    '        <di:waypoint x="730" y="198" />\n' +
-    '        <di:waypoint x="730" y="236" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
     '</bpmn2:definitions>';
 // endregion
 
 export const BpmnConfig = {
-  statusAutoClass:'com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener',
-  analyzeTypes:['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:InclusiveGateway']
+  statusAutoClass: 'com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener',
+  analyzeTypes: ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:InclusiveGateway', 'bpmn:IntermediateCatchEvent'],
+  asyncTypes: ['bpmn:UserTask', 'bpmn:ServiceTask'],
 };
 
 export const BpmnTag = {
@@ -347,11 +231,13 @@ export const BpmnTag = {
   roleSet: 'activiti:RoleSet',
   taskListener: 'activiti:TaskListener',
   participant: 'activiti:Participant',
-
+  voteSelect: 'activiti:VoteSelect',
   assign: 'activiti:Assign',
   group: 'activiti:Group',
   role: 'activiti:Role',
   repository: 'activiti:Repository',
+  vote: 'activiti:Vote',
+
   threshold: 'activiti:Threshold',
   field: 'activiti:Field',
 
@@ -469,7 +355,7 @@ export const BpmnFunction = {
     tag.$parent = parent;
     return tag
   },
-  deleteTaskListener(bpmnParams, elementId) {
+  deleteSequence(bpmnParams, elementId) {
     for (let key of Object.keys(bpmnParams)) {
       const type = bpmnParams[key].$type;
       if (!type || type !== 'bpmn:UserTask') {
@@ -477,6 +363,11 @@ export const BpmnFunction = {
       }
       let values = bpmnParams[key].extensionElements.get('values');
       values = values.filter(element => !(element['$type'] === BpmnTag.taskListener && element['event'] === elementId));
+      values.forEach(value=>{
+        if (value['$type'] === BpmnTag.voteSelect){
+          value.votes = value.votes.filter(element => !(element['$type'] === BpmnTag.vote && element['id'] === elementId));
+        }
+      });
       bpmnParams[key].extensionElements.set('values', values);
     }
   },

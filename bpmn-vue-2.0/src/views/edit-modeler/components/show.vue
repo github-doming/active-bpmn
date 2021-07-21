@@ -21,6 +21,8 @@
   import InclusiveGatewayProperties from "./bpmn-show/InclusiveGatewayProperties";
   import CustomModdle from "./js/activiti";
   import {BpmnConfig} from "./js/BpmnHelper";
+  import CustomControls from "./js/customControls";
+  import CustomTranslate from "./js/customTranslate";
 
   export default {
     name: "show",
@@ -153,13 +155,6 @@
       adjustViewer() {
         const canvas = this.$refs.canvas;
         canvas.children[0].removeChild(canvas.children[0].children[0]);
-
-        let bpmnCanvas = this.bpmnModeler.get('canvas');
-        this.bpmnModeler.get('elementRegistry').forEach(element => {
-          if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
-            bpmnCanvas.addMarker(element.id, 'status-auto');
-          }
-        });
       },
       // endregion
 
@@ -228,12 +223,5 @@
     margin: 0 0 0;
   }
 
-
-</style>
-<style>
-  /*状态自动机节点样式*/
-  .status-auto .djs-visual > :nth-child(1) {
-    fill: #fc7b07 !important;
-  }
 
 </style>

@@ -39,7 +39,7 @@
       updateGeneral(newVal) {
         this.modeler.get('modeling').updateProperties(this.element, newVal);
         if (!newVal.name) {
-          BpmnFunction.deleteTaskListener(this.params, this.element.id);
+          BpmnFunction.deleteSequence(this.params, this.element.id);
         }
       },
       updateCondition(condition) {

@@ -17,9 +17,12 @@
         <resource-library :roleSets="roleSetInfos" @updateRepository="updateRepository"/>
       </a-tab-pane>
       <a-tab-pane key="taskListener" :tab="local.taskListener">
-        <task-listener :transform="transform" :taskListeners="taskListeners"
-                       @updateTaskListener="updateTaskListener"/>
+        <task-listener :transform="transform" :taskListeners="taskListeners" @updateTaskListener="updateTaskListener"/>
       </a-tab-pane>
+      <a-tab-pane key="voteSelect" :tab="local.vote">
+        <vote-select :voteSelect="voteSelect()" />
+      </a-tab-pane>
+
     </a-tabs>
   </div>
 </template>
@@ -33,10 +36,11 @@
   import ResourceLibrary from "./tab/ResourceLibrary";
   import TaskListener from "./tab/TaskListener";
   import GeneralUserTask from "./tab/GeneralUserTask";
+  import VoteSelect from "./tab/VoteSelect";
 
   export default {
     name: "UserTaskProperties",
-    components: {GeneralUserTask, TaskListener, ResourceLibrary, Participant, RoleSet, Variable},
+    components: {VoteSelect, GeneralUserTask, TaskListener, ResourceLibrary, Participant, RoleSet, Variable},
     props: {
       modeler: {
         type: Object,
@@ -62,13 +66,20 @@
       roleSetInfos() {
         return this.extensionValues.filter(element => element['$type'] === BpmnTag.roleSet);
       },
+      outgoings() {
+        const outgoings = [];
+        this.element.outgoing.forEach(element => {
+          if (element.businessObject.name) {
+            outgoings.push({id: element.businessObject.id, name: element.businessObject.name});
+          }
+        });
+        return outgoings;
+      },
       transform() {
         let transform = [{code: 'taskCreate', name: this.local.create},
           {code: 'assignment', name: this.local.assignment}, {code: 'complete', name: this.local.complete},];
-        this.element.outgoing.forEach(element => {
-          if (element.businessObject.name) {
-            transform.push({code: element.businessObject.id, name: element.businessObject.name});
-          }
+        this.outgoings.forEach(element => {
+          transform.push({code: element.id, name: element.name});
         });
         return transform;
       },
@@ -153,6 +164,31 @@
           this.extensionValues.push(activity);
         }
         return activity;
+      },
+      voteSelect() {
+        const that = this;
+        let data;
+        const voteSelects = this.extensionValues.filter(element => element['$type'] === BpmnTag.voteSelect);
+        if (voteSelects && voteSelects.length > 0) {
+          data = voteSelects[0];
+        }else {
+          data = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.voteSelect);
+          data.votes = [];
+          this.extensionValues.push(data);
+        }
+        this.outgoings.forEach(element => {
+          const votes = data.votes;
+          for (let i = 0; i < votes.length; i++) {
+            if (element.id === votes[i].id) {
+              votes[i].name = element.name;
+              return;
+            }
+          }
+          let vote = BpmnFunction.createElementTag(that.modeler, data, BpmnTag.vote);
+          Object.assign(vote, {name: element.name, id: element.id, priority: false});
+          data.votes.push(vote);
+        });
+        return data;
       },
       updateGeneral: BpmnMethod.updateGeneral(),
       updateVariable: BpmnMethod.updateVariable(),

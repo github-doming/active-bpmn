@@ -11,7 +11,9 @@
     "bpmn-js": "^5.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "qs": "^6.9.3"
+    "qs": "^6.9.3",
+    "vuedraggable": "^2.24.3",
+    "diagram-js": "^6.8.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-router": "~4.5.0",

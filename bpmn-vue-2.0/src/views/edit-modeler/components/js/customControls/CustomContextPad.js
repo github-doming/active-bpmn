@@ -1,7 +1,7 @@
-import {assign} from 'min-dash';
+import {BpmnConfig} from "../BpmnHelper";
 
-const BpmnType = ['bpmn:UserTask', 'bpmn:CallActivity', 'bpmn:ServiceTask','bpmn:StartEvent',
-  'bpmn:ExclusiveGateway', 'bpmn:InclusiveGateway', 'bpmn:ParallelGateway'];
+const contextPadTypes = ['bpmn:UserTask', 'bpmn:CallActivity', 'bpmn:ServiceTask', 'bpmn:StartEvent',
+  'bpmn:ExclusiveGateway', 'bpmn:InclusiveGateway', 'bpmn:ParallelGateway', 'bpmn:IntermediateCatchEvent'];
 
 export default class CustomContextPad {
   constructor(config, contextPad, create, elementFactory, injector, translate, modeling, connect) {
@@ -29,56 +29,31 @@ export default class CustomContextPad {
     } = this;
 
 
-    function appendAction(type, className, title, options) {
+    function appendAction(type, className, group, title, options) {
       if (typeof title !== 'string') {
         options = title;
         title = translate('Append {type}', {type: type.replace(/^bpmn:/, '')});
       }
 
       function appendStart(event, element) {
-        let shape = elementFactory.createShape(assign({type: type}, options));
+        let shape = elementFactory.createShape(Object.assign({type: type}, options));
         create.start(event, shape, {
           source: element
         })
       }
 
       let append = autoPlace ? (event, element) => {
-        let shape = elementFactory.createShape(assign({type: type}, options));
+        let shape = elementFactory.createShape(Object.assign({type: type}, options));
+        if (BpmnConfig.asyncTypes.includes(type)){
+          shape.businessObject.$attrs['activiti:async'] = true;
+        }
         autoPlace.append(element, shape)
       } : appendStart;
 
       return {
-        group: 'model', className: className, title: title,
+        group: group, className: className, title: title,
         action: {dragstart: appendStart, click: append}
       }
-    }
-
-    function appendUserTask(event, element) {
-      if (autoPlace) {
-        const shape = elementFactory.createShape({type: 'bpmn:UserTask'});
-        autoPlace.append(element, shape)
-      } else {
-        appendUserTaskStart(event, element)
-      }
-    }
-
-    function appendUserTaskStart(event) {
-      const shape = elementFactory.createShape({type: 'bpmn:UserTask'});
-      create.start(event, shape, element)
-    }
-
-    function appendServiceTask(event, element) {
-      if (autoPlace) {
-        const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
-        autoPlace.append(element, shape)
-      } else {
-        appendServiceTaskStart(event, element)
-      }
-    }
-
-    function appendServiceTaskStart(event) {
-      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
-      create.start(event, shape, element)
     }
 
     function startConnect(event, element) {
@@ -96,21 +71,15 @@ export default class CustomContextPad {
     if (element.type === 'label') {
       return actions
     }
-    if (BpmnType.includes(element.type)) {
+    if (contextPadTypes.includes(element.type)) {
       actions = {
-        'append.end-event': appendAction('bpmn:EndEvent', 'bpmn-icon-end-event-none', translate('Append EndEvent')),
-        'append.gateway': appendAction('bpmn:ExclusiveGateway', 'bpmn-icon-gateway-xor', translate('Exclusive Gateway')),
-        'append.user-task': {
-          group: 'model', className: 'bpmn-icon-user-task', title: translate('Append') + ' ' + translate('UserTask'),
-          action: {click: appendUserTask, dragstart: appendUserTaskStart}
-        },
-        'append.service-task': {
-          group: 'model', className: 'bpmn-icon-service-task', title: translate('Append') + ' ' + translate('ServiceTask'),
-          action: {click: appendServiceTask, dragstart: appendServiceTaskStart}
-        },
-        'connect': {
-          group: 'connect', className: 'bpmn-icon-connection-multi',
-          title: translate('Connect using DataInputAssociation'),
+        'append.end-event': appendAction('bpmn:EndEvent', 'bpmn-icon-end-event-none', 'event', translate('Append End Event')),
+        'append.exclusive-gateway': appendAction('bpmn:ExclusiveGateway', 'bpmn-icon-gateway-xor', 'event', translate('Append Exclusive Gateway')),
+        'append.user-task': appendAction('bpmn:UserTask', 'bpmn-icon-user-task', 'model', translate('Append User Task')),
+        'append.service-task': appendAction('bpmn:ServiceTask', 'bpmn-icon-service-task', 'model', translate('Append Service Task')),
+        'append.connect': {
+          group: 'edit', className: 'bpmn-icon-connection-multi',
+          title: translate('Connect'),
           action: {click: startConnect, dragstart: startConnect}
         }
       };
@@ -119,7 +88,7 @@ export default class CustomContextPad {
     }
 
     // 所有节点都有删除
-    assign(actions, {
+    Object.assign(actions, {
       'delete': {
         group: 'edit', className: 'bpmn-icon-trash', title: translate('Remove'),
         action: {click: removeElement}

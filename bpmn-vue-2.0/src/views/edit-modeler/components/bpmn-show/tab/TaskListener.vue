@@ -52,9 +52,6 @@
         local:JSON.parse(localStorage.getItem('activeLocal')), activeCode: '',
       }
     },
-		created() {
-      console.log(this.transform);
-    },
     computed: {
       listeners() {
         let listeners = [];

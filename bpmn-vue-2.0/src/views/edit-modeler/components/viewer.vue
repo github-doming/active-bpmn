@@ -66,6 +66,7 @@
         runningKeys: [],
         ranKeys: [],
         terminatedKeys: [],
+        abortedKeys:[],
         processKey: '',
         element: null,
         showAttribute: true,
@@ -163,18 +164,19 @@
         this.terminatedKeys.forEach(key => {
           canvas.addMarker(key, 'terminated');
         });
+        this.abortedKeys.forEach(key => {
+          canvas.addMarker(key, 'aborted');
+        });
       },
       adjustViewer() {
         const canvas = this.$refs.canvas;
         canvas.children[0].removeChild(canvas.children[0].children[0]);
-
-        let bpmnCanvas = this.bpmnModeler.get('canvas');
-        this.bpmnModeler.get('elementRegistry').forEach(element => {
-          if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
-            bpmnCanvas.addMarker(element.id, 'status-auto');
-           // console.log(element);
-          }
-        });
+        // let bpmnCanvas = this.bpmnModeler.get('canvas');
+        // this.bpmnModeler.get('elementRegistry').forEach(element => {
+        //   if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
+        //     bpmnCanvas.addMarker(element.id, 'status-auto');
+        //   }
+        // });
       },
 
     }
@@ -250,10 +252,13 @@
   .terminated .djs-visual > :nth-child(1) {
     fill: #fcfa3a !important;
   }
-
-  /*状态自动机节点样式*/
-  .status-auto .djs-visual > :nth-child(1) {
-    fill: #fc7b07 !important;
+  /*已终止的任务节点样式*/
+  .aborted .djs-visual > :nth-child(1) {
+    fill: #fc000d !important;
   }
+  /*状态自动机节点样式*/
+  /*.status-auto .djs-visual > :nth-child(1) {*/
+  /*  fill: #fc7b07 !important;*/
+  /*}*/
 
 </style>
