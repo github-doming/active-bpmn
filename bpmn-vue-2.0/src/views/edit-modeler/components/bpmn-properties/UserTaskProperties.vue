@@ -20,7 +20,7 @@
         <task-listener :transform="transform" :taskListeners="taskListeners" @updateTaskListener="updateTaskListener"/>
       </a-tab-pane>
       <a-tab-pane key="voteSelect" :tab="local.vote">
-        <vote-select :voteSelect="voteSelect()" />
+        <vote-select :voteSelect="voteSelect()"/>
       </a-tab-pane>
 
     </a-tabs>
@@ -171,7 +171,7 @@
         const voteSelects = this.extensionValues.filter(element => element['$type'] === BpmnTag.voteSelect);
         if (voteSelects && voteSelects.length > 0) {
           data = voteSelects[0];
-        }else {
+        } else {
           data = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.voteSelect);
           data.votes = [];
           this.extensionValues.push(data);
@@ -185,7 +185,7 @@
             }
           }
           let vote = BpmnFunction.createElementTag(that.modeler, data, BpmnTag.vote);
-          Object.assign(vote, {name: element.name, id: element.id, priority: false});
+          Object.assign(vote, {name: element.name, id: element.id, priority: 1});
           data.votes.push(vote);
         });
         return data;

@@ -15,7 +15,11 @@
               @click="transformSelect(item)">
             <td>{{item.name}}</td>
             <td>
-              <a-checkbox v-model:checked="item.priority">{{local.isPriority}}</a-checkbox>
+              <a-select v-model:value="item.priority" :placeholder="local.isPriority">
+                <a-select-option v-for="i in votes.length" :key="i">
+                  {{ i }}
+                </a-select-option>
+              </a-select>
             </td>
           </tr>
           </tbody>
@@ -86,8 +90,8 @@
           votesCopy[i] = this.votes[i];
           if (this.votes[i].id === this.activeId) {
             if (i !== len - 1) {
-              votesCopy[i] = this.votes[i+1];
-              votesCopy[i+1] = this.votes[i];
+              votesCopy[i] = this.votes[i + 1];
+              votesCopy[i + 1] = this.votes[i];
               i++;
             }
           }

@@ -189,7 +189,7 @@ public class ProcessDesignController {
 		local.put("condition", "条件");
 		local.put("specificState", "特定状态");
 		local.put("vote", "路由");
-		local.put("isPriority", "是否优先");
+		local.put("isPriority", "抢先优先级");
 
 
 		Map<String, Object> language = new HashMap<>(15);
