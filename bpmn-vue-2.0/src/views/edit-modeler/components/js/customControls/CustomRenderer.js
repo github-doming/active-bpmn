@@ -29,9 +29,6 @@ export default class CustomRenderer extends BaseRenderer {
     if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
       return this.drawSetStatus(visuals,element);
     }
-    if (BpmnConfig.asyncTypes.includes(element.type)){
-      element.businessObject.$attrs['activiti:async'] = true;
-    }
     return this.bpmnRenderer.drawShape(visuals, element);
   }
 

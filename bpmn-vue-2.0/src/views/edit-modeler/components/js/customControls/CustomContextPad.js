@@ -44,9 +44,6 @@ export default class CustomContextPad {
 
       let append = autoPlace ? (event, element) => {
         let shape = elementFactory.createShape(Object.assign({type: type}, options));
-        if (BpmnConfig.asyncTypes.includes(type)){
-          shape.businessObject.$attrs['activiti:async'] = true;
-        }
         autoPlace.append(element, shape)
       } : appendStart;
 

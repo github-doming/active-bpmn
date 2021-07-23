@@ -5,7 +5,7 @@
         <a-input :placeholder="local.enterName" v-model="form.name" @change="updateProperty('name')"/>
       </a-form-model-item>
       <a-form-model-item :label="local.taskFormTemplate" prop="taskFormTemplate">
-        <a-select v-model="activity.taskFormTemplate" :placeholder="local.selectTemplate">
+        <a-select v-model="activity.taskFormTemplate" :placeholder="local.selectTemplate" :allow-clear="true">
           <a-select-option v-for="item in template" :key="item">
             {{item}}
           </a-select-option>
@@ -14,13 +14,16 @@
       <a-form-model-item :label="local.signingRequired" prop="signingRequired">
         <a-switch v-model="activity.signingRequired"/>
       </a-form-model-item>
-
+      <a-form-model-item :label="local.isAsync" prop="async">
+        <a-switch v-model="form.async" @change="updateAttrs('async')"/>
+      </a-form-model-item>
     </a-form-model>
   </div>
 </template>
 
 <script>
   const propertiesType = ['name'];
+  const propertiesMap = {async: 'activiti:async'};
   export default {
     name: "GeneralUserTask",
     props: {
@@ -35,18 +38,15 @@
     },
     watch: {
       param(newValue) {
-        const that = this;
-        propertiesType.forEach(type => that.form[type] = newValue[type]);
+        this.mapping(this.form, newValue);
       }
     },
     data() {
       const local = JSON.parse(localStorage.getItem('activeLocal'));
+      let form = {};
+      this.mapping(form, this.param);
       return {
-        local, template: JSON.parse(localStorage.getItem('activeTemplate')), form: {
-          name: this.param.name,
-          taskFormTemplate: this.param.taskFormTemplate,
-          signingRequired: this.param.signingRequired,
-        },
+        local, template: JSON.parse(localStorage.getItem('activeTemplate')), form,
         rules: {
           name: [
             {required: true, message: local.enterName, trigger: 'blur'}
@@ -56,8 +56,17 @@
     },
     methods: {
       updateProperty(type) {
-        this.$set(this.param, type, this.form[type]);
-        this.$emit('updateGeneral', this.form);
+        let properties = {};
+        properties[type] = this.form[type];
+        this.$emit('updateGeneral', properties);
+      },
+      updateAttrs(type) {
+        this.$set(this.param.$attrs, propertiesMap[type], this.form[type]);
+      },
+      mapping(form, param) {
+        Object.keys(propertiesMap).forEach(key => form[key] = param.$attrs[propertiesMap[key]] === 'true' ||
+            (param.$attrs[propertiesMap[key]] === 'false' ? false : param.$attrs[propertiesMap[key]]));
+        propertiesType.forEach(type => form[type] = param[type]);
       },
     },
   }

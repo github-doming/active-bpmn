@@ -19,6 +19,9 @@
       <a-tab-pane key="taskListener" :tab="local.taskListener">
         <task-listener :transform="transform" :taskListeners="taskListeners"></task-listener>
       </a-tab-pane>
+      <a-tab-pane key="voteSelect" :tab="local.vote">
+        <vote-select :voteSelect="voteSelect"/>
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -31,11 +34,12 @@
   import Participant from "./tab/Participant";
   import ResourceLibrary from "./tab/ResourceLibrary";
   import TaskListener from "./tab/TaskListener";
+  import VoteSelect from "./tab/VoteSelect";
   import {BpmnComputed, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
 
   export default {
     name: "UserTaskProperties",
-    components: {GeneralUserTask, Variable, RoleSet, Participant, ResourceLibrary, TaskListener},
+    components: {GeneralUserTask, Variable, RoleSet, Participant, ResourceLibrary, TaskListener, VoteSelect},
     props: {
       modeler: {
         type: Object,
@@ -94,6 +98,15 @@
         });
         return transform;
       },
+      voteSelect() {
+        const voteSelects = this.extensionValues.filter(element => element['$type'] === BpmnTag.voteSelect);
+        if (voteSelects && voteSelects.length > 0) {
+          return voteSelects[0];
+        } else {
+          return {votes: []};
+        }
+
+      },
     },
     data() {
       return {
@@ -108,7 +121,11 @@
       element(newValue) {
         this.activeTab = 'general';
         this.param = this.params[newValue.id];
-        this.extensionValues = this.getExtensionElements().get('values');
+        if (this.getExtensionElements()) {
+          this.extensionValues = this.getExtensionElements().get('values');
+        } else {
+          this.extensionValues = [];
+        }
       },
     },
     methods: {

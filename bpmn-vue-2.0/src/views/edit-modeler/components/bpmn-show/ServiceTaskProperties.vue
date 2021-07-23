@@ -55,7 +55,11 @@
       }
     },
     created() {
-      this.extensionValues = this.getExtensionElements().get('values');
+      if (this.getExtensionElements()) {
+        this.extensionValues = this.getExtensionElements().get('values');
+      } else {
+        this.extensionValues = [];
+      }
     },
     methods: {
       getExtensionElements: BpmnMethod.getExtensionElementsOnly(),

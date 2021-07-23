@@ -7,12 +7,15 @@
       <a-form-model-item :label="local.clazz" prop="class">
         <a-input :placeholder="local.enterClass" v-model="form.class" @change="updateAttrs('class')"/>
       </a-form-model-item>
+      <a-form-model-item :label="local.isAsync" prop="async">
+        <a-switch v-model="form.async" @change="updateAttrs('async')"/>
+      </a-form-model-item>
     </a-form-model>
   </div>
 </template>
 
 <script>
-  const propertiesMap = {class: 'activiti:class'};
+  const propertiesMap = {class: 'activiti:class', async: 'activiti:async'};
   const propertiesType = ['name'];
   export default {
     name: "GeneralServiceTask",
@@ -43,13 +46,14 @@
         this.$set(this.param, type, this.form[type]);
         let temp = {};
         temp[type] = this.form[type];
-        this.$emit('updateGeneral',temp);
+        this.$emit('updateGeneral', temp);
       },
       updateAttrs(type) {
         this.$set(this.param.$attrs, propertiesMap[type], this.form[type]);
       },
       mapping(form, param) {
-        Object.keys(propertiesMap).forEach(key => form[key] = param.$attrs[propertiesMap[key]]);
+        Object.keys(propertiesMap).forEach(key => form[key] = param.$attrs[propertiesMap[key]] === 'true' ||
+            (param.$attrs[propertiesMap[key]] === 'false' ? false : param.$attrs[propertiesMap[key]]));
         propertiesType.forEach(type => form[type] = param[type]);
       },
     },

@@ -32,9 +32,6 @@ export default class CustomPalette {
         bpmnType = 'bpmn:InclusiveGateway';
       }
       const shape = elementFactory.createShape({type: bpmnType});
-      if (BpmnConfig.asyncTypes.includes(bpmnType)) {
-        shape.businessObject.$attrs['activiti:async'] = true;
-      }
       create.start(event, shape);
     }
 

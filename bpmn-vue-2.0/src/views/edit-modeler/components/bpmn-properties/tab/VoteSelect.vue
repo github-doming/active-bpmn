@@ -15,8 +15,8 @@
               @click="transformSelect(item)">
             <td>{{item.name}}</td>
             <td>
-              <a-select v-model:value="item.priority" :placeholder="local.isPriority">
-                <a-select-option v-for="i in votes.length" :key="i">
+              <a-select v-model:value="item.priority" :placeholder="local.isPriority" @change="isLeaderPriority(item)">
+                <a-select-option v-for="i in votesLen" :key="i">
                   {{ i }}
                 </a-select-option>
               </a-select>
@@ -48,12 +48,19 @@
     watch: {
       voteSelect(newValue) {
         this.votes = newValue.votes;
+        this.leader = 0;
+        this.leaderId = null;
       },
+    },
+    computed: {
+      votesLen() {
+        return this.votes.length - this.leader;
+      }
     },
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
-        votes: [], activeId: null,
+        votes: [], activeId: null, leader: 0, leaderId: null,
       }
     },
     created() {
@@ -62,6 +69,14 @@
     methods: {
       transformSelect(item) {
         this.activeId = item.id;
+      },
+      isLeaderPriority(item) {
+        if (item.priority === this.votes.length) {
+          this.leader = 1;
+          this.leaderId = item.id;
+        } else if (this.leaderId === item.id) {
+          this.leader = 0;
+        }
       },
       upVote() {
         if (!this.activeId) {

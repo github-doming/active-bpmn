@@ -5,7 +5,10 @@
         <a-input v-model="form.name" read-only/>
       </a-form-model-item>
       <a-form-model-item :label="local.clazz" prop="class">
-        <a-input v-model="form['activiti:class']" read-only/>
+        <a-input v-model="form.class" read-only/>
+      </a-form-model-item>
+      <a-form-model-item :label="local.isAsync" prop="async">
+        <a-switch :checked="form.async"/>
       </a-form-model-item>
     </a-form-model>
   </div>
@@ -29,7 +32,11 @@
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
-        form: {name: this.param.name, 'activiti:class': this.param.$attrs['activiti:class']},
+        form: {
+          name: this.param.name,
+          class: this.param.$attrs['activiti:class'],
+          'async': Boolean(this.param.$attrs['activiti:async'])
+        },
       }
     },
   }

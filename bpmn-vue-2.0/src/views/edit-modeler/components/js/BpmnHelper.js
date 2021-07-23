@@ -254,22 +254,41 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '</bpmn2:definitions>\n';
 
 const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
+    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
     '  <bpmn2:process id="Process_1" name="234" isExecutable="true">\n' +
     '    <bpmn2:extensionElements />\n' +
-    '    <bpmn2:serviceTask id="ServiceTask_01w5qhm" name="CLOSE" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener">\n' +
+    '    <bpmn2:userTask id="UserTask_11yoeqw" name="12333" activiti:async="true">\n' +
     '      <bpmn2:extensionElements>\n' +
-    '        <activiti:field name="stateKey">\n' +
-    '          <activiti:string>close</activiti:string>\n' +
-    '        </activiti:field>\n' +
+    '        <activiti:formTemplate taskFormTemplate="Complete Change Notice Task" signingRequired="true" />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_role_id" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:voteSelect />\n' +
     '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:outgoing>SequenceFlow_11ms3dq</bpmn2:outgoing>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:serviceTask id="ServiceTask_0d492jl" name="123" activiti:async="false">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>SequenceFlow_11ms3dq</bpmn2:incoming>\n' +
     '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:sequenceFlow id="SequenceFlow_11ms3dq" sourceRef="UserTask_11yoeqw" targetRef="ServiceTask_0d492jl" />\n' +
     '  </bpmn2:process>\n' +
     '  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
     '    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
-    '      <bpmndi:BPMNShape id="ServiceTask_01w5qhm_di" bpmnElement="ServiceTask_01w5qhm">\n' +
-    '        <dc:Bounds x="506" y="206" width="48" height="48" />\n' +
+    '      <bpmndi:BPMNShape id="UserTask_11yoeqw_di" bpmnElement="UserTask_11yoeqw">\n' +
+    '        <dc:Bounds x="610" y="190" width="60" height="48" />\n' +
     '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="ServiceTask_0d492jl_di" bpmnElement="ServiceTask_0d492jl">\n' +
+    '        <dc:Bounds x="720" y="174" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNEdge id="SequenceFlow_11ms3dq_di" bpmnElement="SequenceFlow_11ms3dq">\n' +
+    '        <di:waypoint x="670" y="214" />\n' +
+    '        <di:waypoint x="700" y="214" />\n' +
+    '        <di:waypoint x="700" y="198" />\n' +
+    '        <di:waypoint x="720" y="198" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
     '</bpmn2:definitions>';
@@ -278,7 +297,6 @@ const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 export const BpmnConfig = {
   statusAutoClass: 'com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener',
   analyzeTypes: ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:InclusiveGateway', 'bpmn:IntermediateCatchEvent'],
-  asyncTypes: ['bpmn:UserTask', 'bpmn:ServiceTask'],
 };
 
 export const BpmnTag = {
@@ -420,7 +438,7 @@ export const BpmnFunction = {
       let values = bpmnParams[key].extensionElements.get('values');
       values = values.filter(element => !(element['$type'] === BpmnTag.taskListener && element['event'] === elementId));
       values.forEach(value=>{
-        if (value['$type'] === BpmnTag.voteSelect){
+        if (value['$type'] === BpmnTag.voteSelect && value.votes){
           value.votes = value.votes.filter(element => !(element['$type'] === BpmnTag.vote && element['id'] === elementId));
         }
       });

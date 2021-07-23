@@ -14,6 +14,9 @@
       <a-form-model-item :label="local.signingRequired">
         <a-switch :checked="activity.signingRequired"/>
       </a-form-model-item>
+      <a-form-model-item :label="local.isAsync" prop="async">
+        <a-switch :checked="form.async"/>
+      </a-form-model-item>
     </a-form-model>
   </div>
 </template>
@@ -35,13 +38,14 @@
       param(newValue) {
         console.log(newValue);
         this.form.name = newValue.name;
+        this.form.async = newValue.$attrs['activiti:async'];
       }
     },
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
         template: JSON.parse(localStorage.getItem('activeTemplate')),
-        form: {name: this.param.name,},
+        form: {name: this.param.name, 'async': Boolean(this.param.$attrs['activiti:async'])},
 
       }
     },

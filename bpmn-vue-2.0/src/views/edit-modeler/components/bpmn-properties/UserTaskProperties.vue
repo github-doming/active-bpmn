@@ -122,7 +122,7 @@
           let tagElement = BpmnFunction.createElementTag(that.modeler, participant, BpmnTag.role);
           participant.roles = [tagElement];
           Object.assign(tagElement, {
-            'id': 'operator_role_id', 'name': that.local.operator, 'roleCode': 'operator_code',
+            'id': 'operator_code', 'name': that.local.operator, 'roleCode': 'operator_code',
             'hover': false, 'type': 'role', 'need': 'ALL', 'number': ''
           });
           //2.添加之前节点的角色设置
@@ -135,7 +135,7 @@
             extensionElements.get('values').filter(item => item.$type === BpmnTag.participant).forEach(participant => {
               if (participant.roles) {
                 participant.roles.forEach(item => {
-                  if (item.id !== 'operator_role_id') {
+                  if (item.id !== 'operator_code') {
                     rolesOption[item.id] = {'name': item.name, 'id': item.id, 'code': item.roleCode, sourceRef: key};
                   }
                 })
