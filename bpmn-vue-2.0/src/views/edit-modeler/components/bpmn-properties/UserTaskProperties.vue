@@ -173,8 +173,10 @@
           data = voteSelects[0];
         } else {
           data = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.voteSelect);
-          data.votes = [];
           this.extensionValues.push(data);
+        }
+        if (!data.votes){
+          data.votes = [];
         }
         this.outgoings.forEach(element => {
           const votes = data.votes;
