@@ -203,6 +203,16 @@
           "name": "class",
           "type": "String",
           "isAttr": true
+        },
+        {
+          "name": "field",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isAttr": true
         }
       ]
     },

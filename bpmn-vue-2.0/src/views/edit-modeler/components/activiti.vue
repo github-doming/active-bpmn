@@ -288,7 +288,7 @@
         // region 节点移除
         that.bpmnModeler.on('connection.removed', event => {
           //移除该节点关联的转变
-          BpmnFunction.deleteSequence(that.bpmnParams, event.element.id);
+          BpmnFunction.deleteSequence(event.element);
           //移除节点时将元素从 bpmnParams 中移除
           that.removedElement(event);
         });

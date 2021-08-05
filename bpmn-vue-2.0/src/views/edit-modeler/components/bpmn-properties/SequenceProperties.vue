@@ -10,7 +10,7 @@
 
 <script>
   import GeneralSequence from "./tab/GeneralSequence";
-  import {BpmnFunction} from "../js/BpmnHelper";
+  import {BpmnFunction, BpmnTag} from "../js/BpmnHelper";
 
   export default {
     name: "SequenceProperties",
@@ -38,8 +38,46 @@
     methods: {
       updateGeneral(newVal) {
         this.modeler.get('modeling').updateProperties(this.element, newVal);
-        if (!newVal.name) {
-          BpmnFunction.deleteSequence(this.params, this.element.id);
+        if (newVal.name) {
+          const sequenceId = this.element.id;
+          const sourceElement = this.element.source;
+          if (sourceElement.type !== 'bpmn:UserTask') {
+            return;
+          }
+          let values = sourceElement.businessObject.extensionElements.get('values');
+          let voteState = 2;
+          let votesTemp;
+          values = values.forEach(value => {
+            if (value['$type'] === BpmnTag.taskListener && value.event === sequenceId) {
+              value.name = newVal.name;
+            }
+            if (value['$type'] === BpmnTag.voteSelect) {
+              voteState = 1;
+              votesTemp = value;
+              if (value.votes) {
+                value.votes.forEach(vote => {
+                  if (vote.id === sequenceId) {
+                    vote.name = newVal.name;
+                    voteState = 0;
+                  }
+                });
+              } else {
+                value.votes = [];
+              }
+
+            }
+          });
+          if (!votesTemp){
+            votesTemp = BpmnFunction.createElementTag(this.modeler, sourceElement.businessObject.extensionElements, BpmnTag.voteSelect);
+            values.push(votesTemp);
+          }
+          if (voteState >= 1) {
+            let vote = BpmnFunction.createElementTag(this.modeler, votesTemp, BpmnTag.vote);
+            Object.assign(vote, {name: newVal.name, id: sequenceId, priority: 1});
+            votesTemp.votes.push(vote);
+          }
+        } else {
+          BpmnFunction.deleteSequence(this.element);
         }
       },
       updateCondition(condition) {

@@ -236,14 +236,15 @@
       updateTaskListener(type, listenerData) {
         if ('add' === type) {
           let tagElement = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.taskListener);
-          tagElement.event = listenerData.event;
-          tagElement.class = listenerData.class;
+          for (let key of Object.keys(listenerData)){
+            tagElement[key] = listenerData[key];
+          }
           this.extensionValues.push(tagElement);
         } else if ('remove' === type) {
           for (let i = 0; i < this.extensionValues.length; i++) {
             let value = this.extensionValues[i];
             if (value['$type'] === BpmnTag.taskListener && value.event === listenerData.event) {
-              if ((listenerData.typeKey === 'class' && value.class === listenerData.value) || (listenerData.typeKey === 'field' && value.field === listenerData.value)) {
+              if (value[listenerData.typeKey] === listenerData.value) {
                 this.extensionValues.splice(i, 1);
                 return;
               }

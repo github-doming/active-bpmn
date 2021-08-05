@@ -137,6 +137,7 @@
           typeKey: "class",
           value: '',
         };
+        this.listenerId = '';
         this.listenerVisible = true;
       },
       updateData() {
@@ -168,7 +169,7 @@
             if (that.listenerItem.typeKey === 'class') {
               newVariable = {event: that.activeCode, class: that.listenerItem.value, name: that.activeName};
             } else if (that.listenerItem.typeKey === 'field') {
-              newVariable = {event: that.activeCode, field: that.listenerItem.value};
+              newVariable = {event: that.activeCode, field: that.listenerItem.value, name: that.activeName};
             }
             that.$emit('updateTaskListener', 'add', newVariable);
             if (that.listenerId) {
