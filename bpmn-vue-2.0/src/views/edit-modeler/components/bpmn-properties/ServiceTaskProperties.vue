@@ -2,8 +2,8 @@
   <div class="properties">
     <a-tabs type="card">
       <a-tab-pane key="general" :tab="local.general">
-        <general-service-task v-show="!statusAuto" :param="param" @updateGeneral="updateGeneral"/>
-        <general-service-task-status-auto v-show="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
+        <general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
+        <general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
       </a-tab-pane>
     </a-tabs>
   </div>
