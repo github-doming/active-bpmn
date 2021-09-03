@@ -38,20 +38,41 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '        <activiti:taskListener event="SequenceFlow_0bv6z76" class="123" name="测试" />\n' +
     '        <activiti:taskListener event="SequenceFlow_0bv6z76" class="12" name="测试" />\n' +
     '        <activiti:taskListener event="SequenceFlow_08c4gtq" class="555" name="测试重复" />\n' +
+    '        <activiti:roleSet id="1" name="zhangsan" code="审批者" view="false" add="false" remove="false" sourceRef="UserTask_1hulywu" />\n' +
+    '        <activiti:roleSet id="3" name="wangwu" code="终结者" view="false" add="false" remove="false" sourceRef="UserTask_1hulywu" />\n' +
+    '        <activiti:roleSet id="6" name="shuner" code="吃瓜群众" view="false" add="false" remove="false" sourceRef="UserTask_1hulywu" />\n' +
     '      </bpmn2:extensionElements>\n' +
     '      <bpmn2:incoming>SequenceFlow_1vrscp7</bpmn2:incoming>\n' +
     '      <bpmn2:outgoing>SequenceFlow_0bv6z76</bpmn2:outgoing>\n' +
     '      <bpmn2:outgoing>SequenceFlow_08c4gtq</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>SequenceFlow_0ccsebv</bpmn2:outgoing>\n' +
     '    </bpmn2:userTask>\n' +
     '    <bpmn2:sequenceFlow id="SequenceFlow_1vrscp7" sourceRef="StartEvent_150xhye" targetRef="UserTask_19969hx" />\n' +
     '    <bpmn2:endEvent id="EndEvent_01kz8pq" name="结束">\n' +
     '      <bpmn2:incoming>SequenceFlow_0bv6z76</bpmn2:incoming>\n' +
+    '      <bpmn2:incoming>SequenceFlow_04600cd</bpmn2:incoming>\n' +
     '    </bpmn2:endEvent>\n' +
     '    <bpmn2:sequenceFlow id="SequenceFlow_0bv6z76" name="测试" sourceRef="UserTask_19969hx" targetRef="EndEvent_01kz8pq" />\n' +
     '    <bpmn2:endEvent id="EndEvent_050257c" name="结束">\n' +
     '      <bpmn2:incoming>SequenceFlow_08c4gtq</bpmn2:incoming>\n' +
     '    </bpmn2:endEvent>\n' +
     '    <bpmn2:sequenceFlow id="SequenceFlow_08c4gtq" name="测试重复" sourceRef="UserTask_19969hx" targetRef="EndEvent_050257c" />\n' +
+    '    <bpmn2:userTask id="UserTask_1hulywu" name="456">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:formTemplate />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_code" />\n' +
+    '          <activiti:role need="NO" number="" name="zhangsan" type="role" roleCode="审批者" id="1" />\n' +
+    '          <activiti:role need="NO" number="" name="wangwu" type="role" roleCode="终结者" id="3" />\n' +
+    '          <activiti:role need="NO" number="" name="shuner" type="role" roleCode="吃瓜群众" id="6" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:voteSelect />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>SequenceFlow_0ccsebv</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>SequenceFlow_04600cd</bpmn2:outgoing>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:sequenceFlow id="SequenceFlow_0ccsebv" sourceRef="UserTask_19969hx" targetRef="UserTask_1hulywu" />\n' +
+    '    <bpmn2:sequenceFlow id="SequenceFlow_04600cd" sourceRef="UserTask_1hulywu" targetRef="EndEvent_01kz8pq" />\n' +
     '  </bpmn2:process>\n' +
     '  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
     '    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
@@ -69,16 +90,16 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '        <di:waypoint x="500" y="144" />\n' +
     '      </bpmndi:BPMNEdge>\n' +
     '      <bpmndi:BPMNShape id="EndEvent_01kz8pq_di" bpmnElement="EndEvent_01kz8pq">\n' +
-    '        <dc:Bounds x="652" y="126" width="36" height="36" />\n' +
+    '        <dc:Bounds x="892" y="126" width="36" height="36" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="659" y="165" width="22" height="14" />\n' +
+    '          <dc:Bounds x="899" y="165" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNShape>\n' +
     '      <bpmndi:BPMNEdge id="SequenceFlow_0bv6z76_di" bpmnElement="SequenceFlow_0bv6z76">\n' +
     '        <di:waypoint x="560" y="144" />\n' +
-    '        <di:waypoint x="652" y="144" />\n' +
+    '        <di:waypoint x="892" y="144" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="595" y="126" width="22" height="14" />\n' +
+    '          <dc:Bounds x="715" y="126" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
     '      <bpmndi:BPMNShape id="EndEvent_050257c_di" bpmnElement="EndEvent_050257c">\n' +
@@ -95,9 +116,22 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '          <dc:Bounds x="523" y="211" width="44" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNShape id="UserTask_1hulywu_di" bpmnElement="UserTask_1hulywu">\n' +
+    '        <dc:Bounds x="620" y="16" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNEdge id="SequenceFlow_0ccsebv_di" bpmnElement="SequenceFlow_0ccsebv">\n' +
+    '        <di:waypoint x="530" y="120" />\n' +
+    '        <di:waypoint x="530" y="40" />\n' +
+    '        <di:waypoint x="620" y="40" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="SequenceFlow_04600cd_di" bpmnElement="SequenceFlow_04600cd">\n' +
+    '        <di:waypoint x="680" y="40" />\n' +
+    '        <di:waypoint x="910" y="40" />\n' +
+    '        <di:waypoint x="910" y="126" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
-    '</bpmn2:definitions>';
+    '</bpmn2:definitions>\n';
 
 const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
@@ -540,8 +574,8 @@ export const Http = {
 
 export const BpmnFunction = {
   getBpmnTemplate() {
-    return BaseCreateBpmn;
-    // return CompleteBpmn;
+    // return BaseCreateBpmn;
+    return CompleteBpmn;
   },
 
   /**
@@ -557,9 +591,8 @@ export const BpmnFunction = {
     tag.$parent = parent;
     return tag
   },
-  deleteSequence(element) {
+  deleteSequence(element,sourceElement) {
     const sequenceId = element.id;
-    const sourceElement = element.source;
     if (sourceElement.type !== 'bpmn:UserTask') {
       return;
     }

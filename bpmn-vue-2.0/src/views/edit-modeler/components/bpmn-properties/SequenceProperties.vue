@@ -77,7 +77,7 @@
             votesTemp.votes.push(vote);
           }
         } else {
-          BpmnFunction.deleteSequence(this.element);
+          BpmnFunction.deleteSequence(this.element,this.element.source);
         }
       },
       updateCondition(condition) {

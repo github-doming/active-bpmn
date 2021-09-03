@@ -24,7 +24,7 @@
   import CustomTranslate from "./js/customTranslate";
   import CustomModdle from './js/activiti'
   import language from './js/customTranslate/language'
-  import {BpmnConfig, BpmnFunction} from "./js/BpmnHelper";
+  import {BpmnConfig, BpmnFunction, BpmnTag} from "./js/BpmnHelper";
 
   import ProcessProperties from "./bpmn-properties/ProcessProperties";
   import UserTaskProperties from "./bpmn-properties/UserTaskProperties";
@@ -54,10 +54,7 @@
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
-        bpmnModeler: null,
-        bpmnParams: {},
-        propsComponent: '',
-        element: null,
+        bpmnModeler: null, bpmnParams: {}, propsComponent: '', element: null, connectionSource: null,
       }
     },
     mounted() {
@@ -281,6 +278,17 @@
             that.propsComponent = 'ProcessProperties'
           }
         });
+        that.bpmnModeler.on("bendpoint.move.hover", (event) => {
+          if (that.connectionSource === null) {
+            that.connectionSource = event.hover;
+          }
+        });
+        that.bpmnModeler.on("bendpoint.move.cleanup", (event) => {
+          if (event.hover !== that.connectionSource) {
+            BpmnFunction.deleteSequence(event.connection, that.connectionSource);
+            that.connectionSource = null;
+          }
+        });
         that.bpmnModeler.on('interactionEvents.createHit', event => {
           //添加新节点的时候都将元素添加到 bpmnParams 中
           that.bpmnParams[event.element.id] = event.element.businessObject;
@@ -288,21 +296,30 @@
         // region 节点移除
         that.bpmnModeler.on('connection.removed', event => {
           //移除该节点关联的转变
-          BpmnFunction.deleteSequence(event.element);
+          const element = event.element;
+          BpmnFunction.deleteSequence(element, element.source);
           //移除节点时将元素从 bpmnParams 中移除
-          that.removedElement(event);
+          that.removedElement(element);
         });
         that.bpmnModeler.on('shape.removed', event => {
           //移除节点时将元素从 bpmnParams 中移除
-          that.removedElement(event);
+          that.removedElement(event.element);
+          let elementId = event.element.id;
+          Object.values(that.bpmnParams).forEach(element => {
+            if ('bpmn:UserTask' === element.$type) {
+              let values = element.extensionElements.get("values");
+              values = values.filter(item => !(item['$type'] === BpmnTag.roleSet && item.sourceRef === elementId));
+              element.extensionElements.set('values', values);
+            }
+          })
         });
         // endregion
       },
-      removedElement(event) {
-        if (event.element.type.indexOf('bpmn:') < 0) {
+      removedElement(element) {
+        if (element.type.indexOf('bpmn:') < 0) {
           return;
         }
-        delete this.bpmnParams[event.element.id];
+        delete this.bpmnParams[element.id];
         this.element = this.bpmnParams.process.element;
         this.propsComponent = 'ProcessProperties'
       },
@@ -379,9 +396,11 @@
     background-repeat: no-repeat;
     background-position: center;
   }
-  .icon-custom-status-auto:before{
+
+  .icon-custom-status-auto:before {
     content: url('./js/util/set-status.svg');
   }
+
   [class^="icon-custom-"]:before, [class*=" icon-custom-"]:before {
     font-style: normal;
     font-weight: normal;
