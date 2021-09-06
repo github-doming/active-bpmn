@@ -53,7 +53,7 @@
     },
     data() {
       return {
-        local: JSON.parse(localStorage.getItem('activeLocal')),
+        local: JSON.parse(localStorage.getItem('activeLocal')),isDataRepair:true,
         bpmnModeler: null, bpmnParams: {}, propsComponent: '', element: null, connectionSource: null,
       }
     },
@@ -179,6 +179,9 @@
           }
           if (nodeType.includes(element.type)) {
             that.bpmnParams[element.id] = element.businessObject;
+          }
+          if (that.isDataRepair){
+            that.dataRepair(element);
           }
         });
       },
@@ -323,7 +326,14 @@
         this.element = this.bpmnParams.process.element;
         this.propsComponent = 'ProcessProperties'
       },
-
+      dataRepair(element){
+        if (element.type === 'bpmn:ServiceTask'){
+          if (element.businessObject.$attrs['activiti:class'] !== BpmnConfig.statusAutoClass){
+            console.log(element.businessObject.extensionElements);
+            element.businessObject.extensionElements.set('values', []);
+          }
+        }
+      }
       // endregion
 
     },

@@ -20,115 +20,388 @@ const BaseCreateBpmn = '<?xml version="1.0" encoding="UTF-8"?>' +
     '</bpmn2:definitions>';
 const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
-    '  <bpmn2:process id="Process_1" name="123" isExecutable="true">\n' +
+    '  <bpmn2:process id="Process_1" name="原材料（RMS）生效流程" isExecutable="true" description="原材料（RMS）生效流程">\n' +
     '    <bpmn2:extensionElements />\n' +
-    '    <bpmn2:startEvent id="StartEvent_150xhye" name="开始">\n' +
-    '      <bpmn2:outgoing>SequenceFlow_1vrscp7</bpmn2:outgoing>\n' +
+    '    <bpmn2:startEvent id="Event_1q1a1p8" name="开始">\n' +
+    '      <bpmn2:outgoing>Flow_1fap0wu</bpmn2:outgoing>\n' +
     '    </bpmn2:startEvent>\n' +
-    '    <bpmn2:userTask id="UserTask_19969hx" name="123">\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1fap0wu" sourceRef="Event_1q1a1p8" targetRef="Activity_1n4xmuu" />\n' +
+    '    <bpmn2:userTask id="Activity_04mwg3c" name="采购审批" activiti:async="true">\n' +
     '      <bpmn2:extensionElements>\n' +
-    '        <activiti:formTemplate />\n' +
+    '        <activiti:formTemplate signingRequired="true" />\n' +
     '        <activiti:participant>\n' +
-    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_code" />\n' +
+    '          <activiti:role need="NO" number="" name="采购" type="role" roleCode="Buyer" id="Buyer" />\n' +
     '        </activiti:participant>\n' +
     '        <activiti:voteSelect>\n' +
-    '          <activiti:vote id="SequenceFlow_0bv6z76" name="测试" priority="1" />\n' +
-    '          <activiti:vote id="SequenceFlow_08c4gtq" name="测试重复" priority="2" />\n' +
+    '          <activiti:vote id="Flow_1od4zog" name="通过" priority="1" />\n' +
+    '          <activiti:vote id="Flow_0iw1jse" name="驳回" priority="1" />\n' +
     '        </activiti:voteSelect>\n' +
-    '        <activiti:taskListener event="SequenceFlow_0bv6z76" class="123" name="测试" />\n' +
-    '        <activiti:taskListener event="SequenceFlow_0bv6z76" class="12" name="测试" />\n' +
-    '        <activiti:taskListener event="SequenceFlow_08c4gtq" class="555" name="测试重复" />\n' +
-    '        <activiti:roleSet id="1" name="zhangsan" code="审批者" view="false" add="false" remove="false" sourceRef="UserTask_1hulywu" />\n' +
-    '        <activiti:roleSet id="3" name="wangwu" code="终结者" view="false" add="false" remove="false" sourceRef="UserTask_1hulywu" />\n' +
-    '        <activiti:roleSet id="6" name="shuner" code="吃瓜群众" view="false" add="false" remove="false" sourceRef="UserTask_1hulywu" />\n' +
+    '        <activiti:taskListener event="Flow_1od4zog" class="com.pisx.tundra.bioengine.part.taskListener.OperatingAuthorizationSignatureTaskListener" name="通过" />\n' +
+    '        <activiti:roleSet id="Department Leader" name="部门主管" code="Department Leader" view="false" add="false" remove="false" sourceRef="Activity_1hxzz7c" />\n' +
+    '        <activiti:roleSet id="QA" name="QA" code="QA" view="false" add="false" remove="false" sourceRef="Activity_0l5h44u" />\n' +
     '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_1vrscp7</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0bv6z76</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_08c4gtq</bpmn2:outgoing>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_0ccsebv</bpmn2:outgoing>\n' +
+    '      <bpmn2:incoming>Flow_06lgdlv</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_1od4zog</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>Flow_0iw1jse</bpmn2:outgoing>\n' +
     '    </bpmn2:userTask>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_1vrscp7" sourceRef="StartEvent_150xhye" targetRef="UserTask_19969hx" />\n' +
-    '    <bpmn2:endEvent id="EndEvent_01kz8pq" name="结束">\n' +
-    '      <bpmn2:incoming>SequenceFlow_0bv6z76</bpmn2:incoming>\n' +
-    '      <bpmn2:incoming>SequenceFlow_04600cd</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0bv6z76" name="测试" sourceRef="UserTask_19969hx" targetRef="EndEvent_01kz8pq" />\n' +
-    '    <bpmn2:endEvent id="EndEvent_050257c" name="结束">\n' +
-    '      <bpmn2:incoming>SequenceFlow_08c4gtq</bpmn2:incoming>\n' +
-    '    </bpmn2:endEvent>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_08c4gtq" name="测试重复" sourceRef="UserTask_19969hx" targetRef="EndEvent_050257c" />\n' +
-    '    <bpmn2:userTask id="UserTask_1hulywu" name="456">\n' +
+    '    <bpmn2:userTask id="Activity_0l5h44u" name="质量审计" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:formTemplate signingRequired="true" />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:role need="NO" number="" name="QA" type="role" roleCode="QA" id="QA" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:voteSelect>\n' +
+    '          <activiti:vote id="Flow_0fyp2no" name="通过" priority="1" />\n' +
+    '          <activiti:vote id="Flow_0axvqpc" name="驳回" priority="1" />\n' +
+    '        </activiti:voteSelect>\n' +
+    '        <activiti:roleSet id="Department Leader" name="部门主管" code="Department Leader" view="false" add="false" remove="false" sourceRef="Activity_1hxzz7c" />\n' +
+    '        <activiti:roleSet id="Buyer" name="采购" code="Buyer" view="false" add="false" remove="false" sourceRef="Activity_04mwg3c" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_1od4zog</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_0fyp2no</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>Flow_0axvqpc</bpmn2:outgoing>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1od4zog" name="通过" sourceRef="Activity_04mwg3c" targetRef="Activity_0l5h44u" />\n' +
+    '    <bpmn2:userTask id="Activity_0ekz7bm" name="质量确认" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:formTemplate signingRequired="true" />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:assign userName="YANGZHUO" type="user" id="14494" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:taskListener event="Flow_03tqnlr" class="com.pisx.tundra.bioengine.part.taskListener.QualityAuthorizationSignatureTaskListener" />\n' +
+    '        <activiti:voteSelect>\n' +
+    '          <activiti:vote id="Flow_03tqnlr" name="通过" priority="1" />\n' +
+    '          <activiti:vote id="Flow_0gb1en9" name="通过" priority="1" />\n' +
+    '          <activiti:vote id="Flow_10sllb1" name="驳回" priority="1" />\n' +
+    '        </activiti:voteSelect>\n' +
+    '        <activiti:taskListener event="Flow_0gb1en9" class="com.pisx.tundra.bioengine.part.taskListener.QualityAuthorizationSignatureTaskListener" name="通过" />\n' +
+    '        <activiti:roleSet id="Department Leader" name="部门主管" code="Department Leader" view="false" add="false" remove="false" sourceRef="Activity_1hxzz7c" />\n' +
+    '        <activiti:roleSet id="Buyer" name="采购" code="Buyer" view="false" add="false" remove="false" sourceRef="Activity_04mwg3c" />\n' +
+    '        <activiti:roleSet id="QA" name="QA" code="QA" view="false" add="false" remove="false" sourceRef="Activity_0l5h44u" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_0fyp2no</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_0gb1en9</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>Flow_10sllb1</bpmn2:outgoing>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0fyp2no" name="通过" sourceRef="Activity_0l5h44u" targetRef="Activity_0ekz7bm" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_03tqnlr" name="通过" sourceRef="Activity_08aako4" targetRef="Activity_0hvtfwq" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1sougaq" name="" sourceRef="Activity_0ohjkis" targetRef="Activity_1n4xmuu" condition="" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0iw1jse" name="驳回" sourceRef="Activity_04mwg3c" targetRef="Activity_0ohjkis" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0axvqpc" name="驳回" sourceRef="Activity_0l5h44u" targetRef="Activity_0ohjkis" />\n' +
+    '    <bpmn2:userTask id="Activity_1n4xmuu" name="编制" activiti:async="true">\n' +
     '      <bpmn2:extensionElements>\n' +
     '        <activiti:formTemplate />\n' +
     '        <activiti:participant>\n' +
-    '          <activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_code" />\n' +
-    '          <activiti:role need="NO" number="" name="zhangsan" type="role" roleCode="审批者" id="1" />\n' +
-    '          <activiti:role need="NO" number="" name="wangwu" type="role" roleCode="终结者" id="3" />\n' +
-    '          <activiti:role need="NO" number="" name="shuner" type="role" roleCode="吃瓜群众" id="6" />\n' +
+    '          <activiti:role need="NO" number="" name="操作者" type="role" roleCode="operator_code" id="operator_role_id" />\n' +
     '        </activiti:participant>\n' +
-    '        <activiti:voteSelect />\n' +
+    '        <activiti:voteSelect>\n' +
+    '          <activiti:vote id="Flow_1gyy3w0" name="完成" priority="1" />\n' +
+    '          <activiti:vote id="Flow_1goohf3" name="取消" priority="1" />\n' +
+    '        </activiti:voteSelect>\n' +
+    '        <activiti:roleSet id="Department Leader" name="部门主管" code="Department Leader" view="true" add="true" remove="true" sourceRef="Activity_1hxzz7c">\n' +
+    '          <activiti:repository id="64079" name="部门主管" type="group" />\n' +
+    '        </activiti:roleSet>\n' +
+    '        <activiti:roleSet id="Buyer" name="采购" code="Buyer" view="true" add="true" remove="true" sourceRef="Activity_04mwg3c">\n' +
+    '          <activiti:repository id="64089" name="采购" type="group" />\n' +
+    '        </activiti:roleSet>\n' +
+    '        <activiti:roleSet id="QA" name="QA" code="QA" view="true" add="true" remove="true" sourceRef="Activity_0l5h44u">\n' +
+    '          <activiti:repository id="64062" name="QA" type="group" />\n' +
+    '        </activiti:roleSet>\n' +
     '      </bpmn2:extensionElements>\n' +
-    '      <bpmn2:incoming>SequenceFlow_0ccsebv</bpmn2:incoming>\n' +
-    '      <bpmn2:outgoing>SequenceFlow_04600cd</bpmn2:outgoing>\n' +
+    '      <bpmn2:incoming>Flow_1sougaq</bpmn2:incoming>\n' +
+    '      <bpmn2:incoming>Flow_1fap0wu</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_1gyy3w0</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>Flow_1goohf3</bpmn2:outgoing>\n' +
     '    </bpmn2:userTask>\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_0ccsebv" sourceRef="UserTask_19969hx" targetRef="UserTask_1hulywu" />\n' +
-    '    <bpmn2:sequenceFlow id="SequenceFlow_04600cd" sourceRef="UserTask_1hulywu" targetRef="EndEvent_01kz8pq" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1gyy3w0" name="完成" sourceRef="Activity_1n4xmuu" targetRef="Activity_0u43fps" condition="" />\n' +
+    '    <bpmn2:endEvent id="Event_1rzzg9x" name="结束">\n' +
+    '      <bpmn2:incoming>Flow_0otumd5</bpmn2:incoming>\n' +
+    '    </bpmn2:endEvent>\n' +
+    '    <bpmn2:serviceTask id="Activity_0u43fps" name="正在审阅" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey">\n' +
+    '          <activiti:string>UNDERREVIEW</activiti:string>\n' +
+    '        </activiti:field>\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_1gyy3w0</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_1ancnrm</bpmn2:outgoing>\n' +
+    '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:serviceTask id="Activity_0ohjkis" name="重新工作" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey">\n' +
+    '          <activiti:string>REWORK</activiti:string>\n' +
+    '        </activiti:field>\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_0axvqpc</bpmn2:incoming>\n' +
+    '      <bpmn2:incoming>Flow_0iw1jse</bpmn2:incoming>\n' +
+    '      <bpmn2:incoming>Flow_1m025or</bpmn2:incoming>\n' +
+    '      <bpmn2:incoming>Flow_10sllb1</bpmn2:incoming>\n' +
+    '      <bpmn2:incoming>Flow_0k486ni</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_1sougaq</bpmn2:outgoing>\n' +
+    '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:serviceTask id="Activity_0hvtfwq" name="生效" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey">\n' +
+    '          <activiti:string>EFFECT</activiti:string>\n' +
+    '        </activiti:field>\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_03tqnlr</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_09ic98n</bpmn2:outgoing>\n' +
+    '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:serviceTask id="Activity_1tci20o" name="物料同步ERP" activiti:async="true" activiti:class="com.pisx.tundra.bioengine.part.taskListener.EPRWLEffectTaskListener">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_09ic98n</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_06fgp11</bpmn2:outgoing>\n' +
+    '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_09ic98n" sourceRef="Activity_0hvtfwq" targetRef="Activity_1tci20o" />\n' +
+    '    <bpmn2:serviceTask id="Activity_07yacz2" name="RMS同步QMS" activiti:async="true" activiti:class="com.pisx.tundra.bioengine.part.taskListener.ControlledDocumentSendQMSTaskListener">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_06fgp11</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_1e9p9wm</bpmn2:outgoing>\n' +
+    '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_06fgp11" sourceRef="Activity_1tci20o" targetRef="Activity_07yacz2" />\n' +
+    '    <bpmn2:endEvent id="Event_00e66zb" name="结束">\n' +
+    '      <bpmn2:incoming>Flow_1e9p9wm</bpmn2:incoming>\n' +
+    '    </bpmn2:endEvent>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1e9p9wm" sourceRef="Activity_07yacz2" targetRef="Event_00e66zb" />\n' +
+    '    <bpmn2:serviceTask id="Activity_1lspri4" name="正在工作" activiti:class="com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:field name="stateKey">\n' +
+    '          <activiti:string>INWORK</activiti:string>\n' +
+    '        </activiti:field>\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_1goohf3</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_0otumd5</bpmn2:outgoing>\n' +
+    '    </bpmn2:serviceTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1goohf3" name="取消" sourceRef="Activity_1n4xmuu" targetRef="Activity_1lspri4" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0otumd5" sourceRef="Activity_1lspri4" targetRef="Event_1rzzg9x" />\n' +
+    '    <bpmn2:userTask id="Activity_08aako4" name="领导批准" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:formTemplate signingRequired="true" />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:assign userName="ashi" type="user" id="14516" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:roleSet id="operator_role_id" name="操作者" code="operator_code" view="false" add="false" remove="false" sourceRef="Activity_1n4xmuu" />\n' +
+    '        <activiti:voteSelect>\n' +
+    '          <activiti:vote id="Flow_03tqnlr" name="通过" priority="1" />\n' +
+    '          <activiti:vote id="Flow_1m025or" name="驳回" priority="1" />\n' +
+    '        </activiti:voteSelect>\n' +
+    '        <activiti:taskListener event="Flow_03tqnlr" class="com.pisx.tundra.bioengine.part.taskListener.ManagerAuthorizationSignatureTaskListener" name="通过" />\n' +
+    '        <activiti:taskListener event="Flow_03tqnlr" class="com.pisx.tundra.bioengine.part.taskListener.RebuildSignaturePDFTaskListener" name="通过" />\n' +
+    '        <activiti:roleSet id="Department Leader" name="部门主管" code="Department Leader" view="false" add="false" remove="false" sourceRef="Activity_1hxzz7c" />\n' +
+    '        <activiti:roleSet id="Buyer" name="采购" code="Buyer" view="false" add="false" remove="false" sourceRef="Activity_04mwg3c" />\n' +
+    '        <activiti:roleSet id="QA" name="QA" code="QA" view="false" add="false" remove="false" sourceRef="Activity_0l5h44u" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_0gb1en9</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_03tqnlr</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>Flow_1m025or</bpmn2:outgoing>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1m025or" name="驳回" sourceRef="Activity_08aako4" targetRef="Activity_0ohjkis" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0gb1en9" name="通过" sourceRef="Activity_0ekz7bm" targetRef="Activity_08aako4" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_10sllb1" name="驳回" sourceRef="Activity_0ekz7bm" targetRef="Activity_0ohjkis" />\n' +
+    '    <bpmn2:userTask id="Activity_1hxzz7c" name="审核" activiti:async="true">\n' +
+    '      <bpmn2:extensionElements>\n' +
+    '        <activiti:formTemplate signingRequired="true" />\n' +
+    '        <activiti:participant>\n' +
+    '          <activiti:role need="NO" number="" name="部门主管" type="role" roleCode="Department Leader" id="Department Leader" />\n' +
+    '        </activiti:participant>\n' +
+    '        <activiti:roleSet id="operator_role_id" name="操作者" code="operator_code" view="false" add="false" remove="false" sourceRef="Activity_1n4xmuu" />\n' +
+    '        <activiti:voteSelect>\n' +
+    '          <activiti:vote id="Flow_06lgdlv" name="通过" priority="1" />\n' +
+    '          <activiti:vote id="Flow_0k486ni" name="驳回" priority="1" />\n' +
+    '        </activiti:voteSelect>\n' +
+    '        <activiti:roleSet id="Buyer" name="采购" code="Buyer" view="false" add="false" remove="false" sourceRef="Activity_04mwg3c" />\n' +
+    '        <activiti:roleSet id="QA" name="QA" code="QA" view="false" add="false" remove="false" sourceRef="Activity_0l5h44u" />\n' +
+    '      </bpmn2:extensionElements>\n' +
+    '      <bpmn2:incoming>Flow_1ancnrm</bpmn2:incoming>\n' +
+    '      <bpmn2:outgoing>Flow_06lgdlv</bpmn2:outgoing>\n' +
+    '      <bpmn2:outgoing>Flow_0k486ni</bpmn2:outgoing>\n' +
+    '    </bpmn2:userTask>\n' +
+    '    <bpmn2:sequenceFlow id="Flow_1ancnrm" sourceRef="Activity_0u43fps" targetRef="Activity_1hxzz7c" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_06lgdlv" name="通过" sourceRef="Activity_1hxzz7c" targetRef="Activity_04mwg3c" />\n' +
+    '    <bpmn2:sequenceFlow id="Flow_0k486ni" name="驳回" sourceRef="Activity_1hxzz7c" targetRef="Activity_0ohjkis" />\n' +
     '  </bpmn2:process>\n' +
     '  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n' +
     '    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">\n' +
-    '      <bpmndi:BPMNShape id="StartEvent_150xhye_di" bpmnElement="StartEvent_150xhye">\n' +
-    '        <dc:Bounds x="322" y="126" width="36" height="36" />\n' +
+    '      <bpmndi:BPMNEdge id="Flow_0k486ni_di" bpmnElement="Flow_0k486ni">\n' +
+    '        <di:waypoint x="480" y="236" />\n' +
+    '        <di:waypoint x="480" y="110" />\n' +
+    '        <di:waypoint x="394" y="110" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="329" y="165" width="22" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNShape id="UserTask_19969hx_di" bpmnElement="UserTask_19969hx">\n' +
-    '        <dc:Bounds x="500" y="120" width="60" height="48" />\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_1vrscp7_di" bpmnElement="SequenceFlow_1vrscp7">\n' +
-    '        <di:waypoint x="358" y="144" />\n' +
-    '        <di:waypoint x="500" y="144" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="EndEvent_01kz8pq_di" bpmnElement="EndEvent_01kz8pq">\n' +
-    '        <dc:Bounds x="892" y="126" width="36" height="36" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="899" y="165" width="22" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0bv6z76_di" bpmnElement="SequenceFlow_0bv6z76">\n' +
-    '        <di:waypoint x="560" y="144" />\n' +
-    '        <di:waypoint x="892" y="144" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="715" y="126" width="22" height="14" />\n' +
+    '          <dc:Bounds x="449" y="173" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="EndEvent_050257c_di" bpmnElement="EndEvent_050257c">\n' +
-    '        <dc:Bounds x="652" y="242" width="36" height="36" />\n' +
+    '      <bpmndi:BPMNEdge id="Flow_06lgdlv_di" bpmnElement="Flow_06lgdlv">\n' +
+    '        <di:waypoint x="510" y="260" />\n' +
+    '        <di:waypoint x="570" y="260" />\n' +
     '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="659" y="281" width="22" height="14" />\n' +
-    '        </bpmndi:BPMNLabel>\n' +
-    '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_08c4gtq_di" bpmnElement="SequenceFlow_08c4gtq">\n' +
-    '        <di:waypoint x="530" y="168" />\n' +
-    '        <di:waypoint x="530" y="260" />\n' +
-    '        <di:waypoint x="652" y="260" />\n' +
-    '        <bpmndi:BPMNLabel>\n' +
-    '          <dc:Bounds x="523" y="211" width="44" height="14" />\n' +
+    '          <dc:Bounds x="529" y="242" width="22" height="14" />\n' +
     '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNShape id="UserTask_1hulywu_di" bpmnElement="UserTask_1hulywu">\n' +
-    '        <dc:Bounds x="620" y="16" width="60" height="48" />\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1ancnrm_di" bpmnElement="Flow_1ancnrm">\n' +
+    '        <di:waypoint x="394" y="260" />\n' +
+    '        <di:waypoint x="450" y="260" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_10sllb1_di" bpmnElement="Flow_10sllb1">\n' +
+    '        <di:waypoint x="820" y="236" />\n' +
+    '        <di:waypoint x="820" y="110" />\n' +
+    '        <di:waypoint x="394" y="110" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="789" y="173" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_0gb1en9_di" bpmnElement="Flow_0gb1en9">\n' +
+    '        <di:waypoint x="850" y="260" />\n' +
+    '        <di:waypoint x="910" y="260" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="870" y="242" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1m025or_di" bpmnElement="Flow_1m025or">\n' +
+    '        <di:waypoint x="940" y="236" />\n' +
+    '        <di:waypoint x="940" y="110" />\n' +
+    '        <di:waypoint x="394" y="110" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="909" y="173" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_0otumd5_di" bpmnElement="Flow_0otumd5">\n' +
+    '        <di:waypoint x="236" y="360" />\n' +
+    '        <di:waypoint x="148" y="360" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1goohf3_di" bpmnElement="Flow_1goohf3">\n' +
+    '        <di:waypoint x="260" y="284" />\n' +
+    '        <di:waypoint x="260" y="336" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="256" y="295" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1e9p9wm_di" bpmnElement="Flow_1e9p9wm">\n' +
+    '        <di:waypoint x="1260" y="260" />\n' +
+    '        <di:waypoint x="1312" y="260" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_06fgp11_di" bpmnElement="Flow_06fgp11">\n' +
+    '        <di:waypoint x="1170" y="260" />\n' +
+    '        <di:waypoint x="1200" y="260" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_09ic98n_di" bpmnElement="Flow_09ic98n">\n' +
+    '        <di:waypoint x="1074" y="260" />\n' +
+    '        <di:waypoint x="1110" y="260" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1gyy3w0_di" bpmnElement="Flow_1gyy3w0">\n' +
+    '        <di:waypoint x="290" y="260" />\n' +
+    '        <di:waypoint x="346" y="260" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="309" y="242" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_0axvqpc_di" bpmnElement="Flow_0axvqpc">\n' +
+    '        <di:waypoint x="710" y="236" />\n' +
+    '        <di:waypoint x="710" y="110" />\n' +
+    '        <di:waypoint x="394" y="110" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="679" y="173" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_0iw1jse_di" bpmnElement="Flow_0iw1jse">\n' +
+    '        <di:waypoint x="600" y="236" />\n' +
+    '        <di:waypoint x="600" y="110" />\n' +
+    '        <di:waypoint x="394" y="110" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="569" y="173" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1sougaq_di" bpmnElement="Flow_1sougaq">\n' +
+    '        <di:waypoint x="346" y="110" />\n' +
+    '        <di:waypoint x="260" y="110" />\n' +
+    '        <di:waypoint x="260" y="236" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="397" y="-107" width="55" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_03tqnlr_di" bpmnElement="Flow_03tqnlr">\n' +
+    '        <di:waypoint x="970" y="260" />\n' +
+    '        <di:waypoint x="1026" y="260" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="988" y="242" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_0fyp2no_di" bpmnElement="Flow_0fyp2no">\n' +
+    '        <di:waypoint x="740" y="260" />\n' +
+    '        <di:waypoint x="790" y="260" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="754" y="242" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1od4zog_di" bpmnElement="Flow_1od4zog">\n' +
+    '        <di:waypoint x="630" y="260" />\n' +
+    '        <di:waypoint x="680" y="260" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="647" y="242" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNEdge id="Flow_1fap0wu_di" bpmnElement="Flow_1fap0wu">\n' +
+    '        <di:waypoint x="148" y="260" />\n' +
+    '        <di:waypoint x="230" y="260" />\n' +
+    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNShape id="Event_1q1a1p8_di" bpmnElement="Event_1q1a1p8">\n' +
+    '        <dc:Bounds x="112" y="242" width="36" height="36" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="120" y="281" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
     '      </bpmndi:BPMNShape>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_0ccsebv_di" bpmnElement="SequenceFlow_0ccsebv">\n' +
-    '        <di:waypoint x="530" y="120" />\n' +
-    '        <di:waypoint x="530" y="40" />\n' +
-    '        <di:waypoint x="620" y="40" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
-    '      <bpmndi:BPMNEdge id="SequenceFlow_04600cd_di" bpmnElement="SequenceFlow_04600cd">\n' +
-    '        <di:waypoint x="680" y="40" />\n' +
-    '        <di:waypoint x="910" y="40" />\n' +
-    '        <di:waypoint x="910" y="126" />\n' +
-    '      </bpmndi:BPMNEdge>\n' +
+    '      <bpmndi:BPMNShape id="Activity_04mwg3c_di" bpmnElement="Activity_04mwg3c">\n' +
+    '        <dc:Bounds x="570" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_0l5h44u_di" bpmnElement="Activity_0l5h44u">\n' +
+    '        <dc:Bounds x="680" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_0ekz7bm_di" bpmnElement="Activity_0ekz7bm">\n' +
+    '        <dc:Bounds x="790" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_1n4xmuu_di" bpmnElement="Activity_1n4xmuu">\n' +
+    '        <dc:Bounds x="230" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Event_1rzzg9x_di" bpmnElement="Event_1rzzg9x">\n' +
+    '        <dc:Bounds x="112" y="342" width="36" height="36" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="119" y="381" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_0u43fps_di" bpmnElement="Activity_0u43fps">\n' +
+    '        <dc:Bounds x="346" y="236" width="48" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_0ohjkis_di" bpmnElement="Activity_0ohjkis">\n' +
+    '        <dc:Bounds x="346" y="86" width="48" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_0hvtfwq_di" bpmnElement="Activity_0hvtfwq">\n' +
+    '        <dc:Bounds x="1026" y="236" width="48" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_1tci20o_di" bpmnElement="Activity_1tci20o">\n' +
+    '        <dc:Bounds x="1110" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_07yacz2_di" bpmnElement="Activity_07yacz2">\n' +
+    '        <dc:Bounds x="1200" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Event_00e66zb_di" bpmnElement="Event_00e66zb">\n' +
+    '        <dc:Bounds x="1312" y="242" width="36" height="36" />\n' +
+    '        <bpmndi:BPMNLabel>\n' +
+    '          <dc:Bounds x="1319" y="281" width="22" height="14" />\n' +
+    '        </bpmndi:BPMNLabel>\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_1lspri4_di" bpmnElement="Activity_1lspri4">\n' +
+    '        <dc:Bounds x="236" y="336" width="48" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_08aako4_di" bpmnElement="Activity_08aako4">\n' +
+    '        <dc:Bounds x="910" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
+    '      <bpmndi:BPMNShape id="Activity_1hxzz7c_di" bpmnElement="Activity_1hxzz7c">\n' +
+    '        <dc:Bounds x="450" y="236" width="60" height="48" />\n' +
+    '      </bpmndi:BPMNShape>\n' +
     '    </bpmndi:BPMNPlane>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
     '</bpmn2:definitions>\n';

@@ -30,7 +30,11 @@
       }
     },
     data() {
-      return {local: JSON.parse(localStorage.getItem('activeLocal')),extensionValues: [], param: this.params[this.element.id]}
+      return {
+        local: JSON.parse(localStorage.getItem('activeLocal')),
+        extensionValues: [],
+        param: this.params[this.element.id]
+      }
     },
     watch: {
       element(val) {
@@ -50,6 +54,9 @@
       updateGeneral: BpmnMethod.updateGeneral(),
       getExtensionElements: BpmnMethod.getExtensionElements(),
       field() {
+        if (!this.statusAuto) {
+          return null;
+        }
         let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
         if (fields.length > 0) {
           return fields[0];
