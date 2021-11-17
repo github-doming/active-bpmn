@@ -21,8 +21,7 @@
   import InclusiveGatewayProperties from "./bpmn-show/InclusiveGatewayProperties";
   import CustomModdle from "./js/activiti";
   import {BpmnConfig} from "./js/BpmnHelper";
-  import CustomControls from "./js/customControls";
-  import CustomTranslate from "./js/customTranslate";
+  import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
 
   export default {
     name: "show",
@@ -32,7 +31,14 @@
         default: () => ({}),
       },
     },
-    components: {ProcessProperties, UserTaskProperties, ServiceTaskProperties,SequenceProperties,InclusiveGatewayProperties, NameProperties},
+    components: {
+      ProcessProperties,
+      UserTaskProperties,
+      ServiceTaskProperties,
+      SequenceProperties,
+      InclusiveGatewayProperties,
+      NameProperties
+    },
     data() {
       return {
         local: JSON.parse(localStorage.getItem('activeLocal')),
@@ -94,7 +100,10 @@
         let canvas = this.$refs.canvas;
         this.bpmnModeler = new BpmnViewer({
           container: canvas,
-          moddleExtensions: {activiti: CustomModdle}
+          moddleExtensions: {activiti: CustomModdle},
+          additionalModules: [
+            MoveCanvasModule,
+          ]
         });
         that.bpmnModeler.importXML(that.activeData.bpmnXml, (err) => {
           if (err) {
@@ -146,7 +155,7 @@
             that.propsComponent = 'SequenceProperties'
           } else if (that.element.type === 'bpmn:InclusiveGateway') {
             this.propsComponent = 'InclusiveGatewayProperties';
-          }else {
+          } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
           }

@@ -9,7 +9,10 @@
                  :params="bpmnParams" :element="element"></component>
       <span>
 			<a-button type="primary" @click="saveBpmn" style="margin: 5px">{{local.save}}</a-button>
-			<a-button @click="saveBpmn" style="margin: 5px" v-show="downloadShow">{{local.download}}</a-button>
+			<a-button @click="exportBpmn" style="margin: 5px" v-show="downloadShow || isDebug">{{local.download}}</a-button>
+			<a-button @click="$refs.refFile.click()" style="margin: 5px" v-show="isDebug">{{local.import}}</a-button>
+        <!-- 用于打开本地文件-->
+      <input type="file" id="files" ref="refFile" style="display: none" accept=".xml, .bpmn" @change="importBpmn" />
 			</span>
     </div>
   </div>
@@ -53,7 +56,7 @@
     },
     data() {
       return {
-        local: JSON.parse(localStorage.getItem('activeLocal')),isDataRepair:true,
+        local: JSON.parse(localStorage.getItem('activeLocal')), isDataRepair: true, isDebug: true,
         bpmnModeler: null, bpmnParams: {}, propsComponent: '', element: null, connectionSource: null,
       }
     },
@@ -61,6 +64,7 @@
       Object.assign(language, this.local.language);
       //初始化模型编辑器
       this.initBpmnModeler();
+      console.log("init success");
     },
     methods: {
       // region 页面处理方法
@@ -69,20 +73,53 @@
         if (!that.validateBpmn()) {
           return;
         }
-        // let rootParam = that.bpmnParams[that.bpmnParams.process.key];
-        // const name = rootParam.name;
-        // const description = rootParam.$attrs.description;
-        // console.log(name,description);
         that.bpmnModeler.saveXML({format: true}, (err, xml) => {
           if (err) {
             console.error('流程数据生成失败');
             console.log(err);
-            return
+            return;
           }
           console.log(xml);
         })
       },
+      exportBpmn() {
+        const that = this;
+        if (!that.validateBpmn()) {
+          return;
+        }
+        that.bpmnModeler.saveXML({format: true}, (err, xml) => {
+          if (err) {
+            console.error('流程数据生成失败');
+            console.log(err);
+            return;
+          }
+          const anchor = document.createElement("a");
+          anchor.href = "data:application/bpmn20-xml;charset=UTF-8," + encodeURIComponent(xml);
+          anchor.download = "diagram.bpmn";
+          anchor.click();
+        })
+      },
+      importBpmn() {
+        const that = this;
+        const file = this.$refs.refFile.files[0];
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function() {
+          let xmlStr = this.result;
+          that.bpmnModeler.importXML(xmlStr, (err) => {
+            if (err) {
+              console.log('bpmn文档导入失败', err)
+            } else {
+              that.parsedBpmnParams();
+            }
+          });
+        };
+      },
       validateBpmn() {
+        if (this.isDebug) {
+          return true;
+        }
+        this.parsedBpmnParams();
         for (let key of Object.keys(this.bpmnParams)) {
           const type = this.bpmnParams[key].$type;
           if (!type) {
@@ -162,13 +199,14 @@
       },
       success() {
         this.adjustViewer();
-        this.initBpmnParams();
+        this.parsedBpmnParams();
         this.addEventBusListener();
       },
-      initBpmnParams() {
+      parsedBpmnParams() {
         //解析的节点信息
         const nodeType = BpmnConfig.analyzeTypes;
         let that = this;
+        this.bpmnParams = {};
         this.bpmnModeler.get('elementRegistry').forEach(element => {
           if (element.type === 'bpmn:Process') {
             that.bpmnParams['process'] = {};
@@ -180,7 +218,7 @@
           if (nodeType.includes(element.type)) {
             that.bpmnParams[element.id] = element.businessObject;
           }
-          if (that.isDataRepair){
+          if (that.isDataRepair) {
             that.dataRepair(element);
           }
         });
@@ -263,13 +301,13 @@
           if (event.element.type.indexOf('bpmn:') < 0) {
             return;
           }
-          that.element = event.element;
-          that.propsComponent = 'NameProperties';
+          const element = event.element;
+          that.element = element;
           const type = that.element.type;
           if (type === 'bpmn:StartEvent') {
-            that.element.businessObject.name = '开始';
+            element.businessObject.name = '开始';
           } else if (type === 'bpmn:EndEvent') {
-            that.element.businessObject.name = '结束';
+            element.businessObject.name = '结束';
           } else if (type === 'bpmn:UserTask') {
             that.propsComponent = 'UserTaskProperties';
           } else if (type === 'bpmn:InclusiveGateway') {
@@ -280,6 +318,16 @@
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
           }
+          setTimeout(() => {
+            if (element.incoming[0]) {
+              if (element.incoming[0].source.outgoing.length === 1) {
+                const elements = [element, element.incoming[0].source];
+                const align = this.bpmnModeler.get("alignElements");
+                align.trigger(elements, 'bottom');
+              }
+            }
+          }, 2);
+
         });
         that.bpmnModeler.on("bendpoint.move.hover", (event) => {
           if (that.connectionSource === null) {
@@ -326,10 +374,9 @@
         this.element = this.bpmnParams.process.element;
         this.propsComponent = 'ProcessProperties'
       },
-      dataRepair(element){
-        if (element.type === 'bpmn:ServiceTask'){
-          if (element.businessObject.$attrs['activiti:class'] !== BpmnConfig.statusAutoClass){
-            console.log(element.businessObject.extensionElements);
+      dataRepair(element) {
+        if (element.type === 'bpmn:ServiceTask') {
+          if (element.businessObject.$attrs['activiti:class'] !== BpmnConfig.statusAutoClass) {
             element.businessObject.extensionElements.set('values', []);
           }
         }

@@ -7,7 +7,7 @@ import {
 } from 'tiny-svg';
 import setStatus from '../util/set-status.svg';
 
-const CustomTypes = ['bpmn:UserTask', 'bpmn:ServiceTask'];
+const CustomTypes = ['bpmn:UserTask', 'bpmn:ServiceTask', 'bpmn:SendTask'];
 
 // 最高优先级
 const HIGH_PRIORITY = 1500;
@@ -23,8 +23,8 @@ export default class CustomRenderer extends BaseRenderer {
 
   drawShape(visuals, element) {
     if (CustomTypes.includes(element.type)) {
-      element.width = 60;
-      element.height = 48;
+      element.width = 62.5;
+      element.height = 50;
     }
     if (element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass) {
       return this.drawSetStatus(visuals,element);
@@ -33,7 +33,7 @@ export default class CustomRenderer extends BaseRenderer {
   }
 
   drawSetStatus(parentNode, element) {
-    const attr = { x: 0, y: 0, width: 48, height: 48 };
+    const attr = { x: 0, y: 0, width: 50, height: 50 };
     const customIcon = svgCreate('image', {
       ...attr,
       href:setStatus,

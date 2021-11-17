@@ -48,7 +48,7 @@
 
   import AttributePanel from './bpmn-viewer/AttributePanel'
   import CustomModdle from "./js/activiti";
-  import {BpmnConfig} from "./js/BpmnHelper";
+  import MoveCanvasModule from "diagram-js/lib/navigation/movecanvas";
 
   export default {
     name: "viewer",
@@ -110,7 +110,10 @@
         let canvas = this.$refs.canvas;
         this.bpmnModeler = new BpmnViewer({
           container: canvas,
-          moddleExtensions: {activiti: CustomModdle}
+          moddleExtensions: {activiti: CustomModdle},
+          additionalModules: [
+            MoveCanvasModule ,
+          ]
         });
         this.importBpmnXml()
       },

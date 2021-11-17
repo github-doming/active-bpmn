@@ -24,6 +24,8 @@ export default class CustomPalette {
         bpmnType = 'bpmn:UserTask';
       } else if (dataAction === 'create.service-task') {
         bpmnType = 'bpmn:ServiceTask';
+      } else if (dataAction === 'create.send-task') {
+        bpmnType = 'bpmn:SendTask';
       } else if (dataAction === 'create.parallel-gateway') {
         bpmnType = 'bpmn:ParallelGateway';
       } else if (dataAction === 'create.xor-gateway') {
@@ -56,28 +58,25 @@ export default class CustomPalette {
       'create.user-task': {
         group: 'activity', className: 'bpmn-icon-user-task', title: translate('Create UserTask'),
         action: {dragstart: createNode, click: createNode}
-      },
-      'create.service-task': {
+      }, 'create.service-task': {
         group: 'activity', className: 'bpmn-icon-service-task', title: translate('Create ServiceTask'),
         action: {dragstart: createNode, click: createNode}
-      },
-      'create.parallel-gateway': {
+      }, 'create.send-task': {
+        group: 'activity', className: 'bpmn-icon-send-task', title: translate('Create SendTask'),
+        action: {dragstart: createNode, click: createNode}
+      }, 'create.parallel-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-parallel', title: translate('Create Parallel Gateway'),
         action: {dragstart: createNode, click: createNode}
-      },
-      'create.xor-gateway': {
+      }, 'create.xor-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-xor', title: translate('Create Exclusive Gateway'),
         action: {dragstart: createNode, click: createNode}
-      },
-      'create.inclusive-gateway': {
+      }, 'create.inclusive-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-or', title: translate('Create Inclusive Gateway'),
         action: {dragstart: createNode, click: createNode}
-      },
-      'create.status-auto': {
+      }, 'create.status-auto': {
         group: 'activity', className: 'icon-custom icon-custom-status-auto', title: translate('Create Status Auto'),
         action: {dragstart: createStatusAuto, click: createStatusAuto}
-      },
-      'create.intermediate-event-catch-timer': {
+      }, 'create.intermediate-event-catch-timer': {
         group: 'activity', className: 'bpmn-icon-intermediate-event-catch-timer', title: translate('Create Timer'),
         action: {dragstart: createIntermediateCatchEvent, click: createIntermediateCatchEvent}
       }

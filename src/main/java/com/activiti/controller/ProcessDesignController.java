@@ -90,6 +90,7 @@ public class ProcessDesignController {
 		JSONObject local = new JSONObject();
 		local.put("save", "保存");
 		local.put("download", "下载");
+		local.put("import", "导入");
 
 		local.put("general", "常规");
 		local.put("variable", "变量");

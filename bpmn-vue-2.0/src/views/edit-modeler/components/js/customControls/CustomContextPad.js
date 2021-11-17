@@ -1,7 +1,6 @@
-import {BpmnConfig} from "../BpmnHelper";
 
 const contextPadTypes = ['bpmn:UserTask', 'bpmn:CallActivity', 'bpmn:ServiceTask', 'bpmn:StartEvent',
-  'bpmn:ExclusiveGateway', 'bpmn:InclusiveGateway', 'bpmn:ParallelGateway', 'bpmn:IntermediateCatchEvent'];
+  'bpmn:ExclusiveGateway', 'bpmn:InclusiveGateway', 'bpmn:ParallelGateway', 'bpmn:IntermediateCatchEvent','bpmn:SendTask'];
 
 export default class CustomContextPad {
   constructor(config, contextPad, create, elementFactory, injector, translate, modeling, connect) {
