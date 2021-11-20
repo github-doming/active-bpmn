@@ -67,17 +67,17 @@
 
             }
           });
-          if (!votesTemp){
+          if (!votesTemp) {
             votesTemp = BpmnFunction.createElementTag(this.modeler, sourceElement.businessObject.extensionElements, BpmnTag.voteSelect);
             values.push(votesTemp);
           }
           if (voteState >= 1) {
             let vote = BpmnFunction.createElementTag(this.modeler, votesTemp, BpmnTag.vote);
-            Object.assign(vote, {name: newVal.name, id: sequenceId, priority: 1});
+            Object.assign(vote, {name: newVal.name, id: sequenceId, priority: 1, requiredReason: false});
             votesTemp.votes.push(vote);
           }
         } else {
-          BpmnFunction.deleteSequence(this.element,this.element.source);
+          BpmnFunction.deleteSequence(this.element, this.element.source);
         }
       },
       updateCondition(condition) {

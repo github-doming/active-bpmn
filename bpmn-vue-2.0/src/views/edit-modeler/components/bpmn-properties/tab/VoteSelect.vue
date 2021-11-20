@@ -8,6 +8,7 @@
           <tr>
             <th>{{local.vote}}</th>
             <th>{{local.isPriority}}</th>
+            <th>路由备注</th>
           </tr>
           </thead>
           <tbody>
@@ -20,6 +21,9 @@
                   {{ i }}
                 </a-select-option>
               </a-select>
+            </td>
+            <td>
+              <a-checkbox v-model:checked="item.requiredReason">必填</a-checkbox>
             </td>
           </tr>
           </tbody>
@@ -54,7 +58,16 @@
     },
     computed: {
       votesLen() {
-        return this.votes.length - this.leader;
+        let len =  this.votes.length - this.leader;
+        let start = 1;
+        if (this.votes.length ===2){
+          start = 0;
+        }
+        let priorities = [];
+        for (let i = start; i <= len; i++) {
+          priorities.push(i);
+        }
+        return priorities;
       }
     },
     data() {

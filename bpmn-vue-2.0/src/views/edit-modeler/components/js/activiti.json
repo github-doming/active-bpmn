@@ -386,6 +386,11 @@
           "name": "priority",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "requiredReason",
+          "isAttr": true,
+          "type": "Boolean"
         }
       ]
     }

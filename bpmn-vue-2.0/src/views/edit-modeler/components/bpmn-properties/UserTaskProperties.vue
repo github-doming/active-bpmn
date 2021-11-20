@@ -175,7 +175,7 @@
           data = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.voteSelect);
           this.extensionValues.push(data);
         }
-        if (!data.votes){
+        if (!data.votes) {
           data.votes = [];
         }
         this.outgoings.forEach(element => {
@@ -187,7 +187,7 @@
             }
           }
           let vote = BpmnFunction.createElementTag(that.modeler, data, BpmnTag.vote);
-          Object.assign(vote, {name: element.name, id: element.id, priority: 1});
+          Object.assign(vote, {name: element.name, id: element.id, priority: 1, requiredReason: false});
           data.votes.push(vote);
         });
         return data;
@@ -236,7 +236,7 @@
       updateTaskListener(type, listenerData) {
         if ('add' === type) {
           let tagElement = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.taskListener);
-          for (let key of Object.keys(listenerData)){
+          for (let key of Object.keys(listenerData)) {
             tagElement[key] = listenerData[key];
           }
           this.extensionValues.push(tagElement);

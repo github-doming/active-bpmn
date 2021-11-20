@@ -1064,7 +1064,7 @@ export const Http = {
 export const BpmnFunction = {
   getBpmnTemplate() {
     // return BaseCreateBpmn;
-    return CompleteBpmn;
+    return CompleteBpmn2;
   },
 
   /**
