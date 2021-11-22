@@ -8,7 +8,7 @@
           <tr>
             <th>{{local.vote}}</th>
             <th>{{local.isPriority}}</th>
-            <th>路由备注</th>
+            <th>{{local.routingNotes}}</th>
           </tr>
           </thead>
           <tbody>
@@ -23,7 +23,7 @@
               </a-select>
             </td>
             <td>
-              <a-checkbox v-model:checked="item.requiredReason">必填</a-checkbox>
+              <a-checkbox v-model:checked="item.requiredReason">{{local.required}}</a-checkbox>
             </td>
           </tr>
           </tbody>
@@ -52,15 +52,23 @@
     watch: {
       voteSelect(newValue) {
         this.votes = newValue.votes;
+        let len = this.votes.length;
+        for (const item of this.votes) {
+          if (len === item.priority) {
+            this.leader = 1;
+            this.leaderId = item.id;
+            return;
+          }
+        }
         this.leader = 0;
         this.leaderId = null;
       },
     },
     computed: {
       votesLen() {
-        let len =  this.votes.length - this.leader;
+        let len = this.votes.length - this.leader;
         let start = 1;
-        if (this.votes.length ===2){
+        if (this.votes.length === 2) {
           start = 0;
         }
         let priorities = [];

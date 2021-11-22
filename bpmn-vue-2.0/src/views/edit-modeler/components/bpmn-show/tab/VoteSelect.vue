@@ -8,6 +8,7 @@
           <tr>
             <th>{{local.vote}}</th>
             <th>{{local.isPriority}}</th>
+            <th>{{local.routingNotes}}</th>
           </tr>
           </thead>
           <tbody>
@@ -19,6 +20,9 @@
                   {{ i }}
                 </a-select-option>
               </a-select>
+            </td>
+            <td>
+              <a-checkbox :checked="item.requiredReason">{{local.required}}</a-checkbox>
             </td>
           </tr>
           </tbody>
