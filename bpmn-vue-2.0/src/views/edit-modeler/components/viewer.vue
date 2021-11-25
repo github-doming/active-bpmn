@@ -49,6 +49,7 @@
   import AttributePanel from './bpmn-viewer/AttributePanel'
   import CustomModdle from "./js/activiti";
   import MoveCanvasModule from "diagram-js/lib/navigation/movecanvas";
+  import CustomShow from "./js/customShow";
 
   export default {
     name: "viewer",
@@ -112,7 +113,7 @@
           container: canvas,
           moddleExtensions: {activiti: CustomModdle},
           additionalModules: [
-            MoveCanvasModule ,
+            CustomShow,MoveCanvasModule ,
           ]
         });
         this.importBpmnXml()

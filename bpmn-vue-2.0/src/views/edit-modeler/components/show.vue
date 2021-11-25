@@ -22,6 +22,7 @@
   import CustomModdle from "./js/activiti";
   import {BpmnConfig} from "./js/BpmnHelper";
   import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
+  import CustomShow from "./js/customShow";
 
   export default {
     name: "show",
@@ -102,7 +103,7 @@
           container: canvas,
           moddleExtensions: {activiti: CustomModdle},
           additionalModules: [
-            MoveCanvasModule,
+            CustomShow,MoveCanvasModule,
           ]
         });
         that.bpmnModeler.importXML(that.activeData.bpmnXml, (err) => {
