@@ -622,7 +622,7 @@ const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '  </bpmndi:BPMNDiagram>\n' +
     '</bpmn2:definitions>\n';
 
-const CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+let CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
     '  <bpmn2:process id="Process_1" name="WF_projectChangeRequest" isExecutable="true" description="项目变更流程">\n' +
     '    <bpmn2:extensionElements />\n' +
@@ -1346,9 +1346,14 @@ export const Http = {
 
 
 export const BpmnFunction = {
+
+  setBpmnTemplate(template) {
+    CompleteBpmn2 = template;
+  },
+
   getBpmnTemplate() {
     // return BaseCreateBpmn;
-    return CompleteBpmn2;
+    return CompleteBpmn;
   },
 
   /**

@@ -193,6 +193,7 @@ public class ProcessDesignController {
 		local.put("isPriority", "抢先优先级");
 		local.put("isAsync", "是否异步");
 		local.put("routingNotes", "路由备注");
+		local.put("close", "关闭");
 
 
 		Map<String, Object> language = new HashMap<>(15);
