@@ -63,7 +63,7 @@
 				</a-form-model-item>
 				<a-form-model-item :label="local.authority">
 					<a-checkbox v-model="activeItem.isVisible">{{local.visible}}</a-checkbox>
-					<a-checkbox v-model="activeItem.isNecessary">{{local.necessary}}</a-checkbox>
+					<a-checkbox v-model="activeItem.isNecessary" @change="isNecessaryChange">{{local.necessary}}</a-checkbox>
 					<a-checkbox v-model="activeItem.isReadOnly">{{local.readOnly}}</a-checkbox>
 					<a-checkbox v-model="activeItem.isReset">{{local.reset}}</a-checkbox>
 				</a-form-model-item>
@@ -103,6 +103,7 @@
 
 <script>
   import {BpmnFunction} from "../../js/BpmnHelper";
+
   const type = ['int', 'char', 'float', 'boolean', 'String', 'Date', 'URL', 'Other...',];
   const ignoreAttr = ['$type', 'id'];
 
@@ -189,6 +190,11 @@
           }
         });
       },
+      isNecessaryChange() {
+        if (this.activeItem.isNecessary) {
+          this.activeItem.isVisible = true;
+        }
+      },
       clearData() {
         this.activeId = '';
         this.activeItem = {};
@@ -199,22 +205,22 @@
         let that = this;
         return this.variables.filter(variable => variable.id === that.activeId)[0];
       },
-      validateClass(){
-        if (this.activeItem.type === 'Other...' && !this.activeItem.otherName){
+      validateClass() {
+        if (this.activeItem.type === 'Other...' && !this.activeItem.otherName) {
           BpmnFunction.errorMessage(this, this.local.enterClass);
           return false;
-				}
+        }
         //TODO 添加远程校验
 
-			},
+      },
       validateForm() {
         if (!this.validateVariableName()) {
           BpmnFunction.errorMessage(this, this.local.singleVariableName);
           return false;
         } else if (!this.validateTypeValue()) {
-          BpmnFunction.errorMessage(this,  this.local.mismatchType);
+          BpmnFunction.errorMessage(this, this.local.mismatchType);
           return false;
-        } else if (this.activeItem.type === 'Other...' && !this.activeItem.otherName ) {
+        } else if (this.activeItem.type === 'Other...' && !this.activeItem.otherName) {
           BpmnFunction.errorMessage(this, this.local.enterClass);
           return false;
         }

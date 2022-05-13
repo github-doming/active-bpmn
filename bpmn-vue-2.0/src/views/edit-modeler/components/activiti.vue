@@ -72,6 +72,7 @@
       saveBpmn() {
         const that = this;
         that.getBpmnXml().then(newXml => {
+          console.log(newXml);
           that.setBpmnXml(newXml);
         });
       },
