@@ -58,7 +58,6 @@
     methods: {
       updateGeneral: BpmnMethod.updateGeneral(),
       getExtensionElements: BpmnMethod.getExtensionElements(),
-
       // participant() {
       //   let participant;
       //   for (let i = 0; i < this.extensionValues.length; i++) {
