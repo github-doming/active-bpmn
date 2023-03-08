@@ -7,9 +7,6 @@
       <a-form-model-item :label="local.clazz" prop="class">
         <a-input :placeholder="local.enterClass" v-model="form.class" @change="updateAttrs('class')"/>
       </a-form-model-item>
-      <a-form-model-item :label="local.isAsync" prop="async">
-        <a-switch v-model="form.async" @change="updateAttrs('async')"/>
-      </a-form-model-item>
     </a-form-model>
   </div>
 </template>

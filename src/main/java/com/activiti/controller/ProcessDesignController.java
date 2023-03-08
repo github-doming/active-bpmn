@@ -5,19 +5,11 @@ import com.activiti.model.ModelSaveRestResource;
 import com.activiti.service.ProcessDesignService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.activiti.engine.repository.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.activiti.engine.repository.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -55,6 +47,20 @@ public class ProcessDesignController {
 			Map<String, String> data = new HashMap<>(2);
 			data.put("code", state.toLowerCase());
 			data.put("name", state);
+			result.add(data);
+		});
+
+		return result;
+	}
+
+	@RequestMapping(value = "/model/roles", method = RequestMethod.GET)
+	public JSONArray listRoles() {
+		String[] status = {"Reviewer", "Approver", "Distributor", "Countersigner"};
+		JSONArray result = new JSONArray();
+		Arrays.stream(status).forEach(state -> {
+			Map<String, String> data = new HashMap<>(2);
+			data.put("roleCode", state.toLowerCase());
+			data.put("roleName", state);
 			result.add(data);
 		});
 
@@ -174,6 +180,7 @@ public class ProcessDesignController {
 		local.put("taskFormTemplate", "模板名称");
 		local.put("selectTemplate", "请选择模板");
 		local.put("signingRequired", "需要签名");
+		local.put("isSendNotification", "需要发送通知");
 		local.put("pleaseEnter", "请输入");
 		local.put("workflowTemplate", "工作流模板");
 		local.put("userTask", "用户任务");
@@ -194,6 +201,27 @@ public class ProcessDesignController {
 		local.put("isAsync", "是否异步");
 		local.put("routingNotes", "路由备注");
 		local.put("close", "关闭");
+		local.put("recipient", "收件人");
+		local.put("responsibleRole", "负责角色");
+
+		local.put("message", "消息");
+		local.put("subject", "主题");
+		local.put("subjectSelect", "主题选择");
+		local.put("pboSubject", "流程主对象");
+		local.put("templateSubject", "使用模板主题");
+		local.put("messageBody", "邮件主体");
+		local.put("attachment", "附件");
+		local.put("wfProcessPbo", "进程的主要业务对象");
+		local.put("primaryContent", "主要内容");
+		local.put("secondContent", "附属内容");
+		local.put("attrInfo", "属性信息");
+		local.put("varSelect", "选择进程变量");
+		local.put("varName", "变量名称");
+
+		local.put("operator", "操作者");
+		local.put("team", "团队");
+		local.put("email", "电子邮件");
+
 
 
 		Map<String, Object> language = new HashMap<>(15);
@@ -218,6 +246,7 @@ public class ProcessDesignController {
 		language.put("Create Exclusive Gateway", "创建互斥网关");
 		language.put("Create Inclusive Gateway", "创建相容网关");
 		language.put("Create Status Auto", "创建状态自动机");
+		language.put("Create Mail Auto", "邮件自动机");
 		language.put("Create Timer", "创建定时器");
 
 

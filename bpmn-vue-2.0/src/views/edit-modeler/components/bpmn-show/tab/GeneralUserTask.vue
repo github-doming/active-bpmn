@@ -14,8 +14,8 @@
       <a-form-model-item :label="local.signingRequired">
         <a-switch :checked="activity.signingRequired"/>
       </a-form-model-item>
-      <a-form-model-item :label="local.isAsync" prop="async">
-        <a-switch :checked="form.async"/>
+      <a-form-model-item :label="local.isSendNotification" prop="isSendNotification">
+        <a-switch v-model="activity.isSendNotification"/>
       </a-form-model-item>
     </a-form-model>
   </div>
