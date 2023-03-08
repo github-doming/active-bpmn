@@ -21,8 +21,13 @@
           "name": "signingRequired",
           "type": "Boolean",
           "isAttr": true
+        },
+        {
+          "name": "isSendNotification",
+          "type": "Boolean",
+          "isAttr": true
         }
-      ]
+          ]
     },
     {
       "name": "Variable",
@@ -262,7 +267,57 @@
     },
 
 
-
+    {
+      "name": "ResponsibleRole",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "roleCode",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Recipient",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "assign",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "group",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "role",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "assigns",
+          "isMany": true,
+          "type": "Assign"
+        },
+        {
+          "name": "groups",
+          "isMany": true,
+          "type": "Group"
+        },
+        {
+          "name": "roles",
+          "isMany": true,
+          "type": "Role"
+        }
+      ]
+    },
 
     {
       "name": "Assign",

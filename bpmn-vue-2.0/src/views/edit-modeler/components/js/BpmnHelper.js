@@ -21,6 +21,9 @@ const BaseCreateBpmn = '<?xml version="1.0" encoding="UTF-8"?>' +
 const CompleteBpmn = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"><bpmn2:process id="Process_1" isExecutable="true"><bpmn2:extensionElements /><bpmn2:startEvent id="StartEvent_0npimz1" name="开始"><bpmn2:extensionElements /><bpmn2:outgoing>SequenceFlow_0g09s4d</bpmn2:outgoing></bpmn2:startEvent><bpmn2:userTask id="UserTask_001ymr3"><bpmn2:extensionElements><activiti:formTemplate /><activiti:participant><activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_code" /></activiti:participant><activiti:voteSelect /></bpmn2:extensionElements><bpmn2:incoming>SequenceFlow_0g09s4d</bpmn2:incoming></bpmn2:userTask><bpmn2:sequenceFlow id="SequenceFlow_0g09s4d" sourceRef="StartEvent_0npimz1" targetRef="UserTask_001ymr3" /></bpmn2:process><bpmndi:BPMNDiagram id="BPMNDiagram_1"><bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1"><bpmndi:BPMNShape id="StartEvent_0npimz1_di" bpmnElement="StartEvent_0npimz1"><dc:Bounds x="202" y="102" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="208" y="141" width="23" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape><bpmndi:BPMNShape id="UserTask_001ymr3_di" bpmnElement="UserTask_001ymr3"><dc:Bounds x="310" y="95" width="62.5" height="50" /></bpmndi:BPMNShape><bpmndi:BPMNEdge id="SequenceFlow_0g09s4d_di" bpmnElement="SequenceFlow_0g09s4d"><di:waypoint x="238" y="120" /><di:waypoint x="310" y="120" /></bpmndi:BPMNEdge></bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn2:definitions>';
 
+const bpmnTest = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"><bpmn2:process id="Process_1" isExecutable="true"><bpmn2:extensionElements /><bpmn2:startEvent id="StartEvent_01tza0c" name="开始"><bpmn2:extensionElements /><bpmn2:outgoing>SequenceFlow_18ews7b</bpmn2:outgoing></bpmn2:startEvent><bpmn2:userTask id="UserTask_0h0jffi" name="提交"><bpmn2:extensionElements><activiti:formTemplate taskFormTemplate="Analyze Change Request" signingRequired="true" isSendNotification="true" /><activiti:participant><activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_code" /></activiti:participant><activiti:voteSelect /><activiti:roleSet id="11" name="路易十一" code="吃瓜群众" view="true" add="true" remove="true" sourceRef="UserTask_0e5n46n" /></bpmn2:extensionElements><bpmn2:incoming>SequenceFlow_18ews7b</bpmn2:incoming><bpmn2:outgoing>SequenceFlow_1az2cr7</bpmn2:outgoing></bpmn2:userTask><bpmn2:sequenceFlow id="SequenceFlow_18ews7b" sourceRef="StartEvent_01tza0c" targetRef="UserTask_0h0jffi" /><bpmn2:serviceTask id="ServiceTask_1u9qqi9" name="发送邮件" activiti:type="mail"><bpmn2:extensionElements><activiti:responsibleRole /></bpmn2:extensionElements><bpmn2:incoming>SequenceFlow_1az2cr7</bpmn2:incoming><bpmn2:outgoing>SequenceFlow_14f5d20</bpmn2:outgoing></bpmn2:serviceTask><bpmn2:sequenceFlow id="SequenceFlow_1az2cr7" sourceRef="UserTask_0h0jffi" targetRef="ServiceTask_1u9qqi9" /><bpmn2:userTask id="UserTask_0e5n46n" name="发布"><bpmn2:extensionElements><activiti:formTemplate /><activiti:participant><activiti:role need="NO" number="" name="路易十一" type="role" roleCode="吃瓜群众" id="11" /></activiti:participant><activiti:voteSelect /></bpmn2:extensionElements><bpmn2:incoming>SequenceFlow_14f5d20</bpmn2:incoming><bpmn2:outgoing>SequenceFlow_0umcinp</bpmn2:outgoing></bpmn2:userTask><bpmn2:sequenceFlow id="SequenceFlow_14f5d20" sourceRef="ServiceTask_1u9qqi9" targetRef="UserTask_0e5n46n" /><bpmn2:endEvent id="EndEvent_1ii5i7b" name="结束"><bpmn2:extensionElements><activiti:formTemplate /><activiti:participant><activiti:role need="ALL" number="" name="操作者" type="role" roleCode="operator_code" id="operator_code" /></activiti:participant><activiti:voteSelect /></bpmn2:extensionElements><bpmn2:incoming>SequenceFlow_0umcinp</bpmn2:incoming></bpmn2:endEvent><bpmn2:sequenceFlow id="SequenceFlow_0umcinp" sourceRef="UserTask_0e5n46n" targetRef="EndEvent_1ii5i7b" /></bpmn2:process><bpmndi:BPMNDiagram id="BPMNDiagram_1"><bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1"><bpmndi:BPMNShape id="StartEvent_01tza0c_di" bpmnElement="StartEvent_01tza0c"><dc:Bounds x="392" y="222" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="399" y="261" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape><bpmndi:BPMNShape id="UserTask_0h0jffi_di" bpmnElement="UserTask_0h0jffi"><dc:Bounds x="480" y="215" width="62.5" height="50" /></bpmndi:BPMNShape><bpmndi:BPMNEdge id="SequenceFlow_18ews7b_di" bpmnElement="SequenceFlow_18ews7b"><di:waypoint x="428" y="240" /><di:waypoint x="480" y="240" /></bpmndi:BPMNEdge><bpmndi:BPMNShape id="ServiceTask_1u9qqi9_di" bpmnElement="ServiceTask_1u9qqi9"><dc:Bounds x="595" y="215" width="50" height="50" /></bpmndi:BPMNShape><bpmndi:BPMNEdge id="SequenceFlow_1az2cr7_di" bpmnElement="SequenceFlow_1az2cr7"><di:waypoint x="543" y="240" /><di:waypoint x="595" y="240" /></bpmndi:BPMNEdge><bpmndi:BPMNShape id="UserTask_0e5n46n_di" bpmnElement="UserTask_0e5n46n"><dc:Bounds x="700" y="215" width="62.5" height="50" /></bpmndi:BPMNShape><bpmndi:BPMNEdge id="SequenceFlow_14f5d20_di" bpmnElement="SequenceFlow_14f5d20"><di:waypoint x="645" y="240" /><di:waypoint x="700" y="240" /></bpmndi:BPMNEdge><bpmndi:BPMNShape id="EndEvent_1ii5i7b_di" bpmnElement="EndEvent_1ii5i7b"><dc:Bounds x="832" y="222" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="839" y="261" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape><bpmndi:BPMNEdge id="SequenceFlow_0umcinp_di" bpmnElement="SequenceFlow_0umcinp"><di:waypoint x="763" y="240" /><di:waypoint x="832" y="240" /></bpmndi:BPMNEdge></bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn2:definitions>'
+
 let CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://activiti.org/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">\n' +
     '  <bpmn2:process id="Process_1" name="WF_projectChangeRequest" isExecutable="true" description="项目变更流程">\n' +
@@ -631,6 +634,7 @@ let CompleteBpmn2 = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 export const BpmnConfig = {
   statusAutoClass: 'com.pisx.tundra.foundation.workflow.listener.WfProcessSetStateListener',
   analyzeTypes: ['bpmn:Process', 'bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:SequenceFlow', 'bpmn:ServiceTask', 'bpmn:EndEvent', 'bpmn:InclusiveGateway', 'bpmn:IntermediateCatchEvent'],
+    mailAutoType:'mail'
 };
 
 export const BpmnTag = {
@@ -645,6 +649,7 @@ export const BpmnTag = {
   role: 'activiti:Role',
   repository: 'activiti:Repository',
   vote: 'activiti:Vote',
+    responsibleRole: 'activiti:ResponsibleRole',
 
   threshold: 'activiti:Threshold',
   field: 'activiti:Field',
@@ -659,6 +664,16 @@ export const BpmnTag = {
     }
     return undefined;
   },
+    getRecipient(participantKey) {
+        if (participantKey === 'assigns') {
+            return this.assign;
+        } else if (participantKey === 'groups') {
+            return this.group;
+        } else if (participantKey === 'roles') {
+            return this.role;
+        }
+        return undefined;
+    },
   getParticipantType(participantKey) {
     if (participantKey === 'assigns') {
       return 'user';
@@ -668,7 +683,17 @@ export const BpmnTag = {
       return 'role';
     }
     return undefined;
-  }
+  },
+    getRecipientType(participantKey) {
+        if (participantKey === 'assigns') {
+            return 'user';
+        } else if (participantKey === 'groups') {
+            return 'group';
+        } else if (participantKey === 'roles') {
+            return 'role';
+        }
+        return undefined;
+    }
 };
 
 export const BpmnMethod = {
@@ -751,8 +776,8 @@ export const BpmnFunction = {
   },
 
   getBpmnTemplate() {
-    // return BaseCreateBpmn;
-    return CompleteBpmn2;
+    return bpmnTest;
+    // return CompleteBpmn2;
   },
 
   /**

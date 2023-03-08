@@ -1,0 +1,9 @@
+<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+    <defs>
+        <style>.cls-1,.cls-2{fill:none;}.cls-2{stroke:#000;stroke-width:1.2px;}</style>
+    </defs>
+    <title>e-mail</title>
+    <rect id="canvas_background" data-name="canvas background" class="cls-1" x="-1" y="-1" width="32" height="32"/>
+    <rect id="svg_10" data-name="svg 10" class="cls-2" x="1" y="1" width="28" height="28" rx="5"/>
+    <path d="M14,5.09H5a.35.35,0,0,0-.34.35v6.2A.34.34,0,0,0,5,12H14a.35.35,0,0,0,.35-.34V5.44A.35.35,0,0,0,14,5.09Zm-1,.69L9.51,8.49,6,5.78ZM5.38,11.29V6.14L9.29,9.19a.35.35,0,0,0,.22.08.34.34,0,0,0,.21-.08l3.91-3v5.15Z"/>
+</svg>

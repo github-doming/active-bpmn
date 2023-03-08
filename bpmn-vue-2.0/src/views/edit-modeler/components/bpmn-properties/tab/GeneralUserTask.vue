@@ -14,8 +14,8 @@
       <a-form-model-item :label="local.signingRequired" prop="signingRequired">
         <a-switch v-model="activity.signingRequired"/>
       </a-form-model-item>
-      <a-form-model-item :label="local.isAsync" prop="async">
-        <a-switch v-model="form.async" @change="updateAttrs('async')"/>
+      <a-form-model-item :label="local.isSendNotification" prop="isSendNotification">
+        <a-switch v-model="activity.isSendNotification"/>
       </a-form-model-item>
     </a-form-model>
   </div>

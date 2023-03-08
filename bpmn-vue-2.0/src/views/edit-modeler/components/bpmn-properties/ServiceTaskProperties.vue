@@ -1,6 +1,9 @@
 <template>
   <div class="properties">
-    <a-tabs type="card">
+<!--    邮件自动机-->
+    <general-service-task-mail-auto :param="param" :modeler="modeler"  :element="element" v-if="mailAuto" :field="field()" @updateGeneral="updateGeneral"/>
+<!--    状态自动机,普通服务任务-->
+    <a-tabs type="card" v-else>
       <a-tab-pane key="general" :tab="local.general">
         <general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
         <general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
@@ -13,10 +16,11 @@
   import {BpmnConfig, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
   import GeneralServiceTask from "./tab/GeneralServiceTask";
   import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
+  import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
 
   export default {
     name: "ServiceTaskProperties",
-    components: {GeneralServiceTaskStatusAuto, GeneralServiceTask},
+    components: {GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto, GeneralServiceTask},
     props: {
       modeler: {
         type: Object,
@@ -30,11 +34,7 @@
       }
     },
     data() {
-      return {
-        local: JSON.parse(localStorage.getItem('activeLocal')),
-        extensionValues: [],
-        param: this.params[this.element.id]
-      }
+      return {local: JSON.parse(localStorage.getItem('activeLocal')),extensionValues: [], param: this.params[this.element.id]}
     },
     watch: {
       element(val) {
@@ -46,6 +46,9 @@
       statusAuto() {
         return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass;
       },
+      mailAuto(){
+        return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.mailAutoType;
+      }
     },
     created() {
       this.extensionValues = this.getExtensionElements().get('values');
@@ -65,7 +68,7 @@
         elementTag.name = 'stateKey';
         this.extensionValues.push(elementTag);
         return elementTag;
-      },
+      }
     },
   }
 </script>

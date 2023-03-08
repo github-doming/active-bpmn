@@ -45,7 +45,15 @@ export default class CustomPalette {
       create.start(event, shape);
     }
 
-    function createIntermediateCatchEvent(event) {
+    function createMailAuto(event) {
+      const businessObject = bpmnFactory.create('bpmn:ServiceTask');
+      businessObject['name'] = '发送邮件';
+      businessObject.$attrs['activiti:type'] = BpmnConfig.mailAutoType;
+      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask', businessObject});
+      create.start(event, shape);
+    }
+
+      function createIntermediateCatchEvent(event) {
       const timerEvent = bpmnFactory.create('bpmn:TimerEventDefinition');
       const businessObject = bpmnFactory.create('bpmn:IntermediateCatchEvent');
       businessObject.eventDefinitions = [timerEvent];
@@ -60,9 +68,6 @@ export default class CustomPalette {
         action: {dragstart: createNode, click: createNode}
       }, 'create.service-task': {
         group: 'activity', className: 'bpmn-icon-service-task', title: translate('Create ServiceTask'),
-        action: {dragstart: createNode, click: createNode}
-      }, 'create.send-task': {
-        group: 'activity', className: 'bpmn-icon-send-task', title: translate('Create SendTask'),
         action: {dragstart: createNode, click: createNode}
       }, 'create.parallel-gateway': {
         group: 'activity', className: 'bpmn-icon-gateway-parallel', title: translate('Create Parallel Gateway'),
@@ -79,8 +84,12 @@ export default class CustomPalette {
       }, 'create.intermediate-event-catch-timer': {
         group: 'activity', className: 'bpmn-icon-intermediate-event-catch-timer', title: translate('Create Timer'),
         action: {dragstart: createIntermediateCatchEvent, click: createIntermediateCatchEvent}
+      },
+      'create.mail-auto': {
+        group: 'activity', className: 'icon-custom icon-custom-mail-auto', title: translate('Create Mail Auto'),
+        action: {dragstart: createMailAuto, click: createMailAuto}
       }
-    }
+      }
   }
 }
 CustomPalette.$inject = [
