@@ -84,6 +84,10 @@
           .then(res => {
             localStorage.setItem('activeStatus', JSON.stringify(res.data));
           }).catch(err => that.$message('查询失败' + err));
+      request({method: 'get', url: '/workflow/model/roles',})
+              .then(res => {
+                localStorage.setItem('activeRoles', JSON.stringify(res.data));
+              }).catch(err => that.$message('查询失败' + err));
     },
     methods: {
       handleEdit() {

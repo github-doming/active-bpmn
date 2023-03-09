@@ -776,8 +776,8 @@ export const BpmnFunction = {
   },
 
   getBpmnTemplate() {
-    // return bpmnTest;
-    return CompleteBpmn2;
+    return bpmnTest;
+    // return CompleteBpmn2;
   },
 
   /**
