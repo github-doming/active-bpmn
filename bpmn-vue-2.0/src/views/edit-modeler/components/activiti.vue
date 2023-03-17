@@ -423,11 +423,14 @@
         this.propsComponent = 'ProcessProperties'
       },
       dataRepair(element) {
-        if (element.type === 'bpmn:ServiceTask') {
-          if (element.businessObject.$attrs['activiti:class'] !== BpmnConfig.statusAutoClass) {
-            element.businessObject.extensionElements.set('values', []);
+          if (element.type === 'bpmn:ServiceTask') {
+              var isStatusAuto = element.businessObject.$attrs['activiti:class'] !== BpmnConfig.statusAutoClass;
+              var isMailAuto = element.businessObject.$attrs['activiti:type'] !== BpmnConfig.mailAutoType;
+              if (isStatusAuto && isMailAuto) {
+                  console.log(element.businessObject.extensionElements);
+                  element.businessObject.extensionElements.set('values', []);
+              }
           }
-        }
       }
       // endregion
 

@@ -315,10 +315,24 @@
           "name": "roles",
           "isMany": true,
           "type": "Role"
+        },
+        {
+          "name": "operators",
+          "isMany": true,
+          "type": "Operator"
+        },
+        {
+          "name": "variables",
+          "isMany": true,
+          "type": "Variable"
+        },
+        {
+          "name": "emails",
+          "isMany": true,
+          "type": "Email"
         }
       ]
     },
-
     {
       "name": "Assign",
       "properties": [
@@ -334,6 +348,14 @@
         },
         {
           "name": "id",
+          "isAttr": true,
+          "type": "String"
+        },{
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },{
+          "name": "fullName",
           "isAttr": true,
           "type": "String"
         }
@@ -446,6 +468,107 @@
           "name": "requiredReason",
           "isAttr": true,
           "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "Operator",
+      "properties": [
+        {
+          "name": "name",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "roleCode",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Email",
+      "properties": [
+        {
+          "name": "mail",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "id",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "subject",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "subjectSelect",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "mailTemplate",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "messageBody",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Attachment",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "primaryContent",
+          "isAttr": true,
+          "type": "Boolean"
+        },
+        {
+          "name": "secondContent",
+          "isAttr": true,
+          "type": "Boolean"
+        },
+        {
+          "name": "attrInfo",
+          "isAttr": true,
+          "type": "Boolean"
+        },
+        {
+          "name": "variables",
+          "isMany": true,
+          "type": "Variable"
         }
       ]
     }

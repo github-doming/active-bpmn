@@ -112,6 +112,7 @@ public class ProcessDesignController {
 
 		local.put("name", "名称");
 		local.put("enterName", "请输入名称");
+		local.put("emailFormat", "邮件格式不正确");
 
 
 		local.put("user", "用户");

@@ -1,81 +1,194 @@
 <template>
-  <div class="properties">
-<!--    邮件自动机-->
-    <general-service-task-mail-auto :param="param" :modeler="modeler"  :element="element" v-if="mailAuto" :field="field()" @updateGeneral="updateGeneral"/>
-<!--    状态自动机,普通服务任务-->
-    <a-tabs type="card" v-else>
-      <a-tab-pane key="general" :tab="local.general">
-        <general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
-        <general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
-      </a-tab-pane>
-    </a-tabs>
-  </div>
+	<div class="properties">
+		<!--    邮件自动机-->
+		<general-service-task-mail-auto :params="params" :param="param" :element="element"
+																		v-if="mailAuto" :mailGeneral="mailGeneral()"
+																		:mailRecipient="mailRecipient()"
+																		:mailMessage="mailMessage()" :mailAttachment="mailAttachment()"
+																		@updateGeneral="updateGeneral" @updateMailRecipient="updateMailRecipient"
+																		@updateMailAttachment="updateMailAttachment"/>
+		<!--    状态自动机,普通服务任务-->
+		<a-tabs type="card" v-else>
+			<a-tab-pane key="general" :tab="local.general">
+				<general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
+				<general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
+			</a-tab-pane>
+		</a-tabs>
+	</div>
 </template>
 
 <script>
-  import {BpmnConfig, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
-  import GeneralServiceTask from "./tab/GeneralServiceTask";
-  import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
-  import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
+    import {BpmnConfig, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
+    import GeneralServiceTask from "./tab/GeneralServiceTask";
+    import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
+    import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
 
-  export default {
-    name: "ServiceTaskProperties",
-    components: {GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto, GeneralServiceTask},
-    props: {
-      modeler: {
-        type: Object,
-        default: () => ({})
-      }, params: {
-        type: Object,
-        default: () => ({})
-      }, element: {
-        type: Object,
-        default: () => ({})
-      }
-    },
-    data() {
-      return {local: JSON.parse(localStorage.getItem('activeLocal')),extensionValues: [], param: this.params[this.element.id]}
-    },
-    watch: {
-      element(val) {
-        this.param = this.params[val.id];
-        this.extensionValues = this.getExtensionElements().get('values');
-      },
-    },
-    computed: {
-      statusAuto() {
-        return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass;
-      },
-      mailAuto(){
-        return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.mailAutoType;
-      }
-    },
-    created() {
-      this.extensionValues = this.getExtensionElements().get('values');
-    },
-    methods: {
-      updateGeneral: BpmnMethod.updateGeneral(),
-      getExtensionElements: BpmnMethod.getExtensionElements(),
-      field() {
-        if (!this.statusAuto) {
-          return null;
-        }
-        let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
-        if (fields.length > 0) {
-          return fields[0];
-        }
-        let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.field);
-        elementTag.name = 'stateKey';
-        this.extensionValues.push(elementTag);
-        return elementTag;
-      }
-    },
-  }
+    export default {
+        name: "ServiceTaskProperties",
+        components: {GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask},
+        props: {
+            modeler: {
+                type: Object,
+                default: () => ({})
+            }, params: {
+                type: Object,
+                default: () => ({})
+            }, element: {
+                type: Object,
+                default: () => ({})
+            }
+        },
+        data() {
+            return {
+                local: JSON.parse(localStorage.getItem('activeLocal')),
+                extensionValues: [],
+                param: this.params[this.element.id]
+            }
+        },
+        watch: {
+            element(val) {
+                this.param = this.params[val.id];
+                this.extensionValues = this.getExtensionElements().get('values');
+            },
+        },
+        computed: {
+            statusAuto() {
+                return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.statusAutoClass;
+            },
+            mailAuto() {
+                return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.mailAutoType;
+            }
+        },
+        created() {
+            this.extensionValues = this.getExtensionElements().get('values');
+        },
+        methods: {
+            updateGeneral: BpmnMethod.updateGeneral(),
+            getExtensionElements: BpmnMethod.getExtensionElements(),
+            field() {
+                if (!this.statusAuto) {
+                    return null;
+                }
+                let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
+                if (fields.length > 0) {
+                    return fields[0];
+                }
+                let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.field);
+                elementTag.name = 'stateKey';
+                this.extensionValues.push(elementTag);
+                return elementTag;
+            },
+            mailGeneral() {
+                let general;
+                for (let i = 0; i < this.extensionValues.length; i++) {
+                    if (this.extensionValues[i]['$type'] === BpmnTag.responsibleRole) {
+                        general = this.extensionValues[i];
+                        break;
+                    }
+                }
+                if (!general) {
+                    general = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.responsibleRole);
+                    this.extensionValues.push(general);
+                }
+                if (!general.roleCode) {
+                    general.roleCode = 'operator_code';
+                }
+                return general;
+            },
+            mailRecipient() {
+                let participant;
+                for (let i = 0; i < this.extensionValues.length; i++) {
+                    if (this.extensionValues[i]['$type'] === BpmnTag.recipient) {
+                        participant = this.extensionValues[i];
+                        break;
+                    }
+                }
+                if (!participant) {
+                    participant = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.recipient);
+                    this.extensionValues.push(participant);
+                }
+                return participant;
+            },
+            updateMailRecipient(type, participant, participantKey, participantData) {
+                if ('add' === type) {
+                    participantData.forEach(item => {
+                        let tagElement = BpmnFunction.createElementTag(this.modeler, participant, BpmnTag.getRecipient(participantKey));
+                        var addObject = {
+                            'hover': false,
+                            'type': BpmnTag.getRecipientType(participantKey),
+                            'id': item.id
+                        };
+                        if ("assigns" === participantKey) {
+                            Object.assign(addObject, {
+                                'fullName': item.name,
+                                'userName': item.userName
+                            });
+                        } else if ("groups" === participantKey || "variables" === participantKey) {
+                            Object.assign(addObject, {
+                                'name': item.name,
+                            });
+                        } else if("roles" === participantKey || "operators" === participantKey){
+                            Object.assign(addObject, {
+                                'name':item.name,
+                                'roleCode': item.roleCode
+                            });
+												} else if("emails" === participantKey){
+                            Object.assign(addObject, {
+                                'mail': item.mail
+                            });
+                        }
+                        Object.assign(tagElement, addObject);
+                        participant[participantKey].push(tagElement);
+                    });
+                }
+            },
+            mailMessage() {
+                let message;
+                for (let i = 0; i < this.extensionValues.length; i++) {
+                    if (this.extensionValues[i]['$type'] === BpmnTag.message) {
+                        message = this.extensionValues[i];
+                        break;
+                    }
+                }
+                if (!message) {
+                    message = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.message);
+                    this.extensionValues.push(message);
+                }
+                return message;
+            },
+            mailAttachment() {
+                let attachment;
+                for (let i = 0; i < this.extensionValues.length; i++) {
+                    if (this.extensionValues[i]['$type'] === BpmnTag.attachment) {
+                        attachment = this.extensionValues[i];
+                        break;
+                    }
+                }
+                if (!attachment) {
+                    attachment = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.attachment);
+                    this.extensionValues.push(attachment);
+                }
+                return attachment;
+            },
+            updateMailAttachment(attachmentModel, attachmentData) {
+                attachmentModel['variables'] = [];
+                attachmentData.forEach(item => {
+                    let tagElement = BpmnFunction.createElementTag(this.modeler, attachmentModel, BpmnTag.getRecipient('variables'));
+                    Object.assign(tagElement, {
+                        'type': BpmnTag.getRecipientType('variables'),
+                        'id': item.id,
+                        'name': item.name
+                    });
+                    attachmentModel['variables'].push(tagElement);
+                });
+            }
+        },
+    }
 </script>
 
 <style scoped>
-  .properties {
-    padding: 8px 12px;
-    margin: 2px 3px;
-  }
+	.properties {
+		padding: 8px 12px;
+		margin: 2px 3px;
+	}
 </style>
