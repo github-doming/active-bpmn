@@ -222,7 +222,7 @@ public class ProcessDesignController {
 		local.put("operator", "操作者");
 		local.put("team", "团队");
 		local.put("email", "电子邮件");
-
+		local.put("taskGuide", "工作指示");
 
 
 		Map<String, Object> language = new HashMap<>(15);

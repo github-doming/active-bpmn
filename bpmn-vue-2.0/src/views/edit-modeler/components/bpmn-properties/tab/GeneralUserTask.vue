@@ -17,6 +17,12 @@
       <a-form-model-item :label="local.isSendNotification" prop="isSendNotification">
         <a-switch v-model="activity.isSendNotification"/>
       </a-form-model-item>
+      <a-form-model-item :label="local.taskGuide" prop="taskGuide">
+        <a-textarea
+                v-model="activity.taskGuide"
+                :auto-size="{ minRows: 5, maxRows: 7 }"
+        />
+      </a-form-model-item>
     </a-form-model>
   </div>
 </template>

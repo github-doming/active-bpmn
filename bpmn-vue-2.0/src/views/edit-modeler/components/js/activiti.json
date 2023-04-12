@@ -26,6 +26,11 @@
           "name": "isSendNotification",
           "type": "Boolean",
           "isAttr": true
+        },
+        {
+          "name": "taskGuide",
+          "type": "String",
+          "isAttr": true
         }
           ]
     },
