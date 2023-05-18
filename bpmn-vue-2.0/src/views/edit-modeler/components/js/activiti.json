@@ -576,6 +576,79 @@
           "type": "Variable"
         }
       ]
+    },
+    {
+      "name": "Deadline",
+      "superClass": [
+        "Element"
+      ],
+      "properties": [
+        {
+          "name": "deadlineDay",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "deadlineHour",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "deadlineMinute",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "overdueResult",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "overdueBeforeDay",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "overdueBeforeHour",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "overdueBeforeMinute",
+          "type": "String",
+          "isAttr": true
+        }
+      ,{
+          "name": "overdueAfterDay",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "overdueAfterHour",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "overdueAfterMinute",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "noticeRoles",
+          "isMany": true,
+          "type": "Role"
+        },
+        {
+          "name": "isNotice",
+          "type": "Boolean",
+          "isAttr": true
+        },
+        {
+          "name": "markCompleteVotes",
+          "isMany": true,
+          "type": "Vote"
+        }
+      ]
     }
   ],
   "associations": []

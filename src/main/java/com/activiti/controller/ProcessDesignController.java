@@ -204,6 +204,18 @@ public class ProcessDesignController {
 		local.put("close", "关闭");
 		local.put("recipient", "收件人");
 		local.put("responsibleRole", "负责角色");
+		local.put("deadLine", "最后期限");
+		local.put("deadLineSet", "设置最后期限");
+		local.put("afterActivity", "从活动开始时");
+		local.put("overdueResult", "逾期后果");
+		local.put("skip", "跳过");
+		local.put("markComplete", "标记完成");
+		local.put("reassign", "重新分配到负责角色");
+		local.put("overdueNotice", "逾期责任人通知");
+		local.put("overdueBefore", "最后期限之前");
+		local.put("overdueAfter", "最后期限之后");
+		local.put("selectNoticeRole", "通知选定角色");
+		local.put("roleCode", "角色码");
 
 		local.put("message", "消息");
 		local.put("subject", "主题");

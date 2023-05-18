@@ -13,6 +13,9 @@
       <a-tab-pane key="participant" :tab="local.participant">
         <participant :participant="participant()" @updateParticipant="updateParticipant"/>
       </a-tab-pane>
+      <a-tab-pane key="deadLine" :tab="local.deadLine" >
+        <dead-line :deadLineNode="deadLineNode()" :voteSelect="voteSelect()" @updateDeadLine = "updateDeadLine" @updateMarkCompleteVote = "updateMarkCompleteVote"/>
+      </a-tab-pane>
       <a-tab-pane key="resourceLibrary" :tab="local.resourceLibrary">
         <resource-library :roleSets="roleSetInfos" @updateRepository="updateRepository"/>
       </a-tab-pane>
@@ -37,10 +40,11 @@
   import TaskListener from "./tab/TaskListener";
   import GeneralUserTask from "./tab/GeneralUserTask";
   import VoteSelect from "./tab/VoteSelect";
+  import DeadLine from "./tab/DeadLine";
 
   export default {
     name: "UserTaskProperties",
-    components: {VoteSelect, GeneralUserTask, TaskListener, ResourceLibrary, Participant, RoleSet, Variable},
+    components: {VoteSelect, GeneralUserTask, TaskListener, ResourceLibrary, Participant, RoleSet, Variable, DeadLine},
     props: {
       modeler: {
         type: Object,
@@ -165,6 +169,7 @@
         }
         return activity;
       },
+
       voteSelect() {
         const that = this;
         let data;
@@ -288,6 +293,54 @@
           });
         }
       },
+      deadLineNode(){
+        let deadLineNode;
+        for (let i = 0; i < this.extensionValues.length; i++) {
+          if (this.extensionValues[i]['$type'] === BpmnTag.deadline) {
+            deadLineNode = this.extensionValues[i];
+            break;
+          }
+        }
+        if (!deadLineNode) {
+          deadLineNode = BpmnFunction.createElementTag(this.modeler, this.param.extensionElements, BpmnTag.deadline);
+          this.extensionValues.push(deadLineNode);
+        }
+        return deadLineNode;
+      },
+      updateDeadLine(deadLineNode,selectData){
+        const that = this;
+        deadLineNode['noticeRoles'] = [];
+        selectData.forEach(item => {
+          let tagElement = BpmnFunction.createElementTag(that.modeler, deadLineNode, BpmnTag.role);
+          var addRole = {
+            'type': 'role',
+            'id': item.key,
+            'name':item.roleName,
+            'roleCode':item.roleCode
+          };
+          Object.assign(tagElement, addRole);
+          deadLineNode['noticeRoles'].push(tagElement);
+        });
+      },
+      updateMarkCompleteVote(deadLineNode,selectVotes){
+        const that = this;
+        deadLineNode['markCompleteVotes'] = [];
+        let allVotes = this.voteSelect().votes;
+        selectVotes.forEach(item => {
+          for (let i = 0; i < allVotes.length; i++) {
+            if (item == allVotes[i].id) {
+              let tagElement = BpmnFunction.createElementTag(that.modeler, deadLineNode, BpmnTag.vote);
+              var addVote = {
+                'id': allVotes[i].id,
+                'name': allVotes[i].name
+              };
+              Object.assign(tagElement, addVote);
+              deadLineNode['markCompleteVotes'].push(tagElement);
+              break;
+            }
+          }
+        });
+      }
     },
   }
 </script>
