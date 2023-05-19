@@ -13,6 +13,9 @@
       <a-tab-pane key="participant" :tab="local.participant">
         <participant :participant="participant"></participant>
       </a-tab-pane>
+      <a-tab-pane key="deadLine" :tab="local.deadLine" >
+        <dead-line :deadLineNode="deadLineNode" :voteSelect="voteSelect" />
+      </a-tab-pane>
       <a-tab-pane key="resourceLibrary" :tab="local.resourceLibrary">
         <resource-library :roleSets="roleSetInfos"></resource-library>
       </a-tab-pane>
@@ -35,11 +38,12 @@
   import ResourceLibrary from "./tab/ResourceLibrary";
   import TaskListener from "./tab/TaskListener";
   import VoteSelect from "./tab/VoteSelect";
+  import DeadLine from "./tab/DeadLine";
   import {BpmnComputed, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
 
   export default {
     name: "UserTaskProperties",
-    components: {GeneralUserTask, Variable, RoleSet, Participant, ResourceLibrary, TaskListener, VoteSelect},
+    components: {GeneralUserTask, Variable, RoleSet, Participant, ResourceLibrary, TaskListener, VoteSelect,DeadLine},
     props: {
       modeler: {
         type: Object,
@@ -74,6 +78,13 @@
       },
       participant() {
         let participants = this.extensionValues.filter(element => element['$type'] === BpmnTag.participant);
+        if (participants) {
+          return participants[0];
+        }
+        return {};
+      },
+      deadLineNode(){
+        let participants = this.extensionValues.filter(element => element['$type'] === BpmnTag.deadline);
         if (participants) {
           return participants[0];
         }
