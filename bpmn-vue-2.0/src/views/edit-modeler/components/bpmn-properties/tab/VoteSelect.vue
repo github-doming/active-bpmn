@@ -16,7 +16,8 @@
               @click="transformSelect(item)">
             <td>{{item.name}}</td>
             <td>
-              <a-select v-model:value="item.priority" :placeholder="local.isPriority" @change="isLeaderPriority(item)">
+              <a-select v-model:value="item.priority" :placeholder="local.isPriority" >
+<!--                @change="isLeaderPriority(item)"-->
                 <a-select-option v-for="i in votesLen" :key="i">
                   {{ i }}
                 </a-select-option>
@@ -91,14 +92,14 @@
       transformSelect(item) {
         this.activeId = item.id;
       },
-      isLeaderPriority(item) {
-        if (item.priority === this.votes.length) {
-          this.leader = 1;
-          this.leaderId = item.id;
-        } else if (this.leaderId === item.id) {
-          this.leader = 0;
-        }
-      },
+      // isLeaderPriority(item) {
+      //   if (item.priority === this.votes.length) {
+      //     this.leader = 1;
+      //     this.leaderId = item.id;
+      //   } else if (this.leaderId === item.id) {
+      //     this.leader = 0;
+      //   }
+      // },
       upVote() {
         if (!this.activeId) {
           return;
