@@ -41,7 +41,11 @@
 					</tbody>
 				</table>
 			</a-col>
-			<a-col :span="7" class='role-panel'>
+      <a-col :span="1"  class="btn-style">
+        <a-button icon="up" class="up-btn-style" @click="upVote" :disabled="activeId === ''"/>
+        <a-button icon="down" @click="downVote" :disabled="activeId === ''"/>
+      </a-col>
+			<a-col :span="6" class='role-panel'>
 				<table>
 					<tr>
 						<th>{{local.resourceLibrary}}</th>
@@ -91,12 +95,57 @@
         }
 
       },
+      upVote() {
+        if (!this.activeId) {
+          return;
+        }
+        let roleSetCopy = [];
+        for (let i = 0; i < this.roleSetInfos.length; i++) {
+          roleSetCopy[i] = this.roleSetInfos[i];
+          if (this.roleSetInfos[i].id === this.activeId) {
+            if (i !== 0) {
+              roleSetCopy[i - 1] = this.roleSetInfos[i];
+              roleSetCopy[i] = this.roleSetInfos[i - 1];
+            }
+          }
+        }
+        this.roleSetInfos = roleSetCopy;
+        this.$emit('moveUpdateRoleSet', roleSetCopy);
+      },
+      downVote() {
+        if (!this.activeId) {
+          return;
+        }
+        let roleSetCopy = [];
+        const len = this.roleSetInfos.length;
+        for (let i = 0; i < len; i++) {
+          roleSetCopy[i] = this.roleSetInfos[i];
+          if (this.roleSetInfos[i].id === this.activeId) {
+            if (i !== len - 1) {
+              roleSetCopy[i] = this.roleSetInfos[i + 1];
+              roleSetCopy[i + 1] = this.roleSetInfos[i];
+              i++;
+            }
+          }
+        }
+        this.roleSetInfos = roleSetCopy;
+        this.$emit('moveUpdateRoleSet', roleSetCopy);
+      }
     }
-
   }
 </script>
 
 <style scoped>
+  .btn-style {
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+  }
+  .up-btn-style {
+    margin-bottom: 10px;
+  }
 	.role-context {
 		width: 100%;
 		height: 64vh;

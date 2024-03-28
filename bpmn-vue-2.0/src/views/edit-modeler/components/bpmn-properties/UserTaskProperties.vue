@@ -8,7 +8,7 @@
         <variable :variables="variables" :globalVariables="globalVariables" @updateVariable="updateVariable"/>
       </a-tab-pane>
       <a-tab-pane key="roleSet" :tab="local.roleSet">
-        <role-set :param="param" :roleSetInfos="roleSetInfos"/>
+        <role-set :param="param" :roleSetInfos="roleSetInfos" @moveUpdateRoleSet="moveUpdateRoleSet"/>
       </a-tab-pane>
       <a-tab-pane key="participant" :tab="local.participant">
         <participant :participant="participant()" @updateParticipant="updateParticipant"/>
@@ -256,6 +256,21 @@
             }
           }
         }
+      },
+      moveUpdateRoleSet(rolesOption){
+        const that = this;
+        rolesOption.forEach(item => {
+          let index = this.extensionValues.findIndex(obj => obj.id === item.id);
+          if(index !=-1 ){
+            this.extensionValues.splice(index);
+          }
+        });
+        let extensionElements = this.param.extensionElements;
+        rolesOption.forEach(item => {
+          let roleSet = BpmnFunction.createElementTag(that.modeler, extensionElements, BpmnTag.roleSet);
+          Object.assign(roleSet, {view: item.view, add: item.add, remove: item.remove, sourceRef: item.sourceRef,code:item.code,id:item.id,name:item.name});
+          extensionElements.get('values').push(roleSet);
+        });
       },
       editRoleSet4Role(rolesOption, type) {
         const that = this;
