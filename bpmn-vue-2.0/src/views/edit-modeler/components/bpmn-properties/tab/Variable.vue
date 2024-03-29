@@ -1,6 +1,11 @@
 <template>
 	<div class="over-scroll">
 		<div class="flex">
+      <div >
+        <a-button type="primary" @click='addData'>{{local.create}}</a-button>
+        <a-button :disabled="activeId === ''" @click="updateData" class="flex-btn">{{local.updated}}</a-button>
+        <a-button type="danger" :disabled="activeId === ''" @click="deleteData" class="flex-btn">{{local.delete}}</a-button>
+      </div>
 			<div class="flex-table">
 				<table>
 					<thead>
@@ -29,11 +34,6 @@
 					</tr>
 					</tbody>
 				</table>
-			</div>
-			<div class="flex-btn">
-				<a-button type="primary" @click='addData'>{{local.create}}</a-button>
-				<a-button :disabled="activeId === ''" @click="updateData">{{local.updated}}</a-button>
-				<a-button type="danger" :disabled="activeId === ''" @click="deleteData">{{local.delete}}</a-button>
 			</div>
 		</div>
 		<a-modal v-model="variableVisible" :title="local.create" width="600px" :ok-text="local.ok"
@@ -273,7 +273,7 @@
 	}
 
 	.flex {
-		display: flex;
+		//display: flex;
 		min-width: 850px;
 		min-height: 100%;
 		padding-right: 10px;
@@ -289,9 +289,10 @@
 	}
 
 	.flex-btn {
-		width: 65px;
+		//width: 65px;
+    margin-left: 5px;
+    margin-bottom: 5px;
 	}
-
 	.flex-btn button {
 		margin-bottom: 5px;
 	}
