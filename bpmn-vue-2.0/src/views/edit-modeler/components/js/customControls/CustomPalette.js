@@ -53,6 +53,14 @@ export default class CustomPalette {
       create.start(event, shape);
     }
 
+    function createSubProcessAuto(event) {
+      const businessObject = bpmnFactory.create('bpmn:ServiceTask');
+      businessObject['name'] = '子流程';
+      businessObject.$attrs['activiti:class'] = BpmnConfig.subProcessAutoClass;
+      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask', businessObject});
+      create.start(event, shape);
+    }
+
       function createIntermediateCatchEvent(event) {
       const timerEvent = bpmnFactory.create('bpmn:TimerEventDefinition');
       const businessObject = bpmnFactory.create('bpmn:IntermediateCatchEvent');
@@ -88,6 +96,10 @@ export default class CustomPalette {
       'create.mail-auto': {
         group: 'activity', className: 'icon-custom icon-custom-mail-auto', title: translate('Create Mail Auto'),
         action: {dragstart: createMailAuto, click: createMailAuto}
+      },
+      'create.subProcess': {
+        group: 'activity', className: 'icon-custom icon-custom-subProcess-auto', title: translate('Create SubProcess'),
+        action: {dragstart: createSubProcessAuto, click: createSubProcessAuto}
       }
       }
   }

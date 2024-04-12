@@ -53,6 +53,19 @@ public class ProcessDesignController {
 		return result;
 	}
 
+	@RequestMapping(value = "/model/subProcess", method = RequestMethod.GET)
+	public JSONArray listSubProcess() {
+		String[] subProcess = {"子流程1", "子流程2"};
+		JSONArray result = new JSONArray();
+		Arrays.stream(subProcess).forEach(state -> {
+			Map<String, String> data = new HashMap<>();
+			data.put("name", state);
+			result.add(data);
+		});
+
+		return result;
+	}
+
 	@RequestMapping(value = "/model/roles", method = RequestMethod.GET)
 	public JSONArray listRoles() {
 		String[] status = {"Reviewer", "Approver", "Distributor", "Countersigner"};
@@ -197,6 +210,7 @@ public class ProcessDesignController {
 		local.put("threshold", "阈值");
 		local.put("condition", "条件");
 		local.put("specificState", "特定状态");
+		local.put("subProcessTemplate", "子流程模板");
 		local.put("vote", "路由");
 		local.put("isPriority", "抢先优先级");
 		local.put("isAsync", "是否异步");
@@ -261,6 +275,7 @@ public class ProcessDesignController {
 		language.put("Create Status Auto", "创建状态自动机");
 		language.put("Create Mail Auto", "邮件自动机");
 		language.put("Create Timer", "创建定时器");
+		language.put("Create SubProcess", "创建子流程");
 
 
 		language.put("Append End Event", "追加结束事件");

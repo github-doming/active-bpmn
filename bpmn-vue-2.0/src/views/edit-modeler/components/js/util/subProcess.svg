@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33.2 33.2">
+    <defs>
+        <style>.cls-1,.cls-2{fill:none;}.cls-2{stroke:#000;stroke-width:1.2px;}</style>
+    </defs>
+    <g id="图层_2" data-name="图层 2">
+        <g id="图层_1-2" data-name="图层 1">
+            <rect id="canvas_background" data-name="canvas background" class="cls-1" x="0.6" y="0.6" width="32" height="32"/>
+            <rect id="svg_10" data-name="svg 10" class="cls-2" x="0.6" y="0.6" width="32" height="32" rx="5.71"/>
+            <path id="形状" d="M4.45,7.76H7.26V8.81H8.43V5.65H10.3V4.71h2.58V7.29H10.3V6.35H9.13V12H10.3V11h2.58v2.57H10.3v-.93H8.43V9.51H7.26v1.06H4.45Zm6.56,4v1.17h1.17V11.74Zm0-6.32V6.59h1.17V5.42Zm-5.86,3V9.87H6.56V8.46Z"/>
+        </g>
+    </g>
+</svg>

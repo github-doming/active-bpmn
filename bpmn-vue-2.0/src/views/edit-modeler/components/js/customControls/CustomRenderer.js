@@ -7,6 +7,7 @@ import {
 } from 'tiny-svg';
 import setStatus from '../util/set-status.svg';
 import email from '../util/e-mail.svg';
+import subProcess from '../util/subProcess.svg';
 
 const CustomTypes = ['bpmn:UserTask', 'bpmn:ServiceTask', 'bpmn:SendTask'];
 
@@ -34,6 +35,10 @@ export default class CustomRenderer extends BaseRenderer {
     {
       return this.drawSetMail(visuals, element);
     }
+    if(element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:class'] ===  BpmnConfig.subProcessAutoClass)
+    {
+      return this.drawSubProcess(visuals, element);
+    }
       return this.bpmnRenderer.drawShape(visuals, element);
   }
 
@@ -42,6 +47,27 @@ export default class CustomRenderer extends BaseRenderer {
     const customIcon = svgCreate('image', {
       ...attr,
       href:setStatus,
+    });
+    element['width'] = attr.width;
+    element['height'] = attr.height;
+    svgAppend(parentNode, customIcon);
+    const  name = element.businessObject.name;
+    const text = svgCreate('text', {
+      x: attr.x,
+      y: attr.y + attr.height + 20,
+      "font-size": "14",
+      "fill": "#000"
+    });
+    text.innerHTML =name;
+    svgAppend(parentNode, text);
+    return customIcon
+  }
+
+  drawSubProcess(parentNode, element) {
+    const attr = { x: 0, y: 0, width: 50, height: 50 };
+    const customIcon = svgCreate('image', {
+      ...attr,
+      href:subProcess,
     });
     element['width'] = attr.width;
     element['height'] = attr.height;

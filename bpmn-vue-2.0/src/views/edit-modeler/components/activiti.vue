@@ -512,6 +512,9 @@
 	.icon-custom-mail-auto:before {
 		content: url('./js/util/e-mail.svg');
 	}
+  .icon-custom-subProcess-auto:before {
+    content: url('./js/util/subProcess.svg');
+  }
 	[class^="icon-custom-"]:before, [class*=" icon-custom-"]:before {
 		font-style: normal;
 		font-weight: normal;

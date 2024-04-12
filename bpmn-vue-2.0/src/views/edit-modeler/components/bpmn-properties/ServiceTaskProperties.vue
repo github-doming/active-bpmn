@@ -11,6 +11,7 @@
 		<a-tabs type="card" v-else>
 			<a-tab-pane key="general" :tab="local.general">
 				<general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
+        <general-service-task-sub-process v-else-if="subProcessAuto" :field="subProcessField()" @updateGeneral="updateGeneral"/>
 				<general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
 			</a-tab-pane>
 		</a-tabs>
@@ -22,10 +23,13 @@
     import GeneralServiceTask from "./tab/GeneralServiceTask";
     import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
     import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
+    import GeneralServiceTaskSubProcess from "./tab/GeneralServiceTaskSubProcess.vue";
 
     export default {
         name: "ServiceTaskProperties",
-        components: {GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask},
+        components: {
+          GeneralServiceTaskSubProcess,
+          GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask},
         props: {
             modeler: {
                 type: Object,
@@ -57,6 +61,9 @@
             },
             mailAuto() {
                 return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.mailAutoType;
+            },
+            subProcessAuto(){
+              return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.subProcessAutoClass;
             }
         },
         created() {
@@ -77,6 +84,19 @@
                 elementTag.name = 'stateKey';
                 this.extensionValues.push(elementTag);
                 return elementTag;
+            },
+            subProcessField() {
+              if (!this.subProcessAuto) {
+                return null;
+              }
+              let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
+              if (fields.length > 0) {
+                return fields[0];
+              }
+              let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.field);
+              elementTag.name = 'templateName';
+              this.extensionValues.push(elementTag);
+              return elementTag;
             },
             mailGeneral() {
                 let general;

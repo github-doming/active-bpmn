@@ -2,6 +2,7 @@
   <div class="properties">
     <general-service-task-mail-auto v-if="mailAuto" :params="params" :param="param" :element="element" :mailRecipient="mailRecipient()"
                                     :mailGeneral="mailGeneral()" :mailMessage="mailMessage()" :mailAttachment="mailAttachment()"/>
+    <general-service-task-sub-process v-else-if="subProcessAuto" :field="subProcessField"/>
     <a-tabs type="card" v-else>
       <a-tab-pane key="general" :tab="local.general">
         <general-service-task v-show="!statusAuto" :param="param"/>
@@ -16,11 +17,14 @@
   import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
   import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
   import {BpmnConfig,  BpmnMethod, BpmnTag} from "../js/BpmnHelper";
+  import GeneralServiceTaskSubProcess from "./tab/GeneralServiceTaskSubProcess.vue";
 
 
   export default {
     name: "ServiceTaskProperties",
-    components: {GeneralServiceTask,GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto},
+    components: {
+      GeneralServiceTaskSubProcess,
+      GeneralServiceTask,GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto},
     props: {
       modeler: {
         type: Object,
@@ -46,7 +50,17 @@
       mailAuto() {
         return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.mailAutoType;
       },
+      subProcessAuto(){
+        return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.subProcessAutoClass;
+      },
       field() {
+        let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
+        if (fields.length > 0) {
+          return fields[0];
+        }
+        return {};
+      },
+      subProcessField() {
         let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
         if (fields.length > 0) {
           return fields[0];
