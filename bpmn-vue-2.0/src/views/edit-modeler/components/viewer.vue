@@ -160,17 +160,42 @@
       },
       highlightRun() {
         let canvas = this.bpmnModeler.get('canvas');
-        this.runningKeys.forEach(key => {
-          canvas.addMarker(key, 'running');
-        });
+        let serviceKeys = ['set-status','e-mail','subProcess'];
         this.ranKeys.forEach(key => {
           canvas.addMarker(key, 'ran');
+          serviceKeys.forEach(function (serviceKey){
+            let serviceTask = document.getElementById(key + '_' + serviceKey);
+            if(serviceTask){
+              serviceTask.href.baseVal='/img/foundation/activiti/' + serviceKey + '-grey.svg';
+            }
+          });
         });
         this.terminatedKeys.forEach(key => {
           canvas.addMarker(key, 'terminated');
+          serviceKeys.forEach(function (serviceKey){
+            let serviceTask = document.getElementById(key + '_' + serviceKey);
+            if(serviceTask){
+              serviceTask.href.baseVal='/img/foundation/activiti/' + serviceKey + '-red.svg';
+            }
+          });
         });
         this.abortedKeys.forEach(key => {
           canvas.addMarker(key, 'aborted');
+          serviceKeys.forEach(function (serviceKey){
+            let serviceTask = document.getElementById(key + '_' + serviceKey);
+            if(serviceTask){
+              serviceTask.href.baseVal='/img/foundation/activiti/' + serviceKey + '-red.svg';
+            }
+          });
+        });
+        this.runningKeys.forEach(key => {
+          canvas.addMarker(key, 'running');
+          serviceKeys.forEach(function (serviceKey){
+            let serviceTask = document.getElementById(key + '_' + serviceKey);
+            if(serviceTask){
+              serviceTask.href.baseVal='/img/foundation/activiti/' + serviceKey + '-green.svg';
+            }
+          });
         });
       },
       adjustViewer() {

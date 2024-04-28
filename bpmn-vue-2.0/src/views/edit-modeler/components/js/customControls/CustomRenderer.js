@@ -47,6 +47,7 @@ export default class CustomRenderer extends BaseRenderer {
     const customIcon = svgCreate('image', {
       ...attr,
       href:setStatus,
+      id:element.id + "_set-status"
     });
     element['width'] = attr.width;
     element['height'] = attr.height;
@@ -68,6 +69,7 @@ export default class CustomRenderer extends BaseRenderer {
     const customIcon = svgCreate('image', {
       ...attr,
       href:subProcess,
+      id:element.id + "_subProcess"
     });
     element['width'] = attr.width;
     element['height'] = attr.height;
@@ -93,6 +95,7 @@ export default class CustomRenderer extends BaseRenderer {
     const customIcon = svgCreate('image', {
       ...attr,
       href: email,
+      id:element.id + "_e-mail"
     });
     element['width'] = attr.width;
     element['height'] = attr.height;
