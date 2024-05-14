@@ -130,6 +130,7 @@
                 return participant;
             },
             updateMailRecipient(type, participant, participantKey, participantData) {
+              const rolesOption = [];
                 if ('add' === type) {
                     participantData.forEach(item => {
                         let tagElement = BpmnFunction.createElementTag(this.modeler, participant, BpmnTag.getRecipient(participantKey));
@@ -152,6 +153,7 @@
                                 'name':item.name,
                                 'roleCode': item.roleCode
                             });
+                          rolesOption.push({'name': item.name, 'id': item.id, 'code': item.roleCode})
 												} else if("emails" === participantKey){
                             Object.assign(addObject, {
                                 'mail': item.mail
@@ -160,8 +162,53 @@
                         Object.assign(tagElement, addObject);
                         participant[participantKey].push(tagElement);
                     });
+                } else if ('remove' === type) {
+                  if (participantKey === 'roles') {
+                    participantData.forEach(item => {
+                      rolesOption.push(item.id);
+                    });
+                  }
                 }
+              if (rolesOption.length > 0) {
+                this.editRoleSet4Role(rolesOption, type);
+              }
             },
+          editRoleSet4Role(rolesOption, type) {
+            const that = this;
+            if ('add' === type) {
+              let roleSet;
+              Object.keys(this.params).forEach(key => {
+                let extensionElements = that.params[key].extensionElements;
+                if (key === that.element.id || !extensionElements || that.params[key]['$type'] !== 'bpmn:UserTask') {
+                  return;
+                }
+                let existedRoleSetId = [];
+                extensionElements.get('values').filter(item => item.$type === BpmnTag.roleSet).forEach(item => {
+                  existedRoleSetId.push(item.id);
+                });
+                rolesOption.forEach(item => {
+                  if (existedRoleSetId.indexOf(item.id) < 0) {
+                    roleSet = BpmnFunction.createElementTag(that.modeler, extensionElements, BpmnTag.roleSet);
+                    Object.assign(roleSet, {view: false, add: false, remove: false, sourceRef: that.element.id});
+                    Object.assign(roleSet, {...item, repositories: []});
+                    extensionElements.get('values').push(roleSet);
+                  }
+                });
+              });
+            } else {
+              Object.keys(this.params).forEach(key => {
+                if (that.params[key].extensionElements) {
+                  let extensionValues = that.params[key].extensionElements.get('values');
+                  for (let i = 0; i < extensionValues.length; i++) {
+                    if (extensionValues[i]['$type'] === BpmnTag.roleSet && rolesOption.indexOf(extensionValues[i].id) !== -1) {
+                      extensionValues.splice(i, 1);
+                      i = 0;
+                    }
+                  }
+                }
+              });
+            }
+          },
             mailMessage() {
                 let message;
                 for (let i = 0; i < this.extensionValues.length; i++) {
