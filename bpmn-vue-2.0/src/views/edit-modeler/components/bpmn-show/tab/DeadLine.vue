@@ -17,11 +17,10 @@
 			</div>
 
 			<div :style="{ display: 'flex',height:' 10px' }">
-				<a-radio-group v-model="deadLineNode.overdueResult" class="overdueResult" >
-					<!--				<a-radio :value="overdueResult[0]">{{local.skip}}</a-radio>-->
-					<a-radio :value="overdueResult[2]" :disabled="true">{{local.reassign}}</a-radio>
-					<a-radio :value="overdueResult[1]" :disabled="true">{{local.markComplete}}</a-radio>
-				</a-radio-group>
+        <a-checkbox-group v-model="overdueResultList" class="overdueResult" >
+          <a-checkbox :value="overdueResult[2]" >{{local.reassign}}</a-checkbox>
+          <a-checkbox :value="overdueResult[1]" >{{local.markComplete}}</a-checkbox>
+        </a-checkbox-group>
 
 				<a-form-item :label="local.vote" class="overdueVote" >
 					<a-select class="markCompleteVote" mode="multiple" v-model="markCompleteVotes"
@@ -155,6 +154,7 @@
                 isOverdueNotice: isOverdueNotice,
                 isMarkComplete: isMarkComplete,
                 overdueResult: overdueResult,
+                overdueResultList:[this.deadLineNode.overdueResult],
                 votes: [],
                 markCompleteVotes: markCompleteVotes
             }

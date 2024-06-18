@@ -17,12 +17,10 @@
 			</div>
 
 			<div :style="{ display: 'flex',height:' 10px' }">
-				<a-radio-group v-model="deadLineNode.overdueResult" class="overdueResult" @change="handleRadioChange">
-					<!--				<a-radio :value="overdueResult[0]">{{local.skip}}</a-radio>-->
-					<a-radio :value="overdueResult[2]">{{local.reassign}}</a-radio>
-					<a-radio :value="overdueResult[1]">{{local.markComplete}}</a-radio>
-				</a-radio-group>
-
+        <a-checkbox-group v-model="overdueResultList" class="overdueResult" @change="handleRadioChange">
+          <a-checkbox :value="overdueResult[2]" >{{local.reassign}}</a-checkbox>
+          <a-checkbox :value="overdueResult[1]" >{{local.markComplete}}</a-checkbox>
+        </a-checkbox-group>
 				<a-form-item :label="local.vote" class="overdueVote">
 					<a-select class="markCompleteVote" mode="multiple" v-model="markCompleteVotes" @change="handleChange"
 										:disabled="isMarkComplete">
@@ -164,6 +162,7 @@
                 isOverdueNotice: isOverdueNotice,
                 isMarkComplete: isMarkComplete,
                 overdueResult: overdueResult,
+                overdueResultList:[this.deadLineNode.overdueResult],
                 votes: [],
                 markCompleteVotes: markCompleteVotes
             }
@@ -237,13 +236,40 @@
                 this.$emit('updateMarkCompleteVote', this.deadLineNode, value);
             },
             handleRadioChange(e) {
-                var value = e.target.value;
-                if ('markComplete' == value) {
-                    this.isMarkComplete = false;
-                } else {
-                    this.markCompleteVotes = [];
-                    this.isMarkComplete = true;
+              if(e.length > 0){
+                //选取了一个值
+                if(e.length < 2){
+                  var value = e[0];
+                  this.isMCVDisplay(value);
+                  this.overdueResultList = [value];
+                  this.deadLineNode.overdueResult = value;
                 }
+                //选取的两个值
+                else{
+                  var oldValue = this.deadLineNode.overdueResult;
+                  let index = e.indexOf(oldValue); // 找到要删除元素的索引
+                  if (index !== -1) {
+                    e.splice(index, 1); // 从索引处删除一个元素
+                  }
+                  this.isMCVDisplay(e[0]);
+                  this.overdueResultList = e;
+                  this.deadLineNode.overdueResult = e[0];
+                }
+
+              }else{
+                this.markCompleteVotes = [];
+                this.isMarkComplete = true;
+                this.overdueResultList = [];
+                this.deadLineNode.overdueResult = '';
+              }
+            },
+            isMCVDisplay(value){
+              if ('markComplete' == value) {
+                this.isMarkComplete = false;
+              } else {
+                this.markCompleteVotes = [];
+                this.isMarkComplete = true;
+              }
             }
         }
     }
