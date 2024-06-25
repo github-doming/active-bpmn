@@ -208,6 +208,7 @@ public class ProcessDesignController {
 		local.put("enterDescription", "请输入工作流描述");
 		local.put("operator", "操作者");
 		local.put("threshold", "阈值");
+		local.put("voteExpression", "路由表达式");
 		local.put("condition", "条件");
 		local.put("specificState", "特定状态");
 		local.put("subProcessTemplate", "子流程模板");

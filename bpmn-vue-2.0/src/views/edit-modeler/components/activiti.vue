@@ -37,6 +37,7 @@
   import SequenceProperties from "./bpmn-properties/SequenceProperties";
   import InclusiveGatewayProperties from "./bpmn-properties/InclusiveGatewayProperties";
   import IntermediateCatchEventProperties from "./bpmn-properties/IntermediateCatchEventProperties";
+  import ExclusiveGatewayProperties from "./bpmn-properties/ExclusiveGatewayProperties";
 
   export default {
     name: "",
@@ -48,7 +49,7 @@
     },
     components: {
       ProcessProperties, UserTaskProperties, ServiceTaskProperties, NameProperties, SequenceProperties,
-      InclusiveGatewayProperties, IntermediateCatchEventProperties
+      InclusiveGatewayProperties, IntermediateCatchEventProperties ,ExclusiveGatewayProperties
     },
     computed: {
       downloadShow() {
@@ -336,7 +337,9 @@
             this.propsComponent = 'InclusiveGatewayProperties';
           } else if (that.element.type === 'bpmn:IntermediateCatchEvent') {
             this.propsComponent = 'IntermediateCatchEventProperties';
-          } else {
+          } else if (that.element.type === 'bpmn:ExclusiveGateway') {
+            this.propsComponent = 'ExclusiveGatewayProperties';
+          }else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'
           }
@@ -358,6 +361,8 @@
             that.propsComponent = 'InclusiveGatewayProperties';
           } else if (type === 'bpmn:IntermediateCatchEvent') {
             that.propsComponent = 'IntermediateCatchEventProperties';
+          } else if (type === 'bpmn:ExclusiveGateway') {
+            that.propsComponent = 'ExclusiveGatewayProperties';
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'

@@ -2,7 +2,7 @@
   <div class="properties">
     <a-tabs type="card">
       <a-tab-pane key="general" :tab="local.general">
-        <general-inclusive-gateway :threshold="threshold()"/>
+        <general-inclusive-gateway :threshold="threshold()" :expression = "classExpression()"/>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -56,6 +56,15 @@
         this.extensionValues.push(elementTag);
         return elementTag;
       },
+      classExpression() {
+        let classExpression = this.extensionValues.filter(element => element['$type'] === BpmnTag.expression);
+        if (classExpression.length > 0) {
+          return classExpression[0];
+        }
+        let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.expression);
+        this.extensionValues.push(elementTag);
+        return elementTag;
+      }
     },
   }
 </script>
