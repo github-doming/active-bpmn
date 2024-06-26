@@ -19,6 +19,7 @@
   import NameProperties from "./bpmn-show/NameProperties";
   import SequenceProperties from "./bpmn-show/SequenceProperties";
   import InclusiveGatewayProperties from "./bpmn-show/InclusiveGatewayProperties";
+  import ExclusiveGatewayProperties from "./bpmn-show/ExclusiveGatewayProperties";
   import CustomModdle from "./js/activiti";
   import {BpmnConfig} from "./js/BpmnHelper";
   import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
@@ -38,7 +39,8 @@
       ServiceTaskProperties,
       SequenceProperties,
       InclusiveGatewayProperties,
-      NameProperties
+      NameProperties,
+      ExclusiveGatewayProperties
     },
     data() {
       return {
@@ -156,6 +158,8 @@
             that.propsComponent = 'SequenceProperties'
           } else if (that.element.type === 'bpmn:InclusiveGateway') {
             this.propsComponent = 'InclusiveGatewayProperties';
+          } else if (that.element.type === 'bpmn:ExclusiveGateway') {
+            this.propsComponent = 'ExclusiveGatewayProperties';
           } else {
             that.element = that.bpmnParams.process.element;
             that.propsComponent = 'ProcessProperties'

@@ -2,14 +2,14 @@
   <div class="properties">
     <a-tabs type="card">
       <a-tab-pane key="general" :tab="local.general">
-        <general-inclusive-gateway :threshold="threshold"/>
+        <general-inclusive-gateway :threshold="threshold" :expression = "classExpression()"/>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 
 <script>
-  import { BpmnMethod, BpmnTag} from "../js/BpmnHelper";
+import {BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
   import GeneralInclusiveGateway from "./tab/GeneralInclusiveGateway";
 
   export default {
@@ -53,6 +53,12 @@
     },
     methods: {
       getExtensionElements: BpmnMethod.getExtensionElementsOnly(),
+      classExpression() {
+        let classExpression = this.extensionValues.filter(element => element['$type'] === BpmnTag.expression);
+        if (classExpression.length > 0) {
+          return classExpression[0];
+        }
+      }
     },
   }
 </script>
