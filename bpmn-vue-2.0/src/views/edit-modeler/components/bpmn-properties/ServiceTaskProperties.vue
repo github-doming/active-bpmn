@@ -12,6 +12,7 @@
 			<a-tab-pane key="general" :tab="local.general">
 				<general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
         <general-service-task-sub-process v-else-if="subProcessAuto" :field="subProcessField()" @updateGeneral="updateGeneral"/>
+        <general-service-task-synch-robot v-else-if="synchRobotAuto" :param="param" :expression = "classExpression()" @updateGeneral="updateGeneral" />
 				<general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
 			</a-tab-pane>
 		</a-tabs>
@@ -24,12 +25,13 @@
     import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
     import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
     import GeneralServiceTaskSubProcess from "./tab/GeneralServiceTaskSubProcess.vue";
+    import GeneralServiceTaskSynchRobot from "./tab/GeneralServiceTaskSynchRobot.vue";
 
     export default {
         name: "ServiceTaskProperties",
         components: {
           GeneralServiceTaskSubProcess,
-          GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask},
+          GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask,GeneralServiceTaskSynchRobot},
         props: {
             modeler: {
                 type: Object,
@@ -64,6 +66,9 @@
             },
             subProcessAuto(){
               return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.subProcessAutoClass;
+            },
+            synchRobotAuto(){
+              return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.synchRobotType;
             }
         },
         created() {
@@ -248,6 +253,15 @@
                     });
                     attachmentModel['variables'].push(tagElement);
                 });
+            },
+            classExpression() {
+              let classExpression = this.extensionValues.filter(element => element['$type'] === BpmnTag.expression);
+              if (classExpression.length > 0) {
+                return classExpression[0];
+              }
+              let elementTag = BpmnFunction.createElementTag(this.modeler, this.getExtensionElements(), BpmnTag.expression);
+              this.extensionValues.push(elementTag);
+              return elementTag;
             }
         },
     }

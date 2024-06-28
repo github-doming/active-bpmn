@@ -277,6 +277,7 @@ public class ProcessDesignController {
 		language.put("Create Mail Auto", "邮件自动机");
 		language.put("Create Timer", "创建定时器");
 		language.put("Create SubProcess", "创建子流程");
+		language.put("Create SynchRobot", "创建同步自动机");
 
 
 		language.put("Append End Event", "追加结束事件");

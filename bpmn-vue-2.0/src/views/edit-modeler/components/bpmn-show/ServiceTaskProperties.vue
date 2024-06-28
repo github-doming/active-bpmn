@@ -3,6 +3,7 @@
     <general-service-task-mail-auto v-if="mailAuto" :params="params" :param="param" :element="element" :mailRecipient="mailRecipient()"
                                     :mailGeneral="mailGeneral()" :mailMessage="mailMessage()" :mailAttachment="mailAttachment()"/>
     <general-service-task-sub-process v-else-if="subProcessAuto" :field="subProcessField"/>
+    <general-service-task-synch-robot v-else-if="synchRobotAuto" :param="param" :expression = "classExpression()" />
     <a-tabs type="card" v-else>
       <a-tab-pane key="general" :tab="local.general">
         <general-service-task v-show="!statusAuto" :param="param"/>
@@ -16,13 +17,15 @@
   import GeneralServiceTask from "./tab/GeneralServiceTask";
   import GeneralServiceTaskStatusAuto from "./tab/GeneralServiceTaskStatusAuto";
   import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
-  import {BpmnConfig,  BpmnMethod, BpmnTag} from "../js/BpmnHelper";
+  import {BpmnConfig, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
   import GeneralServiceTaskSubProcess from "./tab/GeneralServiceTaskSubProcess.vue";
+  import GeneralServiceTaskSynchRobot from "./tab/GeneralServiceTaskSynchRobot.vue";
 
 
   export default {
     name: "ServiceTaskProperties",
     components: {
+      GeneralServiceTaskSynchRobot,
       GeneralServiceTaskSubProcess,
       GeneralServiceTask,GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto},
     props: {
@@ -52,6 +55,9 @@
       },
       subProcessAuto(){
         return this.element.businessObject.$attrs['activiti:class'] === BpmnConfig.subProcessAutoClass;
+      },
+      synchRobotAuto(){
+        return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.synchRobotType;
       },
       field() {
         let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);
@@ -123,6 +129,12 @@
           }
         }
         return attachment;
+      },
+      classExpression() {
+        let classExpression = this.extensionValues.filter(element => element['$type'] === BpmnTag.expression);
+        if (classExpression.length > 0) {
+          return classExpression[0];
+        }
       }
     }
   }

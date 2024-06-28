@@ -1,11 +1,11 @@
 <template>
   <div class="general-context">
-    <a-form-model ref="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-      <a-form-model-item :label="local.threshold">
-        <a-input :placeholder="0" v-model="threshold.value" read-only/>
+    <a-form-model :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+      <a-form-model-item :label="local.name" prop="name">
+        <a-input :placeholder="local.enterName" v-model="param.name" read-only/>
       </a-form-model-item>
       <a-form-model-item :label="local.voteExpression">
-        <a-input  v-model = "expression.expression" @change="mutexValue('expression')" read-only/>
+        <a-input  v-model = "expression.expression" read-only/>
       </a-form-model-item>
     </a-form-model>
   </div>
@@ -13,9 +13,12 @@
 
 <script>
   export default {
-    name: "GeneralInclusiveGateway",
+    name: "GeneralServiceTaskSynchRobot",
     props: {
-      threshold: Object,
+      param: {
+        type: Object,
+        default: () => ({})
+      },
       expression:{
         type: Object,
         default: () => ({})
@@ -25,6 +28,9 @@
       return {
         local:JSON.parse(localStorage.getItem('activeLocal')),
       }
+    },
+    methods: {
+
     },
   }
 </script>

@@ -61,6 +61,14 @@ export default class CustomPalette {
       create.start(event, shape);
     }
 
+    function createSynchRobot(event) {
+      const businessObject = bpmnFactory.create('bpmn:ServiceTask');
+      businessObject['name'] = '同步自动机';
+      businessObject.$attrs['activiti:type'] = BpmnConfig.synchRobotType;
+      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask', businessObject});
+      create.start(event, shape);
+    }
+
       function createIntermediateCatchEvent(event) {
       const timerEvent = bpmnFactory.create('bpmn:TimerEventDefinition');
       const businessObject = bpmnFactory.create('bpmn:IntermediateCatchEvent');
@@ -100,7 +108,11 @@ export default class CustomPalette {
       'create.subProcess': {
         group: 'activity', className: 'icon-custom icon-custom-subProcess-auto', title: translate('Create SubProcess'),
         action: {dragstart: createSubProcessAuto, click: createSubProcessAuto}
-      }
+      },
+      'create.synchRobot':{
+        group: 'activity', className: 'icon-custom icon-custom-synch-robot', title: translate('Create SynchRobot'),
+        action: {dragstart: createSynchRobot, click: createSynchRobot}
+       }
       }
   }
 }

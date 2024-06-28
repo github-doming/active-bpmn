@@ -160,7 +160,7 @@
       },
       highlightRun() {
         let canvas = this.bpmnModeler.get('canvas');
-        let serviceKeys = ['set-status','e-mail','subProcess'];
+        let serviceKeys = ['set-status','e-mail','subProcess','synchrobot'];
         this.ranKeys.forEach(key => {
           canvas.addMarker(key, 'ran');
           serviceKeys.forEach(function (serviceKey){

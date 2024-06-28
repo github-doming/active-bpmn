@@ -431,7 +431,9 @@
           if (element.type === 'bpmn:ServiceTask') {
               var isStatusAuto = element.businessObject.$attrs['activiti:class'] !== BpmnConfig.statusAutoClass;
               var isMailAuto = element.businessObject.$attrs['activiti:type'] !== BpmnConfig.mailAutoType;
-              if (isStatusAuto && isMailAuto) {
+              var isSubProcessAuto = element.businessObject.$attrs['activiti:class'] !== BpmnConfig.subProcessAutoClass;
+              var isSynchRobot = element.businessObject.$attrs['activiti:type'] !== BpmnConfig.synchRobotType;
+              if (isStatusAuto && isMailAuto && isSynchRobot && isSubProcessAuto) {
                   console.log(element.businessObject.extensionElements);
                   element.businessObject.extensionElements.set('values', []);
               }
@@ -519,6 +521,9 @@
 	}
   .icon-custom-subProcess-auto:before {
     content: url('./js/util/subProcess.svg');
+  }
+  .icon-custom-synch-robot:before {
+    content: url('./js/util/synchrobot.svg');
   }
 	[class^="icon-custom-"]:before, [class*=" icon-custom-"]:before {
 		font-style: normal;
