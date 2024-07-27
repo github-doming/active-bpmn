@@ -119,7 +119,15 @@
     data() {
       const local = JSON.parse(localStorage.getItem('activeLocal'));
       return {
-        local, activeId: '', activeItem: {}, variableVisible: false, showNameVisible: false, type: type,
+        local, activeId: '',
+        activeItem: {
+          isVisible: false,
+          isNecessary: false,
+          isReadOnly: false,
+          isReset: false,
+          defaultValue:''
+        },
+        variableVisible: false, showNameVisible: false, type: type,
         variableRules: {
           name: [{required: true, message: local.enterName, trigger: 'blur'}],
           type: [{required: true, message: local.enterVariable, trigger: 'change'}],
@@ -129,12 +137,6 @@
     methods: {
       addData() {
         this.activeId = '';
-        this.activeItem = {
-          isVisible: false,
-          isNecessary: false,
-          isReadOnly: false,
-          isReset: false
-        };
         this.variableVisible = true;
       },
       updateData() {
