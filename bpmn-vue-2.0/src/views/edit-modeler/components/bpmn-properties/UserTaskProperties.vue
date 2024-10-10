@@ -262,7 +262,7 @@
         rolesOption.forEach(item => {
           let index = this.extensionValues.findIndex(obj => obj.id === item.id);
           if(index !=-1 ){
-            this.extensionValues.splice(index);
+            this.extensionValues.splice(index,1);
           }
         });
         let extensionElements = this.param.extensionElements;
