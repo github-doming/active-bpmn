@@ -269,6 +269,12 @@
         rolesOption.forEach(item => {
           let roleSet = BpmnFunction.createElementTag(that.modeler, extensionElements, BpmnTag.roleSet);
           Object.assign(roleSet, {view: item.view, add: item.add, remove: item.remove, sourceRef: item.sourceRef,code:item.code,id:item.id,name:item.name});
+          if(item.repositories && item.repositories.length != 0){
+            roleSet.repositories = [];
+            let tagElement = BpmnFunction.createElementTag(that.modeler, roleSet, BpmnTag.repository);
+            Object.assign(tagElement, {'id': item.repositories[0].id, 'name': item.repositories[0].name, 'type': item.repositories[0].type});
+            roleSet.repositories.push(tagElement);
+          }
           extensionElements.get('values').push(roleSet);
         });
       },
