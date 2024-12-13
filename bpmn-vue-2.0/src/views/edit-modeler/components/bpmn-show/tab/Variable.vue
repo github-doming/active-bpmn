@@ -70,7 +70,8 @@
 					</a-select>
 				</a-form-model-item>
 			</a-form-model>
-		</a-modal>
+      <acl :variable = "activeItem"/>
+    </a-modal>
 		<a-modal v-model="showNameVisible" :title="local.defineDisplayName" width="300px" :centered="true"
 						 :maskClosable="false">
 			<template slot="footer">
@@ -93,10 +94,13 @@
 </template>
 
 <script>
+  import Acl from "@/views/edit-modeler/components/bpmn-properties/tab/Acl.vue";
+
   const type = ['int', 'char', 'float', 'boolean', 'String', 'Date', 'URL', 'Other...',];
 
   export default {
     name: "Variable",
+    components: {Acl},
     props: {
       variables: {
         type: Array,

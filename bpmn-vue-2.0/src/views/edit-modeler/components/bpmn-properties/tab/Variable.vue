@@ -39,8 +39,8 @@
 		<a-modal v-model="variableVisible" :title="local.create" width="600px" :ok-text="local.ok"
 						 :cancel-text="local.cancel"
 						 :centered="true" :maskClosable="false" @ok="variableOk" @cancel="variableClose">
-			<a-form-model ref="variableForm" :model="activeItem" :rules="variableRules" :label-col="{span: 4}"
-										:wrapper-col="{span: 14}">
+			<a-form-model ref="variableForm" :model="activeItem" :rules="variableRules" :label-col="{span: 5}"
+										:wrapper-col="{span: 14}" >
 				<a-form-model-item :label="local.name" ref="name" prop="name">
 					<a-col :span="11">
 						<a-input v-model="activeItem.name" :placeholder="local.enterVariable"
@@ -78,10 +78,10 @@
 						</a-select-option>
 					</a-select>
 				</a-form-model-item>
+        <acl :variable = "activeItem"/>
 			</a-form-model>
-
-
 		</a-modal>
+
 		<a-modal v-model="showNameVisible" :title="local.defineDisplayName" width="300px" :ok-text="local.ok"
 						 :cancel-text="local.cancel" :centered="true" :maskClosable="false" @ok="showNameClose"
 						 @cancel="showNameClose">
@@ -103,12 +103,15 @@
 
 <script>
   import {BpmnFunction} from "../../js/BpmnHelper";
+  import VoteSelect from "@/views/edit-modeler/components/bpmn-properties/tab/VoteSelect.vue";
+  import Acl from "@/views/edit-modeler/components/bpmn-properties/tab/Acl.vue";
 
   const type = ['int', 'char', 'float', 'boolean', 'String', 'Date', 'URL', 'Other...',];
   const ignoreAttr = ['$type', 'id'];
 
   export default {
     name: "Variable",
+    components: {VoteSelect,Acl},
     props: {
       variables: {
         type: Array,
@@ -262,7 +265,7 @@
           return /[a-zA-z]+:\/\/[^\s]*/.test(value);
         }
         return true;
-      },
+      }
     },
   }
 </script>

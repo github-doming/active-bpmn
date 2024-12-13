@@ -117,6 +117,11 @@
           "name": "initFormVarKey",
           "type": "String",
           "isAttr": true
+        },
+        {
+          "name": "accesses",
+          "type": "String",
+          "isAttr": true
         }
       ]
     },

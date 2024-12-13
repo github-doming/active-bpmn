@@ -53,6 +53,53 @@ public class ProcessDesignController {
 		return result;
 	}
 
+	@RequestMapping(value = "/model/acl", method = RequestMethod.GET)
+	public JSONArray listAcl() {
+		JSONArray result = new JSONArray();
+
+		Map<String, String> data = new HashMap<>(2);
+		data.put("code", "0");
+		data.put("name", "读取");
+		result.add(data);
+
+		Map<String, String> data1 = new HashMap<>(2);
+		data1.put("code", "10");
+		data1.put("name", "下载");
+		result.add(data1);
+
+		Map<String, String> data2 = new HashMap<>(2);
+		data2.put("code", "1");
+		data2.put("name", "修改");
+		result.add(data2);
+
+		Map<String, String> data3 = new HashMap<>(2);
+		data3.put("code", "-1");
+		data3.put("name", "完全控制");
+		result.add(data3);
+
+		Map<String, String> data4 = new HashMap<>(2);
+		data4.put("code", "11");
+		data4.put("name", "修改内容");
+		result.add(data4);
+
+		Map<String, String> data5 = new HashMap<>(2);
+		data5.put("code", "16");
+		data5.put("name", "修改标识");
+		result.add(data5);
+
+		Map<String, String> data6 = new HashMap<>(2);
+		data6.put("code", "2");
+		data6.put("name", "创建");
+		result.add(data6);
+
+		Map<String, String> data7 = new HashMap<>(2);
+		data7.put("code", "7");
+		data7.put("name", "修订");
+		result.add(data7);
+
+		return result;
+	}
+
 	@RequestMapping(value = "/model/subProcess", method = RequestMethod.GET)
 	public JSONArray listSubProcess() {
 		String[] subProcess = {"子流程1", "子流程2"};
@@ -162,7 +209,7 @@ public class ProcessDesignController {
 		local.put("updated", "更新");
 		local.put("variableName", "变量名称");
 		local.put("displayName", "显示名称");
-		local.put("variableType", "变量类型");
+		local.put("variableType", "变量类型名称");
 		local.put("visible", "可见");
 		local.put("necessary", "必需");
 		local.put("readOnly", "只读");
@@ -176,7 +223,7 @@ public class ProcessDesignController {
 		local.put("defineDisplayName", "定义显示名称");
 		local.put("selectVariableName", "请选择变量类型名称");
 		local.put("otherClassName", "其它类名称");
-		local.put("authority", "权限");
+		local.put("authority", "变量类型");
 		local.put("initializedFrom", "初始化自");
 		local.put("initializedFromGlobalVariable", "初始化来自的全局变量");
 		local.put("defaultDisplay", "默认显示");
@@ -231,6 +278,8 @@ public class ProcessDesignController {
 		local.put("overdueAfter", "最后期限之后");
 		local.put("selectNoticeRole", "通知选定角色");
 		local.put("roleCode", "角色码");
+		local.put("access", "权限");
+
 
 		local.put("message", "消息");
 		local.put("subject", "主题");

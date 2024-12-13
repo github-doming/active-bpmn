@@ -92,6 +92,10 @@
               .then(res => {
                 localStorage.setItem('activeRoles', JSON.stringify(res.data));
               }).catch(err => that.$message('查询失败' + err));
+      request({method: 'get', url: '/workflow/model/acl',})
+          .then(res => {
+            localStorage.setItem('accesses', JSON.stringify(res.data));
+          }).catch(err => that.$message('查询失败' + err));
     },
     methods: {
       handleEdit() {
