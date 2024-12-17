@@ -279,6 +279,7 @@ public class ProcessDesignController {
 		local.put("selectNoticeRole", "通知选定角色");
 		local.put("roleCode", "角色码");
 		local.put("access", "权限");
+		local.put("ground", "接地");
 
 
 		local.put("message", "消息");
@@ -327,6 +328,7 @@ public class ProcessDesignController {
 		language.put("Create Timer", "创建定时器");
 		language.put("Create SubProcess", "创建子流程");
 		language.put("Create SynchRobot", "创建同步自动机");
+		language.put("Create Ground", "接地");
 
 
 		language.put("Append End Event", "追加结束事件");

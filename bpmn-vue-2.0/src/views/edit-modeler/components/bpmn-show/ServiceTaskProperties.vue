@@ -4,6 +4,7 @@
                                     :mailGeneral="mailGeneral()" :mailMessage="mailMessage()" :mailAttachment="mailAttachment()"/>
     <general-service-task-sub-process v-else-if="subProcessAuto" :field="subProcessField"/>
     <general-service-task-synch-robot v-else-if="synchRobotAuto" :param="param" :expression = "classExpression()" />
+    <ground v-else-if="ground" :param="param"/>
     <a-tabs type="card" v-else>
       <a-tab-pane key="general" :tab="local.general">
         <general-service-task v-show="!statusAuto" :param="param"/>
@@ -20,6 +21,7 @@
   import {BpmnConfig, BpmnFunction, BpmnMethod, BpmnTag} from "../js/BpmnHelper";
   import GeneralServiceTaskSubProcess from "./tab/GeneralServiceTaskSubProcess.vue";
   import GeneralServiceTaskSynchRobot from "./tab/GeneralServiceTaskSynchRobot.vue";
+  import Ground from "./tab/Ground.vue";
 
 
   export default {
@@ -27,7 +29,7 @@
     components: {
       GeneralServiceTaskSynchRobot,
       GeneralServiceTaskSubProcess,
-      GeneralServiceTask,GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto},
+      GeneralServiceTask,GeneralServiceTaskStatusAuto,GeneralServiceTaskMailAuto,Ground},
     props: {
       modeler: {
         type: Object,
@@ -58,6 +60,9 @@
       },
       synchRobotAuto(){
         return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.synchRobotType;
+      },
+      ground(){
+        return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.ground;
       },
       field() {
         let fields = this.extensionValues.filter(element => element['$type'] === BpmnTag.field);

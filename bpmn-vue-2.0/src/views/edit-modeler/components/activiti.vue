@@ -525,6 +525,9 @@
   .icon-custom-synch-robot:before {
     content: url('./js/util/synchrobot.svg');
   }
+  .icon-custom-ground:before {
+    content: url('./js/util/ground.svg');
+  }
 	[class^="icon-custom-"]:before, [class*=" icon-custom-"]:before {
 		font-style: normal;
 		font-weight: normal;

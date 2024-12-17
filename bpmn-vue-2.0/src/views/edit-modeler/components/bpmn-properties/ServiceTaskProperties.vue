@@ -13,6 +13,7 @@
 				<general-service-task-status-auto v-if="statusAuto" :field="field()" @updateGeneral="updateGeneral"/>
         <general-service-task-sub-process v-else-if="subProcessAuto" :field="subProcessField()" @updateGeneral="updateGeneral"/>
         <general-service-task-synch-robot v-else-if="synchRobotAuto" :param="param" :expression = "classExpression()" @updateGeneral="updateGeneral" />
+        <ground v-else-if="ground" :param="param"/>
 				<general-service-task v-else :param="param" @updateGeneral="updateGeneral"/>
 			</a-tab-pane>
 		</a-tabs>
@@ -26,12 +27,13 @@
     import GeneralServiceTaskMailAuto from "./tab/GeneralServiceTaskMailAuto";
     import GeneralServiceTaskSubProcess from "./tab/GeneralServiceTaskSubProcess.vue";
     import GeneralServiceTaskSynchRobot from "./tab/GeneralServiceTaskSynchRobot.vue";
+    import Ground from "./tab/Ground.vue";
 
     export default {
         name: "ServiceTaskProperties",
         components: {
           GeneralServiceTaskSubProcess,
-          GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask,GeneralServiceTaskSynchRobot},
+          GeneralServiceTaskStatusAuto, GeneralServiceTaskMailAuto, GeneralServiceTask,GeneralServiceTaskSynchRobot,Ground},
         props: {
             modeler: {
                 type: Object,
@@ -69,6 +71,9 @@
             },
             synchRobotAuto(){
               return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.synchRobotType;
+            },
+            ground(){
+              return this.element.businessObject.$attrs['activiti:type'] === BpmnConfig.ground;
             }
         },
         created() {

@@ -9,6 +9,7 @@ import setStatus from '../util/set-status.svg';
 import email from '../util/e-mail.svg';
 import subProcess from '../util/subProcess.svg';
 import synchRobot from '../util/synchrobot.svg';
+import ground from '../util/ground.svg';
 
 const CustomTypes = ['bpmn:UserTask', 'bpmn:ServiceTask', 'bpmn:SendTask'];
 
@@ -43,6 +44,10 @@ export default class CustomRenderer extends BaseRenderer {
     if(element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:type'] ===  BpmnConfig.synchRobotType)
     {
       return this.drawSynchRobot(visuals, element);
+    }
+    if(element.type === 'bpmn:ServiceTask' && element.businessObject.$attrs['activiti:type'] ===  BpmnConfig.ground)
+    {
+      return this.drawGround(visuals, element);
     }
       return this.bpmnRenderer.drawShape(visuals, element);
   }
@@ -104,6 +109,28 @@ export default class CustomRenderer extends BaseRenderer {
     const  name = element.businessObject.name;
     const text = svgCreate('text', {
       x: attr.x,
+      y: attr.y + attr.height + 20,
+      "font-size": "14",
+      "fill": "#000"
+    });
+    text.innerHTML =name;
+    svgAppend(parentNode, text);
+    return customIcon
+  }
+
+  drawGround(parentNode, element) {
+    const attr = { x: 0, y: 0, width: 50, height: 50 };
+    const customIcon = svgCreate('image', {
+      ...attr,
+      href:ground,
+      id:element.id + "_ground"
+    });
+    element['width'] = attr.width;
+    element['height'] = attr.height;
+    svgAppend(parentNode, customIcon);
+    const  name = element.businessObject.name;
+    const text = svgCreate('text', {
+      x: attr.x + 10,
       y: attr.y + attr.height + 20,
       "font-size": "14",
       "fill": "#000"

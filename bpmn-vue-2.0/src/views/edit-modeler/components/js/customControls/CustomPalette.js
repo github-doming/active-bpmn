@@ -69,6 +69,14 @@ export default class CustomPalette {
       create.start(event, shape);
     }
 
+    function createGround(event) {
+      const businessObject = bpmnFactory.create('bpmn:ServiceTask');
+      businessObject['name'] = '接地';
+      businessObject.$attrs['activiti:type'] = BpmnConfig.ground;
+      const shape = elementFactory.createShape({type: 'bpmn:ServiceTask', businessObject});
+      create.start(event, shape);
+    }
+
       function createIntermediateCatchEvent(event) {
       const timerEvent = bpmnFactory.create('bpmn:TimerEventDefinition');
       const businessObject = bpmnFactory.create('bpmn:IntermediateCatchEvent');
@@ -112,7 +120,11 @@ export default class CustomPalette {
       'create.synchRobot':{
         group: 'activity', className: 'icon-custom icon-custom-synch-robot', title: translate('Create SynchRobot'),
         action: {dragstart: createSynchRobot, click: createSynchRobot}
-       }
+       },
+      'create.ground':{
+        group: 'activity', className: 'icon-custom icon-custom-ground', title: translate('Create Ground'),
+        action: {dragstart: createGround, click: createGround}
+      }
       }
   }
 }
