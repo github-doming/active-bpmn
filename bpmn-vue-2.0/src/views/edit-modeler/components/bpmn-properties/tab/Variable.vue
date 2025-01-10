@@ -127,7 +127,7 @@
           isVisible: false,
           isNecessary: false,
           isReadOnly: false,
-          isReset: false,
+          isReset: true,
           defaultValue:''
         },
         variableVisible: false, showNameVisible: false, type: type,
@@ -141,6 +141,13 @@
       addData() {
         this.activeId = '';
         this.variableVisible = true;
+        this.activeItem={
+          isVisible: false,
+          isNecessary: false,
+          isReadOnly: false,
+          isReset: true,
+          defaultValue:''
+        };
       },
       updateData() {
         let variable = this.getVariable();
