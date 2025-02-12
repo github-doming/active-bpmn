@@ -34,9 +34,9 @@
 				<a-button :disabled="activeId === ''" @click="showData">{{local.view}}</a-button>
 			</div>
 		</div>
-		<a-modal v-model="variableVisible" :title="local.create" width="600px" :centered="true" :maskClosable="false">
+		<a-modal v-model="variableVisible" :title="local.view" width="600px" :centered="true" :maskClosable="false">
 			<template slot="footer">
-				<a-button type="primary" @click="variableOk"> {{local.ok}}</a-button>
+				<a-button type="primary" @click="variableOk" hidden="hidden"> {{local.ok}}</a-button>
 			</template>
 			<a-form-model ref="variableForm" :model="activeItem" :label-col="{span: 4}" :wrapper-col="{span: 14}">
 				<a-form-model-item :label="local.name" ref="name" prop="name">
@@ -44,7 +44,7 @@
 						<a-input v-model="activeItem.name" read-only/>
 					</a-col>
 					<a-col :span="11" :offset="2">
-						<a-button type="primary" @click="showNameVisible = true"> {{local.defineDisplayName}}</a-button>
+						<a-button type="primary" @click="showNameVisible = true" > {{local.defineDisplayName}}</a-button>
 					</a-col>
 				</a-form-model-item>
 				<a-form-model-item :label="local.variableType" prop="type">
@@ -75,7 +75,7 @@
 		<a-modal v-model="showNameVisible" :title="local.defineDisplayName" width="300px" :centered="true"
 						 :maskClosable="false">
 			<template slot="footer">
-				<a-button type="primary" @click="showNameClose"> {{local.ok}}</a-button>
+				<a-button type="primary" @click="showNameClose" hidden="hidden"> {{local.ok}}</a-button>
 			</template>
 			<a-form-model :model="activeItem" :label-col="{span: 8}" :wrapper-col="{span: 14}">
 				<a-form-model-item :label="local.defaultDisplay">
