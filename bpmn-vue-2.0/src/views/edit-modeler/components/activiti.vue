@@ -433,9 +433,10 @@
               var isMailAuto = element.businessObject.$attrs['activiti:type'] !== BpmnConfig.mailAutoType;
               var isSubProcessAuto = element.businessObject.$attrs['activiti:class'] !== BpmnConfig.subProcessAutoClass;
               var isSynchRobot = element.businessObject.$attrs['activiti:type'] !== BpmnConfig.synchRobotType;
-              if (isStatusAuto && isMailAuto && isSynchRobot && isSubProcessAuto) {
-                  console.log(element.businessObject.extensionElements);
-                  element.businessObject.extensionElements.set('values', []);
+              var isGround = element.businessObject.$attrs['activiti:type'] !== BpmnConfig.ground;
+              if (isStatusAuto && isMailAuto && isSubProcessAuto && isSynchRobot && isGround) {
+                console.log(element.businessObject.extensionElements);
+                element.businessObject.extensionElements.set('values', []);
               }
           }
       }
