@@ -2,7 +2,7 @@
   <div class="general-context">
     <a-form-model ref="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
       <a-form-model-item :label="local.subProcessTemplate" prop="subProcessTemplate">
-        <a-select v-model="field.string" @change="updateProperty">
+        <a-select v-model="field.string" @change="updateProperty" showSearch>
           <a-select-option v-for="item in template" :key="item.name"> {{item.name}}</a-select-option>
         </a-select>
       </a-form-model-item>
@@ -34,7 +34,7 @@
       updateProperty() {
         const form = {name: this.templateName[this.field.string]};
         this.$emit('updateGeneral', form);
-      },
+      }
     },
   }
 </script>
