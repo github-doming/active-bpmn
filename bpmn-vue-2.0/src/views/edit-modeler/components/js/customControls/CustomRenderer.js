@@ -10,6 +10,7 @@ import email from '../util/e-mail.svg';
 import subProcess from '../util/subProcess.svg';
 import synchRobot from '../util/synchrobot.svg';
 import ground from '../util/ground.svg';
+import usertask from '../util/user-task.svg';
 
 const CustomTypes = ['bpmn:UserTask', 'bpmn:ServiceTask', 'bpmn:SendTask'];
 
@@ -49,7 +50,46 @@ export default class CustomRenderer extends BaseRenderer {
     {
       return this.drawGround(visuals, element);
     }
+    if(element.type === 'bpmn:UserTask')
+    {
+      return this.drawUserTask(visuals, element);
+    }
       return this.bpmnRenderer.drawShape(visuals, element);
+  }
+
+  drawUserTask(parentNode, element) {
+    const attr = { x: 0, y: 0, width: 62.5, height: 50 };
+    const customIcon = svgCreate('image', {
+      ...attr,
+      href:usertask,
+      id:element.id + "_user-task"
+    });
+    element['width'] = attr.width;
+    element['height'] = attr.height;
+    svgAppend(parentNode, customIcon);
+    var name = element.businessObject.name;
+    name = (name == null || name == undefined)?"":name;
+    const contextWidth = this.calculateTextWidth(name,"14");
+    const text = svgCreate('text', {
+      x: attr.x + (attr.width-contextWidth)/2-5,
+      y: attr.y + attr.height + 20,
+      "font-size": "14",
+      "fill": "#000"
+    });
+    text.innerHTML =name;
+    svgAppend(parentNode, text);
+    return customIcon
+  }
+
+  calculateTextWidth(text, font) {
+    // 创建一个 canvas 元素
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    // 设置字体样式
+    context.font = font;
+    // 测量文本的宽度
+    const metrics = context.measureText(text);
+    return metrics.width;
   }
 
   drawSetStatus(parentNode, element) {
